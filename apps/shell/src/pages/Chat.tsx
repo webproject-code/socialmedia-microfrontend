@@ -1,8 +1,6 @@
 import TopbarForMobile from '../components/TopbarForMobile';
 
-type ChatProps = {};
-
-const Chat: React.FC<ChatProps> = () => {
+const Chat: React.FC = () => {
   return (
     <div>
       <TopbarForMobile title="Messages" />

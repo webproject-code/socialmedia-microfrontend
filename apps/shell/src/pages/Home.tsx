@@ -1,8 +1,6 @@
 import TopbarForMobile from '../components/TopbarForMobile';
 
-type HomeProps = {};
-
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC = () => {
   return (
     <div>
       <TopbarForMobile title="Home" />

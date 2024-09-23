@@ -18,13 +18,39 @@
               }
             ]
           }
-        ]
+        ],
+        // General JavaScript/TypeScript rules
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "no-console": ["warn", { "allow": ["warn", "error"] }],
+        "eqeqeq": ["error", "always"],
+        "no-debugger": "error",
+        "curly": ["error", "all"],
+        "no-multiple-empty-lines": ["error", { "max": 1 }],
+        "prefer-const": ["error"],
+
+        // React-specific rules
+        "react/jsx-uses-react": "off", // Not needed with React 17+
+        "react/react-in-jsx-scope": "off", // Not needed with React 17+
+        "react/jsx-key": "error", // Ensure unique keys for lists
+        "react/prop-types": "off", // Not needed with TypeScript
+        "react/no-array-index-key": "warn", // Warn when using index as key
+        "react/no-danger": "warn", // Warn when using `dangerouslySetInnerHTML`
+
+        // React hooks
+        "react-hooks/rules-of-hooks": "error", // Enforce the rules of Hooks
+        "react-hooks/exhaustive-deps": "warn" // Warn about missing dependencies in Hooks
       }
     },
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
+        "@typescript-eslint/no-explicit-any": "warn" // Discourage use of `any` type
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

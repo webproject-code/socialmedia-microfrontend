@@ -1,8 +1,6 @@
 import TopbarForMobile from '../components/TopbarForMobile';
 
-type FriendsProps = {};
-
-const Friends: React.FC<FriendsProps> = () => {
+const Friends: React.FC = () => {
   return (
     <div>
       <TopbarForMobile title="Friends Management" />

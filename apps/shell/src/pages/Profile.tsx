@@ -1,8 +1,6 @@
 import TopbarForMobile from '../components/TopbarForMobile';
 
-type ProfileProps = {};
-
-const Profile: React.FC<ProfileProps> = () => {
+const Profile: React.FC = () => {
   return (
     <div>
       <TopbarForMobile title="Profile" />

@@ -1,6 +1,4 @@
-type AuthProps = {};
-
-const Auth: React.FC<AuthProps> = () => {
+const Auth: React.FC = () => {
   return <div>Auth</div>;
 };
 
