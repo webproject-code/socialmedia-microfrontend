@@ -1,0 +1,61 @@
+{
+  "name": "chatlist",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/chatlist/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "web",
+        "outputPath": "dist/apps/chatlist",
+        "main": "apps/chatlist/src/main.ts",
+        "tsConfig": "apps/chatlist/tsconfig.app.json",
+        "rspackConfig": "apps/chatlist/rspack.config.ts",
+        "assets": ["apps/chatlist/src/favicon.ico", "apps/chatlist/src/assets"]
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false,
+          "rspackConfig": "apps/chatlist/rspack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/rspack:module-federation-dev-server",
+      "options": {
+        "buildTarget": "chatlist:build:development",
+        "port": 4202
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "chatlist:build:production"
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/rspack:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "chatlist:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "chatlist:serve:development"
+        },
+        "production": {
+          "serveTarget": "chatlist:serve:production"
+        }
+      }
+    }
+  }
+}

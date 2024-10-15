@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "auth/Module": ["apps/auth/src/remote-entry.ts"]
+      "auth/Module": ["apps/auth/src/remote-entry.ts"],
+      "chatlist/Module": ["apps/chatlist/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
