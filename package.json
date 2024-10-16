@@ -69,8 +69,8 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "npm run format --uncommitted",
-      "npm run lint --uncommitted"
+      "npm run format ",
+      "npm run lint "
     ]
   }
 }
