@@ -1,7 +1,6 @@
 import { z } from 'zod';
-import { useEffect } from 'react';
 import { IoIosWarning } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Input, Stack } from '@social-media/evoke-ui';
@@ -14,20 +13,10 @@ import { Spinner } from '@social-media/utils';
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const { data, mutate, isPending, error } = useLogin();
+  const { mutate, isPending, error } = useLogin();
   const { login } = useStore();
 
   type FormType = z.infer<typeof loginSchema>;
-
-  useEffect(() => {
-    if (data) {
-      login({
-        isAuthenticated: true,
-        user: data,
-      });
-      navigate('/');
-    }
-  }, [data]);
 
   const {
     control,
@@ -42,15 +31,20 @@ const LoginForm: React.FC = () => {
   });
 
   const onSubmit = (credentials: FormType) => {
-    mutate(credentials);
+    mutate(credentials, {
+      onSuccess: (data) => {
+        login({
+          isAuthenticated: true,
+          user: data,
+        });
+        navigate('/');
+      },
+    });
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 mx-0 sm:mx-4 "
-      >
+    <Stack direction="column" spacing={'large'}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Controller
           name="email"
           control={control}
@@ -79,6 +73,13 @@ const LoginForm: React.FC = () => {
             />
           )}
         />
+        <div className="text-end">
+          <Link to="/auth/forgot-password">
+            <span className="text-sm text-light-secondary dark:text-dark-secondary text-end">
+              Forgot Password ?
+            </span>
+          </Link>
+        </div>
         <Button disabled={isPending}>
           {!isPending ? (
             'Login'
@@ -92,13 +93,13 @@ const LoginForm: React.FC = () => {
         <Stack
           align={'center'}
           spacing={'small'}
-          className="mt-2 p-4 rounded-md border border-red-600 bg-red-300/50 dark:bg-red-700/50 text-red-400"
+          className="p-4 rounded-md border border-red-600 bg-red-300/50 dark:bg-red-700/50 text-red-400"
         >
           <IoIosWarning />
           <p>{error.message}</p>
         </Stack>
       )}
-    </>
+    </Stack>
   );
 };
 

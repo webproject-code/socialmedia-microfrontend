@@ -6,21 +6,16 @@ const config: ModuleFederationConfig = {
     './Module': './src/remote-entry.ts',
   },
   shared: (libraryName, defaultConfig) => {
-    const singletonDeps = [
-      '@hookform/resolvers',
-      'react-hook-form',
-      'zod',
-      'react',
-      'react-dom',
-      '@tanstack/react-query',
-      'zustand',
-    ];
+    const singletonDeps = {
+      '@hookform/resolvers': '^3.9.0',
+    };
 
-    if (singletonDeps.includes(libraryName)) {
+    if (libraryName in singletonDeps) {
       return {
         ...defaultConfig,
         singleton: true,
         strictVersion: false,
+        requiredVersion: singletonDeps[libraryName],
       };
     }
 
