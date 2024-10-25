@@ -12,4 +12,17 @@ export interface User {
 
 export interface IAuthService {
   login(credentials: { email: string; password: string }): Promise<User>;
+  forgotPassword(email: string): Promise<string>;
+  resetPassword(credentials: {
+    password: string;
+    confirmPassword: string;
+    token: string;
+  }): Promise<string>;
+  register(data: {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    profilePicture: File | undefined;
+  }): Promise<User>;
 }
