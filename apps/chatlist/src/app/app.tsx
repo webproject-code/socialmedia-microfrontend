@@ -1,18 +1,11 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import '../styles.css';
-import { Box, Container } from '@social-media/evoke-ui';
-import { DarkModeToggle } from '../components/darkToggleButton';
-import { ChatListCard } from '../components/chatList';
 import '@social-media/evoke-ui/dist/styles.css';
+import { routes } from '../routes';
 
 export function App() {
-  return (
-    <Container>
-      <DarkModeToggle />
-      <Box className="p-2">
-        <ChatListCard />
-      </Box>
-    </Container>
-  );
+  const router = createBrowserRouter(routes);
+  return <RouterProvider router={router} />;
 }
 
 export default App;

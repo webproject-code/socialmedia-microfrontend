@@ -1,47 +1,48 @@
-import { LuSearch } from 'react-icons/lu';
-import { FaPlus } from 'react-icons/fa6';
-import { Box, Button, Input } from '@social-media/evoke-ui';
-import { useState } from 'react';
-import useDebounce from '../hooks/useDebounce';
-import { User } from '@social-media/api';
+// import { LuSearch } from 'react-icons/lu';
+// import { Box, Input } from '@social-media/evoke-ui';
+// import { useCallback, useEffect, useState } from 'react';
+// import useDebounce from '../hooks/useDebounce';
 
-interface ChatSearchProps {
-  setData: React.Dispatch<React.SetStateAction<User[]>>;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface GenericSearchProps<T> {
+//   placeholder: string;
+//   apiHookFunction: (searchTerm: string,userId?:string) => { data: T | undefined };
+//   dataSetterFn: (data: T) => void;
+//   debounceTime?: number;
+//   userId?:string
+// }
 
-export const ChatSearch: React.FC<ChatSearchProps> = ({
-  // setData,
-  setIsModalOpen,
-}) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+// export function GenericSearch<T>({
+//   placeholder,
+//   apiHookFunction,
+//   dataSetterFn,
+//   debounceTime = 300,
+//   userId
+// }: GenericSearchProps<T>) {
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const debouncedSearchTerm = useDebounce(searchTerm, debounceTime);
+//   const { data } = apiHookFunction(debouncedSearchTerm,userId);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    console.log(debouncedSearchTerm);
-  };
+//   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+//     setSearchTerm(event.target.value)
+//   }, [])
 
-  return (
-    <Box className="flex gap-4 items-center py-2">
-      <Box className="w-full">
-        <Input
-          type="text"
-          name="search"
-          value={searchTerm}
-          onChange={handleChange}
-        >
-          <LuSearch />
-        </Input>
-      </Box>
-      <Button
-        size="icon"
-        variant={'ghost'}
-        type="button"
-        onClick={() => setIsModalOpen((prev) => !prev)}
-      >
-        <FaPlus className="dark:fill-dark-secondary text-xl fill-light-secondary" />
-      </Button>
-    </Box>
-  );
-};
+//   useEffect(() => {
+//     if (data) {
+//       dataSetterFn(data);
+//     }
+//   }, [data, dataSetterFn]);
+
+//   return (
+//     <Box className="w-full">
+//       <Input
+//         type="text"
+//         name="search"
+//         value={searchTerm}
+//         onChange={handleChange}
+//         placeholder={placeholder}
+//       >
+//         <LuSearch />
+//       </Input>
+//     </Box>
+//   );
+// }
