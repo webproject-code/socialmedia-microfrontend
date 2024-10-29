@@ -1,5 +1,4 @@
 import { RouteObject, useParams, useSearchParams } from 'react-router-dom';
-import { Home } from './pages/Home';
 import { ChatsList } from './pages/chatsList';
 
 const ChatMessageArea = () => {
@@ -16,10 +15,6 @@ const ChatMessageArea = () => {
 };
 
 export const routes: RouteObject[] = [
-  {
-    path: '/',
-    element: <Home />,
-  },
   {
     path: '/chat',
     element: <ChatsList />,

@@ -28,22 +28,17 @@ export const FriendCard: React.FC<FriendCardProps> = ({
   const { mutate } = useCreateOneOnOneChat();
 
   const handleClick = () => {
-    try {
-      mutate(
-        {
-          initiatorId: CurrentUserId,
-          participantId: id,
+    mutate(
+      {
+        initiatorId: CurrentUserId,
+        participantId: id,
+      },
+      {
+        onSuccess: (data) => {
+          navigate(`/chat/${data.id}?type=ONE_ON_ONE`);
         },
-        {
-          onSuccess: (data) => {
-            console.log(data, 'success');
-            navigate(`/chat/${data.id}?type=ONE_ON_ONE`);
-          },
-        }
-      );
-    } catch (error) {
-      console.log('Fail');
-    }
+      }
+    );
   };
 
   return (

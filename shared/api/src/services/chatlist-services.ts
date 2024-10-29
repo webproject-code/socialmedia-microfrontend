@@ -3,6 +3,7 @@ import {
   ChatsListService,
   ChatsListServiceResponse,
   checkOneOnOneChatStatusResponse,
+  createGroupChatResponse,
   createOneOnOneChatResponse,
   FriendsWithNochatResponse,
   // ChatsListUser,
@@ -53,7 +54,6 @@ export const createOneOnOneChat: ChatsListService['createOneOnOneChat'] =
   async (initiatorId, participantId) => {
     const hasChat = await checkOneOnOneChatStatus(initiatorId, participantId);
     if (hasChat) {
-      console.log('data in create', hasChat);
       return hasChat;
     }
     const { data } = await apiClient.post<createOneOnOneChatResponse>(
@@ -71,6 +71,31 @@ export const checkOneOnOneChatStatus: ChatsListService['checkOneOnOneChatStatus'
     const { data } = await apiClient.get<checkOneOnOneChatStatusResponse>(
       `/chats/one-on-one/${userId1}/${userId2}`
     );
-    console.log('main service data', data);
     return data;
   };
+
+export const createGroupChat: ChatsListService['createGroupChat'] = async (
+  groupData
+) => {
+  const { groupDescription, groupIcon, name, memberIds, ownerId } = groupData;
+  const formData = new FormData();
+  formData.append('groupDescription', groupDescription);
+  formData.append('name', name);
+  formData.append('groupIcon', groupIcon);
+  formData.append('ownerId', ownerId);
+
+  memberIds.forEach((memberId, index) => {
+    formData.append(`memberIds[${index}]`, memberId);
+  });
+
+  const { data } = await apiClient.post<createGroupChatResponse>(
+    '/chats/group/create',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+  return data;
+};

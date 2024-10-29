@@ -77,7 +77,17 @@ export interface ChatsListService {
     // deletedForInitiator: null;
     // deletedForParticipant: null;
   }>;
+
+  createGroupChat(groupData: groupData): Promise<createGroupChatResponse>;
 }
+
+export type groupData = {
+  name: string;
+  ownerId: string;
+  memberIds: string[];
+  groupDescription: string;
+  groupIcon: File;
+};
 
 export type Friends = {
   id: string;
@@ -167,3 +177,15 @@ export type GroupChatListUser = {
 };
 
 export type ChatsListUser = OneOnOneChatListUser | GroupChatListUser; // name change to chat
+
+export type createGroupChatResponse = {
+  id: string;
+  name: string;
+  ownerId: string;
+  groupDescription: string;
+  groupIcon: string;
+  createdAt: string;
+  updatedAt: string;
+  lastMessageAt: string;
+  memberIds: string[];
+};

@@ -1,10 +1,15 @@
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import {
+  createGroupChat,
   createOneOnOneChat,
   fetchChatList,
   fetchFriendWithNoChat,
 } from '../services/chatlist-services';
-import { ChatsListServiceResponse, FriendsWithNochatResponse } from '../types';
+import {
+  ChatsListServiceResponse,
+  FriendsWithNochatResponse,
+  groupData,
+} from '../types';
 import { useEffect, useState } from 'react';
 
 export const useChatList = (searchTerm: string, cursor: string | null) => {
@@ -98,6 +103,14 @@ export const useCreateOneOnOneChat = () => {
   return useMutation({
     mutationFn: (chat: { initiatorId: string; participantId: string }) => {
       return createOneOnOneChat(chat.initiatorId, chat.participantId);
+    },
+  });
+};
+
+export const useCreateGroupChat = () => {
+  return useMutation({
+    mutationFn: (groupData: groupData) => {
+      return createGroupChat(groupData);
     },
   });
 };
