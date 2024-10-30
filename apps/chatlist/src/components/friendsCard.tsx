@@ -1,4 +1,4 @@
-import { useCreateOneOnOneChat } from '@social-media/api';
+// import { useCreateOneOnOneChat } from '@social-media/api';
 import {
   Avatar,
   AvatarImage,
@@ -8,44 +8,26 @@ import {
 } from '@social-media/evoke-ui';
 import React from 'react';
 import { IoChatbubbleEllipses } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface FriendCardProps {
   name: string;
   email: string;
   profilePicture: string;
-  id: string;
+  onClickHandler: () => void;
 }
 
 export const FriendCard: React.FC<FriendCardProps> = ({
   name,
   email,
   profilePicture,
-  id,
+  onClickHandler,
 }) => {
-  const CurrentUserId = '66b30bbeaea1612592e8609b';
-  const navigate = useNavigate();
-  const { mutate } = useCreateOneOnOneChat();
-
-  const handleClick = () => {
-    mutate(
-      {
-        initiatorId: CurrentUserId,
-        participantId: id,
-      },
-      {
-        onSuccess: (data) => {
-          navigate(`/chat/${data.id}?type=ONE_ON_ONE`);
-        },
-      }
-    );
-  };
-
   return (
     <>
       <Card
         className=" bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer"
-        onClick={handleClick}
+        onClick={onClickHandler}
       >
         <Card.Content className="p-2">
           <Box className="flex items-center justify-between gap-2 sm:gap-4">

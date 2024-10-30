@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { string, z } from 'zod';
 
 export const createGroupChatSchema = z.object({
   name: z.string().min(2, 'Group name must be at least 2 characters long'),
-  groupDescription: z.string().optional(),
+  groupDescription: z.string(),
   ownerId: z.string(),
   groupIcon: z
     .instanceof(File)
@@ -15,5 +15,5 @@ export const createGroupChatSchema = z.object({
         message: 'Only .jpg, .png & .svg formats are allowed',
       }
     ),
-  memberIds: z.string().array().nonempty('At lease add 1 member in group'),
+  memberIds: z.array(string()),
 });

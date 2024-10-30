@@ -6,7 +6,6 @@ import {
   createGroupChatResponse,
   createOneOnOneChatResponse,
   FriendsWithNochatResponse,
-  // ChatsListUser,
 } from '../types';
 import { login } from './auth-services';
 
@@ -81,7 +80,7 @@ export const createGroupChat: ChatsListService['createGroupChat'] = async (
   const formData = new FormData();
   formData.append('groupDescription', groupDescription);
   formData.append('name', name);
-  formData.append('groupIcon', groupIcon);
+  if (groupIcon) formData.append('groupIcon', groupIcon);
   formData.append('ownerId', ownerId);
 
   memberIds.forEach((memberId, index) => {

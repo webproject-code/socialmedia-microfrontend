@@ -1,18 +1,19 @@
 import { Box, Button, Input, Modal, ScrollArea } from '@social-media/evoke-ui';
 import { ChatCard } from './chatCard';
-// import { ChatCardMessage, chatMessages } from '../constant';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  ChatsListUser,
+  Chat,
   useChatList,
+  useCreateOneOnOneChat,
   useFriendsWithNoChat,
 } from '@social-media/api';
 import { Spinner } from '@social-media/utils';
-// import { useLocation } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
-import useDebounce from '../hooks/useDebounce';
+import { useDebounce } from '@social-media/api';
 import { LuSearch } from 'react-icons/lu';
 import { FriendCard } from './friendsCard';
+import { GroupChatForm } from './forms/groupChatForm';
+import { useNavigate } from 'react-router-dom';
 
 const currentUserId = '66b30bbeaea1612592e8609b';
 
@@ -41,7 +42,7 @@ export const ChatListCard = () => {
   }, [data?.pages]);
 
   const renderChatCard = useCallback(
-    (chat: ChatsListUser) => {
+    (chat: Chat) => {
       const isOneOnOne = chat.type === 'ONE_ON_ONE';
 
       return (
@@ -120,19 +121,27 @@ export const ChatListCard = () => {
       <AddFriendModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        currentUserId={currentUserId}
       />
     </Box>
   );
 };
 
-const AddFriendModal = ({
-  isModalOpen,
-  setIsModalOpen,
-}: {
+interface AddFriendModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUserId: string;
+}
+
+export const AddFriendModal: React.FC<AddFriendModalProps> = ({
+  isModalOpen,
+  setIsModalOpen,
+  currentUserId,
 }) => {
-  //   const [setSearchData, setSetSearchData] = useState<Friends[]>([]);
+  const [groupChat, setGroupChat] = useState<boolean>(false);
+  const [memberIds, setMemberIds] = useState<{ id: string; name: string }[]>(
+    []
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { data, isLoading, isFetchingNextPage } = useFriendsWithNoChat(
@@ -140,6 +149,8 @@ const AddFriendModal = ({
     currentUserId,
     null
   );
+  const navigate = useNavigate();
+  const { mutate } = useCreateOneOnOneChat();
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,17 +158,45 @@ const AddFriendModal = ({
     },
     []
   );
+
   const FriendListData = useMemo(() => {
     if (!data?.pages) return [];
-
     const allFriends = data.pages.flatMap((page) => page.friends);
     return [...new Set(allFriends)];
   }, [data?.pages]);
 
+  const OneOnOneClickHandle = (id: string) => {
+    mutate(
+      { initiatorId: currentUserId, participantId: id },
+      {
+        onSuccess: (data) => {
+          navigate(`/chat/${data.id}?type=ONE_ON_ONE`);
+        },
+      }
+    );
+  };
+
+  const GroupClickHandle = (id: string, name: string) => {
+    setMemberIds((prev) => {
+      if (prev.some((member) => member.id === id)) {
+        return prev;
+      }
+      return [...prev, { id, name }];
+    });
+  };
+
+  const handleCardClick = (id: string, name: string) => {
+    if (groupChat) {
+      return GroupClickHandle(id, name);
+    } else {
+      return OneOnOneClickHandle(id);
+    }
+  };
+
   return (
     <Modal
       closeOnOutsideClick
-      onClose={() => setIsModalOpen((prev) => !prev)}
+      onClose={() => setIsModalOpen(false)}
       showCross
       size="full"
       isOpen={isModalOpen}
@@ -179,6 +218,25 @@ const AddFriendModal = ({
             <LuSearch />
           </Input>
         </Box>
+        <Box className="p-2">
+          <Button
+            onClick={() => {
+              setGroupChat(!groupChat);
+              setMemberIds([]);
+            }}
+            className="dark:text-dark-secondary dark:border-dark-secondary hover:bg-light-secondary hover:text-light-primary dark:hover:bg-dark-secondary dark:hover:text-dark-primary"
+            variant="outline"
+          >
+            <FaPlus /> {groupChat ? 'Cancel Group' : 'New Group'}
+          </Button>
+        </Box>
+        {groupChat && (
+          <GroupChatForm
+            ownerId={currentUserId}
+            memberList={memberIds}
+            setMemberList={setMemberIds}
+          />
+        )}
         {isLoading ? (
           <Box className="flex justify-center items-center mt-2 h-screen">
             <Spinner />
@@ -186,17 +244,15 @@ const AddFriendModal = ({
         ) : (
           <ScrollArea className="h-[calc(100vh-150px)]">
             <Box className="flex flex-col w-full h-full mt-2">
-              {FriendListData.map((user) => {
-                return (
-                  <FriendCard
-                    key={user.id}
-                    name={user.name}
-                    email={user.email}
-                    profilePicture={user.profilePicture}
-                    id={user.id}
-                  />
-                );
-              })}
+              {FriendListData.map((user) => (
+                <FriendCard
+                  key={user.id}
+                  name={user.name}
+                  email={user.email}
+                  profilePicture={user.profilePicture}
+                  onClickHandler={() => handleCardClick(user.id, user.name)}
+                />
+              ))}
               {isFetchingNextPage && (
                 <div className="flex justify-center flex-col items-center">
                   <Spinner />

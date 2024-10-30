@@ -29,7 +29,7 @@ export interface ChatsListService {
     searchTerm: string | undefined,
     cursor?: string | null | undefined
   ): Promise<{
-    chats: ChatsListUser[];
+    chats: Chat[];
     friendsWithNoChats: [];
     pagination: {
       totalCount: number;
@@ -63,30 +63,29 @@ export interface ChatsListService {
     // deletedForParticipant: null
   }>;
 
-  checkOneOnOneChatStatus(
-    user1Id: string,
-    user2Id: string
-  ): Promise<{
-    id: string;
-    initiatorId: string;
-    participantId: string;
-    vanishMode: true;
-    createdAt: string;
-    updatedAt: string;
-    lastMessageAt: string;
-    // deletedForInitiator: null;
-    // deletedForParticipant: null;
-  }>;
+  checkOneOnOneChatStatus(user1Id: string, user2Id: string): Promise<ChatInfo>;
 
   createGroupChat(groupData: groupData): Promise<createGroupChatResponse>;
 }
+
+export type ChatInfo = {
+  id: string;
+  initiatorId: string;
+  participantId: string;
+  vanishMode: boolean;
+  createdAt: string;
+  updatedAt: string;
+  lastMessageAt: string;
+  // deletedForInitiator: null,
+  // deletedForParticipant: null
+};
 
 export type groupData = {
   name: string;
   ownerId: string;
   memberIds: string[];
   groupDescription: string;
-  groupIcon: File;
+  groupIcon: File | undefined;
 };
 
 export type Friends = {
@@ -118,51 +117,38 @@ export enum ChatType {
   GROUP = 'GROUP',
 }
 
-export type OneOnOneChatListUser = {
-  // oneoonechat, chatuser for initat or a paton  message type
+export type ChatUser = {
   id: string;
-  initiatorId: string;
-  participantId: string;
-  vanishMode: boolean;
+  name: string;
+  profilePicture: string;
+  isDeleted: boolean;
+};
+
+export type Message = {
+  id: string;
+  content: string;
+  senderId: string;
+  oneOnOneChatId: string;
+  groupChatId: null;
   createdAt: string;
   updatedAt: string;
-  lastMessageAt: string;
-  // "deletedForInitiator": null,
-  // "deletedForParticipant": null,
-  initiator: {
+  isDeleted: boolean;
+  sender: {
     id: string;
     name: string;
-    profilePicture: string;
     isDeleted: boolean;
   };
-  participant: {
-    id: string;
-    name: string;
-    profilePicture: string;
-    isDeleted: boolean;
-  };
-  messages: [
-    {
-      id: string;
-      content: string;
-      senderId: string;
-      oneOnOneChatId: string;
-      groupChatId: null;
-      createdAt: string;
-      updatedAt: string;
-      isDeleted: boolean;
-      sender: {
-        id: string;
-        name: string;
-        isDeleted: boolean;
-      };
-    }
-  ];
+};
+
+export type OneOnOneChat = ChatInfo & {
+  initiator: ChatUser;
+  participant: ChatUser;
+  messages: Message[];
   type: ChatType.ONE_ON_ONE;
   name: string;
 };
 
-export type GroupChatListUser = {
+export type GroupChat = {
   id: string;
   name: string;
   ownerId: string;
@@ -172,20 +158,10 @@ export type GroupChatListUser = {
   updatedAt: string;
   lastMessageAt: string;
   memberIds: string[];
-  messages: [];
+  messages: Message[];
   type: ChatType.GROUP;
 };
 
-export type ChatsListUser = OneOnOneChatListUser | GroupChatListUser; // name change to chat
+export type Chat = OneOnOneChat | GroupChat;
 
-export type createGroupChatResponse = {
-  id: string;
-  name: string;
-  ownerId: string;
-  groupDescription: string;
-  groupIcon: string;
-  createdAt: string;
-  updatedAt: string;
-  lastMessageAt: string;
-  memberIds: string[];
-};
+export type createGroupChatResponse = Omit<GroupChat, 'type' | 'messages'>;
