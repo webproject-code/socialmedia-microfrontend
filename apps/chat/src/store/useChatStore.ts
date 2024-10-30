@@ -1,26 +1,16 @@
 import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
-interface ChatState {
-  currentChatId: string | null;
-  currentChatType: 'ONE_ON_ONE' | 'GROUP' | null;
-  isTyping: boolean;
-  isOnline: boolean;
-  vanishMode: boolean;
-  setCurrentChat: (chatId: string, chatType: 'ONE_ON_ONE' | 'GROUP') => void;
-  setTyping: (status: boolean) => void;
-  setOnlineStatus: (status: boolean) => void;
-  setVanishMode: (status: boolean) => void;
-}
+import { ChatSlice, createChatSlice } from './chatSlice';
 
-export const useChatStore = create<ChatState>((set) => ({
-  currentChatId: null,
-  currentChatType: null,
-  isTyping: false,
-  isOnline: false,
-  vanishMode: false,
-  setCurrentChat: (chatId, chatType) =>
-    set(() => ({ currentChatId: chatId, currentChatType: chatType })),
-  setTyping: (status) => set(() => ({ isTyping: status })),
-  setOnlineStatus: (status) => set(() => ({ isOnline: status })),
-  setVanishMode: (status) => set(() => ({ vanishMode: status })),
-}));
+export const useChatStore = create<ChatSlice>()(
+  devtools(
+    persist(
+      (...args) => ({
+        ...createChatSlice(...args),
+      }),
+      { name: 'chat-mfe-store' }
+    ),
+    { name: 'chat-mfe-store' }
+  )
+);

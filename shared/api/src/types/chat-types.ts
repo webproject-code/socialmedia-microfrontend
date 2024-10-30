@@ -79,4 +79,11 @@ export interface IChatServices {
     ownerId: string,
     memberId: string
   ): Promise<string>;
+  sendMessage(
+    content: string,
+    senderId: string,
+    oneOnOneChatId?: string,
+    groupChatId?: string
+  ): Promise<Omit<Message, 'sender'>>;
+  deleteMessage(messageId: string): Promise<string>;
 }

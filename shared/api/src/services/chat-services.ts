@@ -9,7 +9,7 @@ import {
   OneOnOneChatSettings,
 } from '../types/chat-types';
 
-const ONE_ON_ONE_CHAT_ENDPOINT = '/chats/one-on-one-chats';
+const ONE_ON_ONE_CHAT_ENDPOINT = '/chats/one-on-one';
 const GROUP_CHAT_ENDPOINT = '/chats/groups';
 
 export const getOneOnOneChat: IChatServices['getOneOnOneChat'] = async (
@@ -33,12 +33,11 @@ export const updateOneOnOneChatSettings: IChatServices['updateOneOnOneChatSettin
 
 export const getOneOnOneChatMessages: IChatServices['getOneOnOneChatMessages'] =
   async (chatId: string, params?: QueryPagination) => {
-    const { query = '', cursor = '', take = '' } = params || {};
-
+    const { search = '', cursor = '', take = '' } = params || {};
     const { data } = await apiClient.get<
       PaginatedResponse<'messages', Message[]>
     >(
-      `${ONE_ON_ONE_CHAT_ENDPOINT}/${chatId}/messages?cursor=${cursor}&take=${take}&query=${query}`
+      `${ONE_ON_ONE_CHAT_ENDPOINT}/${chatId}/messages?cursor=${cursor}&take=${take}&search=${search}`
     );
     return data;
   };
@@ -78,12 +77,12 @@ export const updateGroupChat: IChatServices['updateGroupChat'] = async (
 
 export const getGroupChatMessages: IChatServices['getGroupChatMessages'] =
   async (chatId: string, params?: QueryPagination) => {
-    const { query = '', cursor = '', take = '' } = params || {};
+    const { search = '', cursor = '', take = '' } = params || {};
 
     const { data } = await apiClient.get<
       PaginatedResponse<'messages', Message[]>
     >(
-      `${GROUP_CHAT_ENDPOINT}/${chatId}/messages?cursor=${cursor}&take=${take}&query=${query}`
+      `${GROUP_CHAT_ENDPOINT}/${chatId}/messages?cursor=${cursor}&take=${take}&search=${search}`
     );
     return data;
   };
@@ -109,3 +108,28 @@ export const removeGroupChatMembers: IChatServices['removeGroupChatMembers'] =
     });
     return 'Member removed successfully!';
   };
+
+export const sendMessage: IChatServices['sendMessage'] = async (
+  content: string,
+  senderId: string,
+  oneOnOneChatId?: string,
+  groupChatId?: string
+) => {
+  const { data } = await apiClient.post<Omit<Message, 'sender'>>(
+    `/messages/send`,
+    {
+      content,
+      senderId,
+      oneOnOneChatId,
+      groupChatId,
+    }
+  );
+  return data;
+};
+
+export const deleteMessage: IChatServices['deleteMessage'] = async (
+  messageId: string
+) => {
+  await apiClient.patch(`/messages/delete/${messageId}`);
+  return 'Message deleted successfully!';
+};
