@@ -1,8 +1,8 @@
 export enum FriendshipStatus {
-  FRIENDS = 'friends',
-  NOT_FRIENDS = 'not_friends',
-  REQUEST_SENT = 'friend_request_sent',
-  REQUEST_RECEIVED = 'friend_request_received',
+  FRIENDS = 'FRIENDS',
+  NOT_FRIENDS = 'NOT_FRIENDS',
+  REQUEST_SENT = 'REQUEST_SENT',
+  REQUEST_RECEIVED = 'REQUEST_RECEIVED',
 }
 
 export type Pagination = {

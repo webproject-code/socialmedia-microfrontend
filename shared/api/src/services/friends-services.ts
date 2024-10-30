@@ -77,17 +77,17 @@ export const sendFriendRequest: IFriendsService['sendFriendRequest'] = async (
 
 // accept or reject friend request
 export const acceptOrRejectFriendRequest: IFriendsService['acceptOrRejectFriendRequest'] =
-  async (friendId: string, status: 'ACCEPTED' | 'REJECTED') => {
-    await apiClient.put<string>(`/friend-requests/${friendId}`, {
+  async (friendRequestId: string, status: 'ACCEPTED' | 'REJECTED') => {
+    await apiClient.put<string>(`/friend-requests/${friendRequestId}`, {
       status,
     });
     return 'Friend request Updated!';
   };
 
 // cancle friend request
-export const cancleFriendRequest: IFriendsService['cancleFriendRequest'] =
-  async (friendId: string) => {
-    await apiClient.delete(`/friend-requests/${friendId}`);
+export const cancelFriendRequest: IFriendsService['cancleFriendRequest'] =
+  async (friendRequestId: string) => {
+    await apiClient.delete(`/friend-requests/${friendRequestId}`);
     return 'Friend request Cancelled!';
   };
 

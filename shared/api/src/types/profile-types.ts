@@ -1,5 +1,5 @@
 import { User } from '.';
-import { FriendshipStatus, PaginatedResponse } from './utils-types';
+import { FriendshipStatus } from './utils-types';
 
 export type UserProfile = Omit<User, 'accessToken' | 'expiresIn'> & {
   friendIds: string[];
@@ -15,7 +15,7 @@ export type EditUser = {
 };
 
 export type FriendshipStatusResponse = {
-  id: string;
+  friendRequestId: string;
   status: FriendshipStatus;
 };
 
