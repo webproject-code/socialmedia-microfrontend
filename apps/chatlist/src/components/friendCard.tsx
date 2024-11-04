@@ -1,4 +1,3 @@
-// import { useCreateOneOnOneChat } from '@social-media/api';
 import {
   Avatar,
   AvatarImage,
@@ -6,10 +5,9 @@ import {
   Card,
   Divider,
 } from '@social-media/evoke-ui';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { IoChatbubbleEllipses } from 'react-icons/io5';
-// import { useNavigate } from 'react-router-dom';
-
+import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 interface FriendCardProps {
   name: string;
   email: string;
@@ -23,11 +21,30 @@ export const FriendCard: React.FC<FriendCardProps> = ({
   profilePicture,
   onClickHandler,
 }) => {
+  const handleKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onClickHandler();
+      }
+    },
+    [onClickHandler]
+  );
+
   return (
     <>
       <Card
-        className=" bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer"
+        className=" bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer outline-none
+          focus-visible:ring-2 
+          focus-visible:ring-light-secondary
+          focus-visible:ring-offset-2
+          dark:focus-visible:ring-dark-secondary
+          dark:focus-visible:ring-offset-dark-primary"
         onClick={onClickHandler}
+        role="button"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        aria-label={'chat'}
       >
         <Card.Content className="p-2">
           <Box className="flex items-center justify-between gap-2 sm:gap-4">

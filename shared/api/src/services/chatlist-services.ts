@@ -29,12 +29,7 @@ export const fetchChatList: ChatsListService['fetchChatList'] = async (
   const { data } = await apiClient.get<ChatsListServiceResponse>(
     `/users/chats?query=${searchTerm ? searchTerm : ''}&cursor=${
       cursor ? cursor : ''
-    }`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }
+    }`
   );
   return data;
 };

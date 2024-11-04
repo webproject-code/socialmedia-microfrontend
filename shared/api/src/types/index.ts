@@ -56,9 +56,9 @@ export interface ChatsListService {
     initiatorId: string;
     participantId: string;
     vanishMode: boolean;
-    createdAt: string;
-    updatedAt: string;
-    lastMessageAt: string;
+    createdAt: Date;
+    updatedAt: Date;
+    lastMessageAt: Date;
     // deletedForInitiator: null,
     // deletedForParticipant: null
   }>;
@@ -73,9 +73,9 @@ export type ChatInfo = {
   initiatorId: string;
   participantId: string;
   vanishMode: boolean;
-  createdAt: string;
-  updatedAt: string;
-  lastMessageAt: string;
+  createdAt: Date;
+  updatedAt: Date;
+  lastMessageAt: Date;
   // deletedForInitiator: null,
   // deletedForParticipant: null
 };
@@ -85,7 +85,7 @@ export type groupData = {
   ownerId: string;
   memberIds: string[];
   groupDescription: string;
-  groupIcon: File | undefined;
+  groupIcon?: File | undefined;
 };
 
 export type Friends = {
@@ -130,8 +130,8 @@ export type Message = {
   senderId: string;
   oneOnOneChatId: string;
   groupChatId: null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   isDeleted: boolean;
   sender: {
     id: string;
@@ -154,9 +154,9 @@ export type GroupChat = {
   ownerId: string;
   groupDescription: string;
   groupIcon: string;
-  createdAt: string;
-  updatedAt: string;
-  lastMessageAt: string;
+  createdAt: Date;
+  updatedAt: Date;
+  lastMessageAt: Date;
   memberIds: string[];
   messages: Message[];
   type: ChatType.GROUP;

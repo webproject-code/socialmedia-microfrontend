@@ -17,13 +17,15 @@ interface GroupChatFormProps {
   >;
 }
 
-export const GroupChatForm: React.FC<GroupChatFormProps> = ({
+const DefaultGroupIcon = 'assets/Images/people.png';
+
+export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
   ownerId,
   memberList,
   setMemberList,
 }) => {
   type FormType = z.infer<typeof createGroupChatSchema>;
-  const [groupIcon, setGroupIcon] = useState<string | null>(null);
+  const [groupIcon, setGroupIcon] = useState<string>(DefaultGroupIcon);
   const { mutate, isPending } = useCreateGroupChat();
   const navigate = useNavigate();
   const {
@@ -54,13 +56,24 @@ export const GroupChatForm: React.FC<GroupChatFormProps> = ({
 
   const resetForm = () => {
     reset();
-    setGroupIcon(null);
+    setGroupIcon(DefaultGroupIcon);
     setMemberList([]);
   };
 
-  const onSubmit: SubmitHandler<FormType> = (data) => {
+  const onSubmit: SubmitHandler<FormType> = async (data) => {
     if (!data.groupIcon) {
-      setError('groupIcon', { message: 'Add group icon' });
+      // setError('groupIcon', { message: 'Add group icon' });
+      try {
+        const response = await fetch(DefaultGroupIcon);
+        const blob = await response.blob();
+        data.groupIcon = new File([blob], 'default-group-icon.png', {
+          type: 'image/png',
+        });
+      } catch (error) {
+        console.error('Error creating File from default icon:', error);
+        setError('groupIcon', { message: 'Failed to set default group icon' });
+        return;
+      }
     }
     if (data.memberIds.length === 0) {
       setError('memberIds', { message: 'At least add 1 member in group' });
@@ -72,13 +85,13 @@ export const GroupChatForm: React.FC<GroupChatFormProps> = ({
           navigate(`/chat/${data.id}?type=GROUP`);
         },
       });
-      // navigate(`/chat/${2}?type=GROUP`);
       resetForm();
     }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         setError('groupIcon', { message: 'File size should be less than 5MB' });
@@ -105,7 +118,7 @@ export const GroupChatForm: React.FC<GroupChatFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mx-2 space-y-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="mx-2 space-y-3 px-2">
       <Controller
         name="name"
         control={control}
@@ -117,6 +130,7 @@ export const GroupChatForm: React.FC<GroupChatFormProps> = ({
             placeholder="Enter group name"
             error={!!errors.name}
             errorMessage={errors.name?.message}
+            required
           />
         )}
       />
@@ -169,7 +183,7 @@ export const GroupChatForm: React.FC<GroupChatFormProps> = ({
 
       <div>
         <label className="block text-sm font-primary text-light-silverSteel dark:text-dark-silverSteel">
-          Members
+          Members <span className="text-red-500">*</span>
           <p className="mt-1">(click on profile of friend to add in list)</p>
         </label>
         <div className="flex flex-wrap gap-2 mt-2">

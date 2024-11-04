@@ -14,6 +14,7 @@ export const createGroupChatSchema = z.object({
       {
         message: 'Only .jpg, .png & .svg formats are allowed',
       }
-    ),
+    )
+    .optional(),
   memberIds: z.array(string()),
 });
