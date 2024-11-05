@@ -16,7 +16,8 @@ const ChatMessageArea = () => {
 
 export const routes: RouteObject[] = [
   {
-    path: '/chat',
+    path: '/chats',
+
     element: <ChatsList />,
   },
   {
