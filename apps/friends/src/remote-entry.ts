@@ -1,1 +1,3 @@
-export { default } from './app/app';
+import Friends from './pages/Friends';
+
+export { Friends };
