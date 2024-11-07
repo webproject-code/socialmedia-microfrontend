@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import {
   forgotPassword,
   login,
+  logout,
   register,
   resetPassword,
 } from '../services/auth-services';
@@ -38,5 +39,11 @@ export const useRegister = () => {
       confirmPassword: string;
       profilePicture: File | undefined;
     }) => register(data),
+  });
+};
+
+export const useLogout = () => {
+  return useMutation({
+    mutationFn: () => logout(),
   });
 };
