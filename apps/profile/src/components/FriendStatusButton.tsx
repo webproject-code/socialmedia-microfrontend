@@ -36,12 +36,11 @@ const FriendStatusButton: React.FC<FriendStatusButtonProps> = ({
       case 'NOT_FRIENDS':
         return <AddFriendButton userId={userId} friendId={friendId} />;
       case 'REQUEST_SENT':
-        console.log('cancel request');
         return (
           <CancelFriendButton
             userId={userId}
             friendId={friendId}
-            friendRequestId={friendshipStatus?.friendRequestId!}
+            friendRequestId={friendshipStatus.friendRequestId}
           />
         );
       case 'REQUEST_RECEIVED':
@@ -49,7 +48,7 @@ const FriendStatusButton: React.FC<FriendStatusButtonProps> = ({
           <AcceptRequestButton
             userId={userId}
             friendId={friendId}
-            friendRequestId={friendshipStatus?.friendRequestId!}
+            friendRequestId={friendshipStatus.friendRequestId}
           />
         );
       default:
@@ -57,7 +56,7 @@ const FriendStatusButton: React.FC<FriendStatusButtonProps> = ({
     }
   };
 
-  return getButtonLabel(friendshipStatus?.status);
+  return getButtonLabel(friendshipStatus.status);
 };
 
 export default FriendStatusButton;

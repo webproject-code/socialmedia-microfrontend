@@ -1,12 +1,11 @@
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import '@social-media/evoke-ui/dist/styles.css';
 import '../styles.css';
-import Profile from '../components/profile/Profile';
+import { routes } from '../routes';
 
-export function App() {
-  return (
-    <div>
-      <Profile />
-    </div>
-  );
-}
+export const App: React.FC = () => {
+  const router = createBrowserRouter(routes);
+  return <RouterProvider router={router} />;
+};
 
 export default App;

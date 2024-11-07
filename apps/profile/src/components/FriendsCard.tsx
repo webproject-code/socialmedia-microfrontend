@@ -20,36 +20,34 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
   };
 
   return (
-    <>
-      <Stack
-        align="center"
-        justify="between"
-        className="w-full border-2 border-light-silverSteel/10 dark:border-dark-silverSteel/10  rounded-md cursor-pointer dark:hover:bg-dark-modalColor/20 hover:bg-light-modalColor"
+    <Stack
+      align="center"
+      justify="between"
+      className="w-full border-2 border-light-silverSteel/10 dark:border-dark-silverSteel/10  rounded-md cursor-pointer dark:hover:bg-dark-modalColor/20 hover:bg-light-modalColor"
+    >
+      <div
+        className="flex gap-4 items-center w-full cursor-pointer p-4"
+        onClick={handleClick}
       >
-        <div
-          className="flex gap-4 items-center w-full cursor-pointer p-4"
-          onClick={handleClick}
-        >
-          <img
-            className="w-11 h-11 rounded-full ring-1 ring-secondary"
-            src={friend.profilePicture}
-            alt="profile"
-          />
-          <div className="flex flex-col">
-            <h6>{friend.name}</h6>
-            <p className="text-sm text-slate-600 dark:text-silverSteel">
-              {friend.email}
-            </p>
-          </div>
+        <img
+          className="w-11 h-11 rounded-full ring-1 ring-secondary"
+          src={friend.profilePicture}
+          alt="profile"
+        />
+        <div className="flex flex-col">
+          <h6>{friend.name}</h6>
+          <p className="text-sm text-slate-600 dark:text-silverSteel">
+            {friend.email}
+          </p>
         </div>
-        <Box className="p-4">
-          <IoChatbubbleEllipses
-            className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer"
-            onClick={handleNavigateToChat}
-          />
-        </Box>
-      </Stack>
-    </>
+      </div>
+      <Box className="p-4">
+        <IoChatbubbleEllipses
+          className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer"
+          onClick={handleNavigateToChat}
+        />
+      </Box>
+    </Stack>
   );
 };
 

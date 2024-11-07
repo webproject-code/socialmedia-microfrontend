@@ -1,12 +1,16 @@
-import { UserProfile } from '@social-media/api';
+import { User, UserProfile } from '@social-media/api';
 import { StateCreator } from 'zustand';
 
 export type ProfileSlice = {
-  selfUser: UserProfile | null;
-  setSelfUser: (selfUser: UserProfile) => void;
+  user: User | null;
+  visitedUser: UserProfile | null;
+  setUser: (user: User | null) => void;
+  setVisitedUser: (visitedUser: UserProfile | null) => void;
 };
 
 export const createProfileSlice: StateCreator<ProfileSlice> = (set) => ({
-  selfUser: null,
-  setSelfUser: (selfUser: UserProfile) => set({ selfUser }),
+  user: null,
+  visitedUser: null,
+  setUser: (user: User | null) => set({ user }),
+  setVisitedUser: (visitedUser: UserProfile | null) => set({ visitedUser }),
 });
