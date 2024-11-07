@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const AuthLinks: React.FC = () => {
   return (
-    <Stack spacing="large">
+    <Stack spacing="large" wrap="wrap" justify="center">
       <Link to="/auth/login">
         <Button>Login</Button>
       </Link>

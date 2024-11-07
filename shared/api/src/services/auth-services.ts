@@ -3,6 +3,7 @@ import { IAuthService, User } from '../types';
 
 export const login: IAuthService['login'] = async (credential) => {
   const { data } = await apiClient.post<User>('/auth/login', credential);
+  localStorage.setItem('token', data.accessToken);
   return data;
 };
 
@@ -45,4 +46,10 @@ export const register: IAuthService['register'] = async (data) => {
     }
   );
   return user;
+};
+
+export const logout: IAuthService['logout'] = async () => {
+  await apiClient.post('/auth/logout');
+  localStorage.removeItem('token');
+  return "You've been logged out!";
 };

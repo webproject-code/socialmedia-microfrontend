@@ -1,6 +1,6 @@
 import { Box, Stack } from '@social-media/evoke-ui';
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/forms/LoginForm';
 import { useTheme } from '@social-media/utils';
 import AuthContainerCard from '../components/AuthContainerCard';
 

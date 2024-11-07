@@ -35,6 +35,7 @@ export interface IAuthService {
     confirmPassword: string;
     profilePicture: File | undefined;
   }): Promise<User>;
+  logout(): Promise<string>;
 }
 
 export interface ChatsListService {
