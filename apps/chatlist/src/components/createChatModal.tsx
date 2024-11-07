@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useCreateOneOnOneChat,
@@ -29,11 +29,8 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
   );
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const { data, isLoading, isFetchingNextPage } = useFriendsWithNoChat(
-    debouncedSearchTerm,
-    currentUserId,
-    null
-  );
+  const { friends, isLoading, isFetchingNextPage, bottomRef } =
+    useFriendsWithNoChat(debouncedSearchTerm, currentUserId);
   const navigate = useNavigate();
   const { mutate } = useCreateOneOnOneChat();
 
@@ -44,18 +41,12 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
     []
   );
 
-  const FriendListData = useMemo(() => {
-    if (!data?.pages) return [];
-    const allFriends = data.pages.flatMap((page) => page.friends);
-    return [...new Set(allFriends)];
-  }, [data?.pages]);
-
   const OneOnOneClickHandle = (id: string) => {
     mutate(
       { initiatorId: currentUserId, participantId: id },
       {
         onSuccess: (data) => {
-          navigate(`/chat/${data.id}?type=ONE_ON_ONE`);
+          navigate(`/chats/one-on-one/${data.id}`);
         },
       }
     );
@@ -141,14 +132,14 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
           </Box>
         ) : (
           <Box className="w-full h-[calc(100vh-200px)]">
-            {FriendListData?.length === 0 ? (
+            {friends?.length === 0 ? (
               <Box className="flex justify-center h-full w-full items-center text-light-secondary dark:text-dark-secondary">
                 <span>User Not Found</span>
               </Box>
             ) : (
               <ScrollArea className="h-[calc(100vh-150px)] px-2">
                 <Box className="flex flex-col w-full h-full mt-2">
-                  {FriendListData.map((user) => (
+                  {friends.map((user) => (
                     <FriendCard
                       key={user.id}
                       name={user.name}
@@ -157,12 +148,14 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                       onClickHandler={() => handleCardClick(user.id, user.name)}
                     />
                   ))}
-                  {isFetchingNextPage && (
-                    <div className="flex justify-center flex-col items-center">
-                      <Spinner />
-                      <span>Loading more...</span>
-                    </div>
-                  )}
+                  <div ref={bottomRef}>
+                    {isFetchingNextPage && (
+                      <div className="flex justify-center flex-col items-center">
+                        <Spinner />
+                        <span>Loading more...</span>
+                      </div>
+                    )}
+                  </div>
                 </Box>
               </ScrollArea>
             )}

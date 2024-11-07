@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { formatDate } from '@social-media/utils';
 import { ChatType } from '@social-media/api';
 import { Avatar, AvatarImage, Card, Divider } from '@social-media/evoke-ui';
@@ -24,8 +24,10 @@ export const ChatCard: React.FC<ChatCardProps> = ({
 }) => {
   const formattedMessageTime = formatDate(lastMessageTime);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const activeChat = pathname.split('/')[3] === chatId;
   const handleCardClick = useCallback(() => {
-    navigate(`${chatId}?type=${type}`);
+    navigate(`${type === 'ONE_ON_ONE' ? 'one-on-one' : 'group'}/${chatId}`);
   }, [navigate, chatId, type]);
 
   const handleKeyDown = useCallback(
@@ -41,13 +43,15 @@ export const ChatCard: React.FC<ChatCardProps> = ({
   return (
     <>
       <Card
-        className="bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer
+        className={`bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer
           outline-none
           focus-visible:ring-2 
           focus-visible:ring-light-secondary
           focus-visible:ring-offset-2
           dark:focus-visible:ring-dark-secondary
-          dark:focus-visible:ring-offset-dark-primary"
+          dark:focus-visible:ring-offset-dark-primary ${
+            activeChat ? 'bg-light-secondary/40 dark:bg-dark-secondary/40' : ''
+          }`}
         onClick={handleCardClick}
         role="button"
         tabIndex={0}

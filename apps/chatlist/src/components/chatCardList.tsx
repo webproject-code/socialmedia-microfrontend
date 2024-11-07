@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Button, Input, ScrollArea } from '@social-media/evoke-ui';
 import { Chat, useChatList, useDebounce } from '@social-media/api';
 import { Spinner } from '@social-media/utils';
@@ -12,13 +12,9 @@ const currentUserId = '66b30bbeaea1612592e8609b'; // Replace with store data
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  const { data, isLoading, isFetchingNextPage } = useChatList(
-    debouncedSearchTerm,
-    null
-  );
+  const { chats, isLoading, isFetchingNextPage, bottomRef } = l;
+  useChatList(debouncedSearchTerm);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(event.target.value);
@@ -26,41 +22,31 @@ export const ChatCardList = () => {
     []
   );
 
-  const chatListData = useMemo(() => {
-    if (!data?.pages) return [];
+  const renderChatCard = useCallback((chat: Chat) => {
+    const isOneOnOne = chat.type === 'ONE_ON_ONE';
 
-    const allChats = data.pages.flatMap((page) => page.chats);
-    return [...new Set(allChats)];
-  }, [data?.pages]);
-
-  const renderChatCard = useCallback(
-    (chat: Chat) => {
-      const isOneOnOne = chat.type === 'ONE_ON_ONE';
-
-      return (
-        <ChatCard
-          type={chat.type}
-          chatId={chat.id}
-          key={chat.id}
-          name={chat.name}
-          lastMessage={
-            isOneOnOne && chat.messages.length > 0 && chat.messages[0].content
-              ? chat.messages[0].content
-              : ''
-          }
-          lastMessageTime={chat.lastMessageAt}
-          profileImage={
-            isOneOnOne
-              ? chat.initiatorId !== currentUserId
-                ? chat.participant.profilePicture
-                : chat.initiator.profilePicture
-              : chat.groupIcon
-          }
-        />
-      );
-    },
-    [currentUserId]
-  );
+    return (
+      <ChatCard
+        type={chat.type}
+        chatId={chat.id}
+        key={chat.id}
+        name={chat.name}
+        lastMessage={
+          isOneOnOne && chat.messages.length > 0 && chat.messages[0].content
+            ? chat.messages[0].content
+            : ''
+        }
+        lastMessageTime={chat.lastMessageAt}
+        profileImage={
+          isOneOnOne
+            ? chat.initiatorId === currentUserId
+              ? chat.participant.profilePicture
+              : chat.initiator.profilePicture
+            : chat.groupIcon
+        }
+      />
+    );
+  }, []);
 
   return (
     <Box className="p-0">
@@ -99,7 +85,7 @@ export const ChatCardList = () => {
         </Box>
       ) : (
         <Box className="w-full h-[calc(100vh-100px)]">
-          {chatListData?.length === 0 ? (
+          {chats?.length === 0 ? (
             <Box className="flex justify-center h-[calc(100vh-100px)] full items-center text-light-secondary dark:text-dark-secondary">
               <span>Chats Not Found</span>
             </Box>
@@ -111,13 +97,15 @@ export const ChatCardList = () => {
                 </Box>
               ) : (
                 <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
-                  {chatListData.map(renderChatCard)}
-                  {isFetchingNextPage && (
-                    <div className="flex justify-center flex-col items-center">
-                      <Spinner />
-                      <span>Loading more...</span>
-                    </div>
-                  )}
+                  {chats.map(renderChatCard)}
+                  <div ref={bottomRef}>
+                    {isFetchingNextPage && (
+                      <div className="flex justify-center flex-col items-center">
+                        <Spinner />
+                        <span>Loading more...</span>
+                      </div>
+                    )}
+                  </div>
                 </Box>
               )}
             </ScrollArea>

@@ -40,7 +40,7 @@ export interface IAuthService {
 export interface ChatsListService {
   fetchChatList(
     searchTerm: string | undefined,
-    cursor?: string | null | undefined
+    cursor?: string
   ): Promise<{
     chats: Chat[];
     friendsWithNoChats: [];
@@ -53,7 +53,7 @@ export interface ChatsListService {
   fetchFriendWithNoChat(
     searchTerm: string,
     userId: string,
-    cursor: string | null | undefined
+    cursor: string
   ): Promise<{
     friends: Friends[];
     pagination: {

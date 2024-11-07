@@ -82,7 +82,7 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
     if (data.groupIcon && data.memberIds.length !== 0) {
       mutate(data, {
         onSuccess(data) {
-          navigate(`/chat/${data.id}?type=GROUP`);
+          navigate(`/chats/group/${data.id}`);
         },
       });
       resetForm();
@@ -193,14 +193,14 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
               className="flex items-center bg-light-secondary text-light-primary dark:bg-dark-secondary dark:text-dark-primary  rounded-full px-3 py-1"
             >
               <span className="text-sm">{member.name}</span>
-              <button
+              <Button
                 type="button"
                 onClick={() => removeMember(member.id)}
-                className="ml-2 text-light-primary dark:text-dark-primary"
+                className="ml-2 p-0 w-5 h-5 text-light-primary dark:text-dark-primary"
                 aria-label={`Remove ${member.name}`}
               >
                 <RxCross2 size={16} />
-              </button>
+              </Button>
             </div>
           ))}
         </div>

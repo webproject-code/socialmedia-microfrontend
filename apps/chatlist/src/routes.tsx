@@ -17,11 +17,16 @@ const ChatMessageArea = () => {
 export const routes: RouteObject[] = [
   {
     path: '/chats',
-
     element: <ChatsList />,
-  },
-  {
-    path: '/chat/:chatId',
-    element: <ChatMessageArea />,
+    children: [
+      {
+        path: 'one-on-one/:chatId',
+        element: <ChatMessageArea />,
+      },
+      {
+        path: 'group/:chatId',
+        element: <ChatMessageArea />,
+      },
+    ],
   },
 ];

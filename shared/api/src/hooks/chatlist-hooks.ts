@@ -10,93 +10,106 @@ import {
   FriendsWithNochatResponse,
   groupData,
 } from '../types';
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useInfiniteScroll } from './useInfiniteScroll';
 
-export const useChatList = (searchTerm: string, cursor: string | null) => {
-  const isNearScreen = useNearScreen();
-
-  const query = useInfiniteQuery<ChatsListServiceResponse, Error>({
+export const useChatList = (searchTerm: string) => {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery<ChatsListServiceResponse, Error>({
     queryKey: ['chatList', searchTerm],
-    queryFn: () => fetchChatList(searchTerm, cursor),
+    queryFn: ({ pageParam = '' }) =>
+      fetchChatList(searchTerm, pageParam as string),
     getNextPageParam: (lastPage) =>
       lastPage.pagination.hasNextPage
         ? lastPage.pagination.nextCursor
         : undefined,
-    initialPageParam: null,
+    initialPageParam: '',
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  useEffect(() => {
-    if (isNearScreen && query.hasNextPage && !query.isFetchingNextPage) {
-      query.fetchNextPage();
+  // Flatten the pages into a single array
+  const chats = useMemo(() => {
+    if (!data?.pages) return [];
+    const allChats = data.pages.flatMap((page) => page.chats);
+    return [...new Set(allChats)];
+  }, [data?.pages]);
+
+  // Handler for loading more data
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  }, [
-    isNearScreen,
-    query.hasNextPage,
-    query.isFetchingNextPage,
-    query.fetchNextPage,
-  ]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  return query;
+  const bottomRef = useInfiniteScroll(loadMore);
+  return {
+    chats,
+    isLoading,
+    isFetchingNextPage,
+    isError,
+    error,
+    hasNextPage,
+    bottomRef,
+    refetch,
+  };
 };
 
-export const useNearScreen = (distance = 300) => {
-  const [isNearScreen, setIsNearScreen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const scrolled = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      const fullHeight = document.documentElement.scrollHeight;
-
-      if (
-        !isNearScreen &&
-        fullHeight - (scrolled + viewportHeight) < distance
-      ) {
-        setIsNearScreen(true);
-      } else if (
-        isNearScreen &&
-        fullHeight - (scrolled + viewportHeight) > distance
-      ) {
-        setIsNearScreen(false);
-      }
-    };
-
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [isNearScreen, distance]);
-
-  return isNearScreen;
-};
-
-export const useFriendsWithNoChat = (
-  searchTerm: string,
-  userId: string,
-  cursor: string | null
-) => {
-  const isNearScreen = useNearScreen();
-
-  const query = useInfiniteQuery<FriendsWithNochatResponse, Error>({
+export const useFriendsWithNoChat = (searchTerm: string, userId: string) => {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery<FriendsWithNochatResponse, Error>({
     queryKey: ['friendsWithNoChats', searchTerm],
-    queryFn: () => fetchFriendWithNoChat(searchTerm, userId, cursor),
+    queryFn: ({ pageParam = '' }) =>
+      fetchFriendWithNoChat(searchTerm, userId, pageParam as string),
     getNextPageParam: (lastPage) =>
       lastPage.pagination.hasNextPage
         ? lastPage.pagination.nextCursor
         : undefined,
-    initialPageParam: null,
+    initialPageParam: '',
   });
 
-  useEffect(() => {
-    if (isNearScreen && query.hasNextPage && !query.isFetchingNextPage) {
-      query.fetchNextPage();
-    }
-  }, [
-    isNearScreen,
-    query.hasNextPage,
-    query.isFetchingNextPage,
-    query.fetchNextPage,
-  ]);
+  // Flatten the pages into a single array
+  const friends = useMemo(() => {
+    if (!data?.pages) return [];
+    const allChats = data.pages.flatMap((page) => page.friends);
+    return [...new Set(allChats)];
+  }, [data?.pages]);
 
-  return query;
+  // Handler for loading more data
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const bottomRef = useInfiniteScroll(loadMore);
+
+  return {
+    friends,
+    isLoading,
+    isFetchingNextPage,
+    isError,
+    error,
+    hasNextPage,
+    bottomRef,
+    refetch,
+  };
 };
 
 export const useCreateOneOnOneChat = () => {
