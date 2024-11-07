@@ -27,6 +27,7 @@ export const useProfileUpdate = () => {
     mutationFn: (profileData: EditUser) => updateProfile(profileData),
     onSuccess: (data: UserProfile) => {
       queryClient.setQueryData(['profile'], data);
+      queryClient.setQueryData(['user', data.id], data);
     },
   });
 };
