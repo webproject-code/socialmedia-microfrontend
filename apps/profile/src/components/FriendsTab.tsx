@@ -1,8 +1,9 @@
-import { Grid, Stack } from '@social-media/evoke-ui';
+import { Box, Grid, Stack } from '@social-media/evoke-ui';
 import FriendsCard from './FriendsCard';
 import { useFriends } from '@social-media/api';
 import { LiaUserFriendsSolid } from 'react-icons/lia';
-import { Spinner } from '@social-media/utils';
+import { Spinner, useTheme } from '@social-media/utils';
+import FriendsListSkeleton from './FriendsListSkeleton';
 
 type FriendsTabProps = {
   userId: string;
@@ -10,9 +11,10 @@ type FriendsTabProps = {
 
 const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
   const { data: friendDetails } = useFriends(userId);
+  const theme = useTheme();
 
   if (!friendDetails) {
-    return <Spinner />;
+    return <FriendsListSkeleton />;
   }
 
   return friendDetails.friends.length === 0 ? (
@@ -20,21 +22,30 @@ const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
       align="center"
       justify="center"
       direction="column"
-      spacing="xlarge"
-      className="text-center h-full border border-light-silverSteel/90 dark:border-dark-silverSteel/50 text-light-silverSteel/50 dark:text-dark-silverSteel/50 rounded-md p-4"
+      className="text-center h-full text-light-silverSteel/50 dark:text-dark-silverSteel/50 rounded-md p-4"
     >
-      <LiaUserFriendsSolid className="w-20 h-20" />
-      <div>
-        <h1 className="font-secondary font-medium text-2xl mb-2">No friends</h1>
-        <p className="font-medium text-lg">
+      <img
+        src={`assets/images/${
+          theme.isDarkTheme ? 'dark' : 'light'
+        }-no-results-found-image.svg`}
+        alt="logo"
+        width={300}
+        height={300}
+        className="opacity-80"
+      />
+      <Box>
+        <h1 className="font-secondary font-medium text-xl sm:text-2xl mb-2">
+          No friends
+        </h1>
+        <p className="font-medium text-base sm:text-lg">
           Looks like you haven't added any friends. Add some to get started
         </p>
-      </div>
+      </Box>
     </Stack>
   ) : (
     <Grid
       spacing={'medium'}
-      columns={{ sm: 1, md: 2 }}
+      columns={{ sm: 1, md: 2, lg: 3 }}
       columnSpacing={'medium'}
       className="overflow-auto"
     >

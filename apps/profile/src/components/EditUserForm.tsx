@@ -20,6 +20,7 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
     control,
     handleSubmit,
     formState: { errors, isDirty },
+    reset,
   } = useForm({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
@@ -51,6 +52,13 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
     mutate(updatedUser, {
       onSuccess: (data) => {
         setVisitedUser(data);
+        reset({
+          // Reset the form to its initial values
+          profilePicture: undefined,
+          name: profile.name,
+          bio: profile.bio,
+        });
+        setPreview(profile.profilePicture); // Reset the image preview as well
       },
     });
   };

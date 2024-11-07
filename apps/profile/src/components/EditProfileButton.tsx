@@ -25,8 +25,7 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
         onClose={closeModal}
         showCross={true}
         closeOnOutsideClick={true}
-        style={{ zIndex: 10000 }}
-        className="bg-light-modalColor dark:bg-dark-modalColor py-4 px-6"
+        className="bg-light-modalColor dark:bg-dark-modalColor py-4 px-6 z-5"
       >
         <Modal.Header>
           <h3 className="text-xl font-bold text-light-secondary dark:text-dark-secondary">
