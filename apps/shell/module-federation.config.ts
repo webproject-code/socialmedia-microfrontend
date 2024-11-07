@@ -1,5 +1,4 @@
 import { ModuleFederationConfig } from '@nx/rspack/module-federation';
-import { SharedConfig } from '@rspack/core';
 
 const config: ModuleFederationConfig = {
   name: 'shell-with-remotes',
@@ -16,22 +15,6 @@ const config: ModuleFederationConfig = {
    *
    */
   remotes: [],
-  shared: (libraryName: string, sharedConfig: SharedConfig) => {
-    const sharedPackages = {
-      react: { singleton: true },
-      'react-dom': { singleton: true },
-      '@hookform/resolvers': { singleton: true },
-      'react-hook-form': { singleton: true },
-    };
-
-    if (libraryName in sharedPackages) {
-      return {
-        ...sharedConfig,
-        ...sharedPackages[libraryName as keyof typeof sharedPackages],
-      };
-    }
-    return sharedConfig;
-  },
 };
 
 export default config;
