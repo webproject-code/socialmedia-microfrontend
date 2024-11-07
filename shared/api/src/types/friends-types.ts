@@ -10,13 +10,8 @@ export type FriendRequest = {
   status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   createdAt: string;
   updatedAt: string;
+  sender: Friend;
 };
-
-export type FriendRequests = FriendRequest &
-  {
-    status: 'PENDING';
-    sender: Friend;
-  }[];
 
 export interface IFriendsService {
   fetchFriends: (
@@ -26,7 +21,7 @@ export interface IFriendsService {
   fetchFriendRequests: (
     userId: string,
     params?: QueryPagination
-  ) => Promise<PaginatedResponse<'friendRequests', FriendRequests>>;
+  ) => Promise<PaginatedResponse<'friendRequests', FriendRequest[]>>;
   fetchSuggestedFriends: (
     userId: string,
     params?: QueryPagination
@@ -46,8 +41,11 @@ export interface IFriendsService {
     friendId: string
   ) => Promise<{ friendRequest: FriendRequest }>;
   acceptOrRejectFriendRequest: (
-    friendId: string,
+    friendRequestId: string,
     status: 'ACCEPTED' | 'REJECTED'
   ) => Promise<string>;
-  cancleFriendRequest: (friendId: string) => Promise<string>;
+  cancelFriendRequest: (friendRequestId: string) => Promise<string>;
+  fetchUsers: (
+    params: QueryPagination
+  ) => Promise<PaginatedResponse<'users', User[]> | null>;
 }

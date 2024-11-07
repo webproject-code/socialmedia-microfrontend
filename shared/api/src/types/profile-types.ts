@@ -15,7 +15,7 @@ export type EditUser = {
 };
 
 export type FriendshipStatusResponse = {
-  id: string;
+  friendRequestId: string;
   status: FriendshipStatus;
 };
 
