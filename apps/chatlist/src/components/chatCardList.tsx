@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Input, ScrollArea } from '@social-media/evoke-ui';
-import { Chat, useChatList, useDebounce } from '@social-media/api';
-import { Spinner } from '@social-media/utils';
+import { Chat, useChatList } from '@social-media/api';
+import { Spinner, useDebounce } from '@social-media/utils';
 import { CreateChatModal } from './createChatModal';
 import { ChatCard } from './chatCard';
 import { LuSearch } from 'react-icons/lu';
@@ -12,8 +12,8 @@ const currentUserId = '66b30bbeaea1612592e8609b'; // Replace with store data
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const { chats, isLoading, isFetchingNextPage, bottomRef } = l;
-  useChatList(debouncedSearchTerm);
+  const { chats, isLoading, isFetchingNextPage, bottomRef } =
+    useChatList(debouncedSearchTerm);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

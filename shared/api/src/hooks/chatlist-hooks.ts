@@ -11,7 +11,7 @@ import {
   groupData,
 } from '../types';
 import { useCallback, useMemo } from 'react';
-import { useInfiniteScroll } from './useInfiniteScroll';
+import { useInfiniteScroll } from '@social-media/utils';
 
 export const useChatList = (searchTerm: string) => {
   const {
