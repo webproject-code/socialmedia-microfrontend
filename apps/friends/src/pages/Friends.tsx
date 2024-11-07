@@ -16,7 +16,7 @@ import {
   useSuggestedFriends,
   useUsers,
 } from '@social-media/api';
-import { useTheme } from '@social-media/utils';
+import { Spinner, useTheme } from '@social-media/utils';
 
 import { FriendSearch } from '../components/FriendSearch';
 import FriendsListCard from '../components/FriendsListCard';
@@ -32,15 +32,17 @@ const Friends: React.FC = () => {
 
   const currentUserId = profileData?.id || '';
   const {
-    data: friendRequestsData,
-    isLoading: isRequestsLoading,
-    isSuccess: isRequestsSuccess,
+    friendRequests,
+    isLoading: isFriendRequestsLoading,
+    bottomRef: friendRequestsBottomRef,
+    isFetchingNextPage: isFetchingNextFriendRequests,
   } = useFriendRequests(currentUserId);
 
   const {
-    data: suggestedFriendsData,
-    isLoading: isSuggestedLoading,
-    isSuccess: isSuggestedSuccess,
+    suggestedFriends,
+    isLoading: isSuggestedFriendsLoading,
+    bottomRef: suggestedFriendsBottomRef,
+    isFetchingNextPage: isFetchingNextSuggestedFriends,
   } = useSuggestedFriends(currentUserId);
 
   const activeTab =
@@ -48,17 +50,15 @@ const Friends: React.FC = () => {
   const pathname = window.location.pathname;
 
   const {
-    data: usersData,
+    users,
     isLoading: isUsersLoading,
-    isSuccess: isUsersSuccess,
+    bottomRef: usersBottomRef,
+    isFetchingNextPage: isFetchingNextUsers,
   } = useUsers(activeTab === 'search' ? { query: searchTerm } : {});
 
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
-
-  const requests = friendRequestsData?.friendRequests;
-  const suggestedFriends = suggestedFriendsData?.suggestedFriends;
 
   return (
     <Box className="bg-light-primary dark:bg-dark-primary dark:text-white w-screen h-screen text-sm lg:text-md">
@@ -84,9 +84,12 @@ const Friends: React.FC = () => {
           </TabsTrigger>
         </TabsList>
 
+        {/* Friend Requests Tab */}
         <TabsContent value="requests" className="h-[90%]">
-          {isRequestsLoading && <FriendsListCardSkeleton cardType="request" />}
-          {isRequestsSuccess && requests?.length === 0 ? (
+          {isFriendRequestsLoading && (
+            <FriendsListCardSkeleton cardType="request" />
+          )}
+          {!isFriendRequestsLoading && friendRequests?.length === 0 && (
             <IllustrationImage
               src={`../assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
@@ -94,9 +97,10 @@ const Friends: React.FC = () => {
               alt="no results"
               message="No new friend requests!"
             />
-          ) : (
+          )}
+          {!isFriendRequestsLoading && friendRequests?.length > 0 && (
             <ScrollArea className="h-[95%] p-1">
-              {requests?.map((request) => (
+              {friendRequests?.map((request) => (
                 <FriendsListCard
                   key={request.id}
                   profile={request.sender.profilePicture}
@@ -106,13 +110,18 @@ const Friends: React.FC = () => {
                   friendRequestId={request.id}
                 />
               ))}
+              <div ref={friendRequestsBottomRef} />
+              {isFetchingNextFriendRequests && <Spinner />}
             </ScrollArea>
           )}
         </TabsContent>
 
+        {/* Suggested Friends Tab */}
         <TabsContent value="suggestedFriends" className="h-[90%]">
-          {isSuggestedLoading && <FriendsListCardSkeleton cardType="add" />}
-          {isSuggestedSuccess && suggestedFriends?.length === 0 ? (
+          {isSuggestedFriendsLoading && (
+            <FriendsListCardSkeleton cardType="add" />
+          )}
+          {!isSuggestedFriendsLoading && suggestedFriends.length === 0 && (
             <IllustrationImage
               src={`../assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
@@ -120,9 +129,10 @@ const Friends: React.FC = () => {
               alt="no results"
               message="No new suggestions for now!"
             />
-          ) : (
+          )}
+          {!isSuggestedFriendsLoading && suggestedFriends.length > 0 && (
             <ScrollArea className="h-[95%] p-1">
-              {suggestedFriends?.map((user) => (
+              {suggestedFriends.map((user) => (
                 <FriendsListCard
                   key={user.id}
                   profile={user.profilePicture}
@@ -132,14 +142,17 @@ const Friends: React.FC = () => {
                   userId={user.id}
                 />
               ))}
+              <div ref={suggestedFriendsBottomRef} />
+              {isFetchingNextSuggestedFriends && <Spinner />}
             </ScrollArea>
           )}
         </TabsContent>
 
+        {/* Search Tab */}
         <TabsContent value="search" className="h-[90%]">
           <FriendSearch onSearch={handleSearch} />
           {isUsersLoading && <FriendsListCardSkeleton cardType="search" />}
-          {!usersData && (
+          {!searchTerm && (
             <IllustrationImage
               src={`../assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
@@ -147,7 +160,7 @@ const Friends: React.FC = () => {
               alt="search"
             />
           )}
-          {isUsersSuccess && usersData?.users.length === 0 ? (
+          {searchTerm && !isUsersLoading && users.length === 0 && (
             <IllustrationImage
               src={`../assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
@@ -155,9 +168,10 @@ const Friends: React.FC = () => {
               alt="no results"
               message="No such users found!"
             />
-          ) : (
+          )}
+          {!isUsersLoading && users.length > 0 && (
             <ScrollArea className="h-[95%] p-1">
-              {usersData?.users.map((user) => (
+              {users.map((user) => (
                 <FriendsListCard
                   key={user.id}
                   profile={user.profilePicture}
@@ -167,6 +181,8 @@ const Friends: React.FC = () => {
                   userId={user.id}
                 />
               ))}
+              <div ref={usersBottomRef} />
+              {isFetchingNextUsers && <Spinner />}
             </ScrollArea>
           )}
         </TabsContent>

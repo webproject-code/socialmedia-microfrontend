@@ -9,11 +9,17 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   const loginHandler = () => {
-    mutate({
-      email: 'kspatelsimform100@gmail.com',
-      password: '123456789',
-    });
-    navigate(`/friends`);
+    mutate(
+      {
+        email: 'kspatelsimform100@gmail.com',
+        password: '12345678',
+      },
+      {
+        onSuccess: () => {
+          navigate(`/friends`);
+        },
+      }
+    );
   };
 
   return (

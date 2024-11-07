@@ -42,7 +42,7 @@ const SendOrCancelRequestButton: React.FC<SendOrCancelRequestButtonProps> = ({
       friendshipStatus.status === FriendshipStatus.REQUEST_SENT ? (
         <>
           <IoPersonRemoveSharp className="sm:hidden" size={25} />
-          <span className="hidden sm:block">Requested</span>
+          <span className="hidden sm:block">Cancel Request</span>
         </>
       ) : (
         <>
