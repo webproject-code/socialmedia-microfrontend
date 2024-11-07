@@ -17,7 +17,7 @@ const ProfileTabs: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   const activeTab = useSearchParams()[0].get('activeTab') || 'friends';
 
   return (
-    <Tabs defaultValue={activeTab} className="h-[90%] border-0" border>
+    <Tabs defaultValue={activeTab} className="h-[90%]">
       <TabsList className="mb-4 h-fit">
         <TabsTrigger
           value="friends"

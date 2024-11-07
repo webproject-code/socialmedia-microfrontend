@@ -65,7 +65,7 @@ const Home: React.FC = () => {
             <Button
               className="w-fit"
               onClick={() =>
-                loginHandler('kspatelsimform100@gmail.com', '123456789')
+                loginHandler('kspatelsimform100@gmail.com', '12345678')
               }
               disabled={isPending}
             >
@@ -75,10 +75,10 @@ const Home: React.FC = () => {
             </Button>
             <Button
               className="w-fit"
-              onClick={() => loginHandler('honey123@gmail.com', '12345678')}
+              onClick={() => loginHandler('vatsal@gmail.com', '12345678')}
               disabled={isPending}
             >
-              {isPending && activeUser === 'honey123@gmail.com'
+              {isPending && activeUser === 'vatsal@gmail.com'
                 ? 'Logging in User 2...'
                 : 'Login as User 2'}
             </Button>

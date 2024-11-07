@@ -27,7 +27,7 @@ const UserProfile = () => {
   const isOwner = user?.id === visitedUser?.id;
 
   return (
-    <Box className="bg-light-primary dark:bg-dark-primary dark:text-white max-h-auto min-h-screen w-screen p-4 sm:p-10 max-w-4xl mx-auto">
+    <Box className="bg-light-primary dark:bg-dark-primary dark:text-white max-h-auto min-h-screen w-screen p-4 sm:p-10 ">
       {visitedUser ? (
         <>
           <ProfileInfo profile={visitedUser} isOwner={isOwner} />

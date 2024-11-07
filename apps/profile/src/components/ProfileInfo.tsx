@@ -5,7 +5,7 @@ import { UserProfile } from '@social-media/api';
 import EditProfileButton from './EditProfileButton';
 import { useStore } from '../store/store';
 import FriendStatusButton from './FriendStatusButton';
-import { Spinner } from '@social-media/utils';
+import ProfileInfoSkeleton from './ProfileInfoSkeleton';
 
 const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
   profile,
@@ -14,10 +14,10 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
   const { user } = useStore();
 
   if (!user) {
-    return <Spinner />;
+    return <ProfileInfoSkeleton />;
   }
   return (
-    <Stack spacing="xxlarge" className="w-full" justify="between">
+    <Stack spacing="xxlarge" className="w-full">
       {/* Profile Picture */}
       <Stack align="center" justify="center">
         <Avatar className="xs:h-20 xs:w-20 sm:h-28 sm:w-28 flex items-center">
@@ -46,7 +46,7 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
             <FriendStatusButton userId={user.id} friendId={profile.id} />
           )}
         </Stack>
-        <div className="space-y-2">
+        <Stack direction="column" spacing="small">
           <ProfileFriendsCount
             friendsCount={profile.friendIds.length + profile.friendOfIds.length}
           />
@@ -57,7 +57,7 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
           <p className="text-sm sm:text-lg text-light-silverSteel dark:text-dark-silverSteel">
             {profile.bio}
           </p>
-        </div>
+        </Stack>
       </Stack>
     </Stack>
   );
