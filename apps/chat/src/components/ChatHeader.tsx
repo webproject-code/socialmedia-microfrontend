@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { useMessagesSearch } from '../hooks/useMessagesSearch';
 import { useChatStore } from '../store/useChatStore';
-import { useTypingStatus } from '../hooks/useTypingStatus';
 
-const ChatHeader: React.FC = () => {
+interface ChatHeaderProps {
+  chatType: string;
+  name: string;
+}
+const ChatHeader: React.FC<ChatHeaderProps> = ({ name }) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [query, setQuery] = useState('');
   const { searchMessages } = useMessagesSearch();
-  const { setSearchResults } = useChatStore();
-  const { isTyping, typingUserId } = useTypingStatus();
+  const { setSearchResults, isTyping } = useChatStore();
 
   const handleSearchToggle = () => {
     setIsSearchActive((prev) => !prev);
@@ -29,11 +31,9 @@ const ChatHeader: React.FC = () => {
   };
 
   return (
-    <div className="chat-header">
-      <h2 className="text-3xl">Chat</h2>
-      {isTyping && typingUserId && (
-        <span className="typing-status">{typingUserId} is typing...</span>
-      )}
+    <div className="chat-header h-12 flex items-center px-3 dark:text-dark-secondary">
+      <h2 className="text-3xl">{name}</h2>
+      {isTyping && <span className="typing-status"> is typing...</span>}
       <Button className="w-fit" variant={'icon'} onClick={handleSearchToggle}>
         <FaSearch />
       </Button>

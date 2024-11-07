@@ -1,6 +1,8 @@
 import { RouteObject } from 'react-router-dom';
-import Home from './pages/Home';
 import Chats from './pages/Chats';
+import GroupChat from './pages/GroupChat'; // Import your GroupChat component
+import Home from './pages/Home';
+import OneOnOneChat from './pages/OneOnOneChat'; // Import your OneOnOneChat component
 
 export const routes: RouteObject[] = [
   {
@@ -9,6 +11,16 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/chats',
-    element: <Chats />,
+    element: <Chats />, // Parent Chats component
+    children: [
+      {
+        path: 'one-on-one/:chatId', // Nested route for one-on-one chat
+        element: <OneOnOneChat />,
+      },
+      {
+        path: 'group/:chatId', // Nested route for group chat
+        element: <GroupChat />,
+      },
+    ],
   },
 ];

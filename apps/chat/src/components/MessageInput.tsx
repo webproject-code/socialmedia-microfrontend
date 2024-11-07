@@ -1,51 +1,91 @@
-import React, { useState } from 'react';
-import { useChatStore } from '../store/useChatStore';
-import { Button, Input } from '@social-media/evoke-ui';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useProfile } from '@social-media/api';
-import { startTyping, stopTyping } from '../services/socket-services';
+import { Button, Input } from '@social-media/evoke-ui';
+import { useSocket } from '@social-media/utils';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 interface MessageInputProps {
-  onSend: (message: string) => void;
+  chatType: 'ONE_ON_ONE' | 'GROUP';
+  chatId: string;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
-  const [message, setMessage] = useState('');
-  const { currentChatId } = useChatStore();
-  const { data } = useProfile();
+const MessageInputSchema = z.object({
+  content: z.string().min(1),
+});
 
-  const handleTyping = () => {
-    if (currentChatId && data) {
-      startTyping(currentChatId, data.id);
+const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
+  const { data: user } = useProfile();
+  const { startTyping, stopTyping, sendMessage, sendGroupMessage } =
+    useSocket();
 
-      setTimeout(() => stopTyping(currentChatId, data.id), 3000);
+  const onSend = ({ chatId, content }: { chatId: string; content: string }) => {
+    if (chatType === 'ONE_ON_ONE') {
+      sendMessage(chatId, content);
+    } else if (chatType === 'GROUP') {
+      sendGroupMessage(chatId, content);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
-    handleTyping();
+  const handleTyping = () => {
+    if (chatId && user?.id) {
+      startTyping(chatId, user.name);
+      setTimeout(
+        () => stopTyping(chatId, user.name),
+
+        3000
+      );
+    }
   };
 
-  const handleSendMessage = () => {
-    if (message.trim() && data) {
-      onSend(message);
-      setMessage('');
-      stopTyping(currentChatId!, data?.id);
+  const form = useForm<z.infer<typeof MessageInputSchema>>({
+    defaultValues: {
+      content: '',
+    },
+    resolver: zodResolver(MessageInputSchema),
+  });
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setFocus,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = (values: z.infer<typeof MessageInputSchema>) => {
+    if (values.content.trim() && user) {
+      onSend({ chatId, content: values.content });
+      reset();
+      setFocus('content');
+      stopTyping(chatId, user.name);
     }
   };
   return (
     <div className="message-input">
-      <Input
-        name="message"
-        type="text"
-        value={message}
-        onChange={handleChange}
-        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-        placeholder="Type a message..."
-      />
-      <Button className="w-fit" onClick={handleSendMessage}>
-        Send
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="content"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              type="text"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                handleTyping();
+                field.onChange(e);
+              }}
+              placeholder="Enter message..."
+              error={!!errors.content}
+              errorMessage={errors.content?.message}
+            />
+          )}
+        />
+        <Button className="w-fit dark:text-zinc-300" type="submit">
+          Send
+        </Button>
+      </form>
     </div>
   );
 };

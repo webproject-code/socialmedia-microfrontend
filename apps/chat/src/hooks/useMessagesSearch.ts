@@ -1,8 +1,8 @@
-import { useChatStore } from '../store/useChatStore';
 import {
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
+import { useChatStore } from '../store/useChatStore';
 
 export const useMessagesSearch = () => {
   const { currentChatId, currentChatType, searchResults, setSearchResults } =

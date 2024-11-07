@@ -30,7 +30,7 @@ const InfiniteScrollList: React.FC<InfiniteScrollListProps> = ({
     [isLoading, hasMore, loadMore]
   );
   return (
-    <Box className="infinite-scroll-list">
+    <Box className="infinite-scroll-list flex flex-col-reverse">
       {items.map((item, index) => {
         if (index === items.length - 1) {
           return (
