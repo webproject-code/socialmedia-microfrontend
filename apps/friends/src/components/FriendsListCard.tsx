@@ -7,6 +7,7 @@ import { useFriendshipStatus } from '@social-media/api';
 import AcceptFriendRequestButton from './AcceptFriendRequestButton';
 import RejectFriendRequestButton from './RejectFriendRequestButton';
 import SendOrCancelRequestButton from './SendOrCancelRequestButton';
+import { useState } from 'react';
 
 interface FriendsListCardProps {
   profile: string;
@@ -26,6 +27,10 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
   friendRequestId,
 }) => {
   const navigate = useNavigate();
+  const [requestStatus, setRequestStatus] = useState<
+    'PENDING' | 'ACCEPTED' | 'REJECTED'
+  >('PENDING');
+
   const {
     data: friendshipStatusResponse,
     isLoading: isFriendshipStatusLoading,
@@ -33,16 +38,11 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
   } = useFriendshipStatus(currentUserId, userId);
 
   return (
-    <Card
-      className="bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer
-      outline-none"
-    >
+    <Card className="bg-transparent cursor-pointer">
       <Card.Content className="flex py-4 px-1 items-center justify-between gap-4">
         <div
-          className="flex gap-3 items-center h-full"
-          onClick={() =>
-            navigate(`https://profile-mfe.netlify.app/users/${userId}`)
-          }
+          className="flex gap-3 items-center h-full w-full"
+          onClick={() => navigate(`/users/${userId}`)}
         >
           <img
             className="w-11 h-11 rounded-full ring-1 ring-secondary"
@@ -54,19 +54,25 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
           </div>
         </div>
 
-        {cardType === 'request' && friendRequestId && (
+        {cardType === 'request' &&
+        friendRequestId &&
+        requestStatus === 'PENDING' ? (
           <div className="flex gap-2">
             <RejectFriendRequestButton
               userId={currentUserId}
               friendId={userId}
               friendRequestId={friendRequestId}
+              onReject={() => setRequestStatus('REJECTED')}
             />
             <AcceptFriendRequestButton
               userId={currentUserId}
               friendId={userId}
               friendRequestId={friendRequestId}
+              onAccept={() => setRequestStatus('ACCEPTED')}
             />
           </div>
+        ) : (
+          <span className="text-gray-500">{requestStatus}</span>
         )}
 
         {cardType === 'add' && isFriendshipStatusSuccess && (
