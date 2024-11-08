@@ -4,8 +4,13 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Auth from './pages/AuthLayout';
 
-import { createAuthSlice } from './store/authSlice';
-import { createRegistrationFormSlice } from './store/registrationFormSlice';
+import { AuthSlice, createAuthSlice } from './store/authSlice';
+import {
+  RegistrationFormSlice,
+  createRegistrationFormSlice,
+} from './store/registrationFormSlice';
+
+import { useStore } from './store/store';
 
 export {
   Login,
@@ -13,6 +18,9 @@ export {
   ForgotPassword,
   ResetPassword,
   Auth,
+  AuthSlice,
+  RegistrationFormSlice,
   createAuthSlice,
   createRegistrationFormSlice,
+  useStore,
 };
