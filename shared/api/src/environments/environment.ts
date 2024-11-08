@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:3000/api/v1',
+  apiURL: 'https://social-media-backend-j5dj.onrender.com',
   // Add other environment variables here
 };
