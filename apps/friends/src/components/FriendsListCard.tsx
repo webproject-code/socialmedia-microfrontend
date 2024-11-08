@@ -36,12 +36,14 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
     <Card
       className="bg-transparent transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20 cursor-pointer
       outline-none"
-      onClick={() =>
-        navigate(`https://profile-mfe.netlify.app/users/${userId}`)
-      }
     >
       <Card.Content className="flex py-4 px-1 items-center justify-between gap-4">
-        <div className="flex gap-3 items-center h-full">
+        <div
+          className="flex gap-3 items-center h-full"
+          onClick={() =>
+            navigate(`https://profile-mfe.netlify.app/users/${userId}`)
+          }
+        >
           <img
             className="w-11 h-11 rounded-full ring-1 ring-secondary"
             src={profile}
