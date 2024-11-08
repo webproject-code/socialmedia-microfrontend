@@ -7,10 +7,12 @@ import { ChatCard } from './chatCard';
 import { LuSearch } from 'react-icons/lu';
 import { FaPlus } from 'react-icons/fa';
 
-const currentUserId = '66b30bbeaea1612592e8609b'; // Replace with store data
+import { useStore } from 'auth/Module';
 
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { user } = useStore();
+  const currentUserId = user?.id;
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { chats, isLoading, isFetchingNextPage, bottomRef } =
     useChatList(debouncedSearchTerm);
@@ -115,7 +117,7 @@ export const ChatCardList = () => {
       <CreateChatModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        currentUserId={currentUserId}
+        currentUserId={currentUserId!}
       />
     </Box>
   );
