@@ -1,4 +1,4 @@
-import { Box, Grid, Stack } from '@social-media/evoke-ui';
+import { Box, Grid, ScrollArea, Stack } from '@social-media/evoke-ui';
 import FriendsCard from './FriendsCard';
 import { useFriends } from '@social-media/api';
 import { useTheme } from '@social-media/utils';
@@ -42,16 +42,17 @@ const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
       </Box>
     </Stack>
   ) : (
-    <Grid
-      spacing={'medium'}
-      columns={{ sm: 1, md: 2, lg: 3 }}
-      columnSpacing={'medium'}
-      className="overflow-auto"
-    >
-      {friendDetails.friends.map((friend) => {
-        return <FriendsCard key={friend.id} friend={friend} />;
-      })}
-    </Grid>
+    <ScrollArea className="h-full w-full">
+      <Grid
+        spacing={'medium'}
+        columns={{ sm: 1, md: 2, lg: 3 }}
+        columnSpacing={'medium'}
+      >
+        {friendDetails.friends.map((friend) => {
+          return <FriendsCard key={friend.id} friend={friend} />;
+        })}
+      </Grid>
+    </ScrollArea>
   );
 };
 

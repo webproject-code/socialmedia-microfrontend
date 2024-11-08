@@ -20,14 +20,7 @@ const FriendStatusButton: React.FC<FriendStatusButtonProps> = ({
   );
 
   if (isPending || !friendshipStatus)
-    return (
-      <Skeleton
-        variant="rectangular"
-        width="30%"
-        height="30px"
-        className="rounded-lg"
-      />
-    );
+    return <Skeleton variant="rectangular" width="100px" height="36px" />;
 
   const getButtonLabel = (status: string | undefined) => {
     switch (status) {

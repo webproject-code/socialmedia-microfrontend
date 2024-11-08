@@ -9,9 +9,6 @@ const FriendsListSkeleton = () => {
       <Skeleton variant="rectangular" height="50px" />
       <Skeleton variant="rectangular" height="50px" />
       <Skeleton variant="rectangular" height="50px" />
-      <Skeleton variant="rectangular" height="50px" />
-      <Skeleton variant="rectangular" height="50px" />
-      <Skeleton variant="rectangular" height="50px" />
     </Grid>
   );
 };
