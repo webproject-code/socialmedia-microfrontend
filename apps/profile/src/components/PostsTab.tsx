@@ -1,6 +1,5 @@
 import { Box, Stack } from '@social-media/evoke-ui';
 import { useTheme } from '@social-media/utils';
-import { BsFilePostFill } from 'react-icons/bs';
 
 const PostsTab = () => {
   const theme = useTheme();

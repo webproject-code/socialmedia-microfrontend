@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserProfile, useProfileUpdate } from '@social-media/api';
 import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isValid },
     reset,
   } = useForm({
     resolver: zodResolver(editProfileSchema),
@@ -31,6 +31,13 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
     mode: 'onChange',
   });
 
+  // Effect to clean up preview URL
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
+
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     onChange: (file: File | undefined) => void
@@ -39,7 +46,6 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
 
     if (file) {
       onChange(file);
-
       setPreview(URL.createObjectURL(file)); // Update preview with new image URL
       return;
     }
@@ -50,15 +56,15 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   const onSubmit = (data: z.infer<typeof editProfileSchema>) => {
     const updatedUser = { id: profile.id, ...data };
     mutate(updatedUser, {
-      onSuccess: (data) => {
-        setVisitedUser(data);
+      onSuccess: (updatedData) => {
+        setVisitedUser(updatedData);
         reset({
-          // Reset the form to its initial values
+          // Reset the form to updated values
           profilePicture: undefined,
-          name: profile.name,
-          bio: profile.bio,
+          name: data.name,
+          bio: data.bio,
         });
-        setPreview(profile.profilePicture); // Reset the image preview as well
+        setPreview(updatedData.profilePicture); // Reset the image preview as well
       },
     });
   };
@@ -123,7 +129,7 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
         <Button
           type="submit"
           className="w-full"
-          disabled={isPending || !isDirty}
+          disabled={!isValid || isPending || !isDirty}
         >
           {isPending ? <Spinner /> : 'Update'}
         </Button>

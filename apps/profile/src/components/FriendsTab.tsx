@@ -1,8 +1,7 @@
 import { Box, Grid, Stack } from '@social-media/evoke-ui';
 import FriendsCard from './FriendsCard';
 import { useFriends } from '@social-media/api';
-import { LiaUserFriendsSolid } from 'react-icons/lia';
-import { Spinner, useTheme } from '@social-media/utils';
+import { useTheme } from '@social-media/utils';
 import FriendsListSkeleton from './FriendsListSkeleton';
 
 type FriendsTabProps = {
