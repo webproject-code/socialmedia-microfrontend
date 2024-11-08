@@ -18,27 +18,33 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   return (
     <div
-      className={`message-bubble ${className} relative group flex items-center hover:bg-black/5 p-4 transition w-full`}
+      className={`message-bubble ${className} ${
+        isSentByCurrentUser ? 'justify-end' : 'justify-start'
+      } flex items-start gap-x-3 mb-2 mx-5`}
     >
-      <div className="group flex gap-x-2 items-start w-full">
-        <div className="cursor-pointer hover:drop-shadow-md transition">
-          <Avatar>
-            <AvatarImage src={message.sender.profilePicture} />
-          </Avatar>
+      {!isSentByCurrentUser && (
+        <Avatar style={{ width: '36px', height: '36px' }}>
+          <AvatarImage src={message.sender.profilePicture} />
+        </Avatar>
+      )}
+      <div className="flex flex-col">
+        <div
+          className={`message-container px-4 py-2  rounded-xl ${
+            isSentByCurrentUser
+              ? 'rounded-tr-none dark:bg-dark-secondary'
+              : 'rounded-tl-none dark:bg-dark-lavender'
+          } max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl`}
+        >
+          <p className="font-primary text-black break-words">
+            {message.content}
+          </p>
         </div>
-        <div className="flex flex-col w-full">
-          <div className="flex items-center gap-x-2">
-            <div className="flex items-center">
-              <p className="font-semibold text-sm cursor-pointer dark:text-zinc-300">
-                {message.sender.name}
-              </p>
-            </div>
-            <span className="message-timestamp text-xs dark:text-zinc-400">
-              {new Date(message.createdAt).toLocaleTimeString()}
-            </span>
-          </div>
-          <p className="text-sm dark:text-zinc-300">{message.content}</p>
-        </div>
+        <span className="message-timestamp self-end text-xs dark:text-dark-silverSteel">
+          {new Date(message.createdAt).toLocaleTimeString([], {
+            hour: 'numeric',
+            minute: 'numeric',
+          })}
+        </span>
       </div>
     </div>
   );

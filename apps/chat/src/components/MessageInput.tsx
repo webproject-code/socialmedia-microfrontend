@@ -4,6 +4,7 @@ import { Button, Input } from '@social-media/evoke-ui';
 import { useSocket } from '@social-media/utils';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { FaPaperPlane } from 'react-icons/fa';
 import * as z from 'zod';
 
 interface MessageInputProps {
@@ -20,9 +21,18 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
   const { startTyping, stopTyping, sendMessage, sendGroupMessage } =
     useSocket();
 
-  const onSend = ({ chatId, content }: { chatId: string; content: string }) => {
+  const onSend = ({
+    chatId,
+    senderId,
+    content,
+  }: {
+    chatId: string;
+    senderId: string;
+    content: string;
+  }) => {
     if (chatType === 'ONE_ON_ONE') {
-      sendMessage(chatId, content);
+      console.log(chatId, senderId, content);
+      sendMessage(chatId, senderId, content);
     } else if (chatType === 'GROUP') {
       sendGroupMessage(chatId, content);
     }
@@ -56,34 +66,44 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
 
   const onSubmit = (values: z.infer<typeof MessageInputSchema>) => {
     if (values.content.trim() && user) {
-      onSend({ chatId, content: values.content });
+      console.log(user.id);
+      onSend({ chatId, senderId: user.id, content: values.content });
       reset();
       setFocus('content');
       stopTyping(chatId, user.name);
     }
   };
   return (
-    <div className="message-input">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="content"
-          control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              type="text"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleTyping();
-                field.onChange(e);
-              }}
-              placeholder="Enter message..."
-              error={!!errors.content}
-              errorMessage={errors.content?.message}
-            />
-          )}
-        />
-        <Button className="w-fit dark:text-zinc-300" type="submit">
-          Send
+    <div className="message-input sticky bottom-0 bg-light-primary dark:bg-dark-primary px-5 py-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex gap-2 items-center justify-center"
+      >
+        <div className="w-full">
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="text"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleTyping();
+                  field.onChange(e);
+                }}
+                placeholder="Enter message..."
+                error={!!errors.content}
+                errorMessage={errors.content?.message}
+              />
+            )}
+          />
+        </div>
+        <Button
+          className="w-fit dark:text-dark-secondary"
+          variant="ghost"
+          type="submit"
+        >
+          <FaPaperPlane className="w-6 h-6" />
         </Button>
       </form>
     </div>

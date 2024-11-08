@@ -1,5 +1,5 @@
-import { useProfile } from '@social-media/api';
-import React, { ElementRef, useRef } from 'react';
+import { Message, useProfile } from '@social-media/api';
+import React, { ElementRef, useRef, useMemo } from 'react';
 import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
@@ -10,16 +10,19 @@ interface ChatWindowProps {
   chatType: 'ONE_ON_ONE' | 'GROUP';
   groupOwnerId?: string;
 }
+
+interface MessagesByDate {
+  [date: string]: Array<Message>;
+}
+
 const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
-
   const { data: user } = useProfile();
 
   const chatRef = useRef<ElementRef<'div'>>(null);
   const bottomRef = useRef<ElementRef<'div'>>(null);
 
-  //  infinite query
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
       chatId,
@@ -27,7 +30,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
     });
 
   useChatSocket({ addKey, updateKey, chatId });
-
   useChatScroll({
     chatRef,
     bottomRef,
@@ -36,23 +38,75 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
     count: data?.pages?.[0]?.messages.length ?? 0,
   });
 
+  const formatDateLabel = (date: string) => {
+    const today = new Date();
+    const messageDate = new Date(date);
+
+    if (today.toDateString() === messageDate.toDateString()) {
+      return 'Today';
+    }
+
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (yesterday.toDateString() === messageDate.toDateString()) {
+      return 'Yesterday';
+    }
+
+    return messageDate.toLocaleDateString('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  // Group messages by date
+  const groupedMessages = useMemo(() => {
+    if (!data?.pages) return {};
+
+    const groups: MessagesByDate = {};
+
+    // Process pages in reverse order
+    [...data.pages].reverse().forEach((page) => {
+      if (!page?.messages) return;
+
+      // Process messages in each page
+      page.messages.forEach((message) => {
+        const date = new Date(message.createdAt).toDateString();
+        if (!groups[date]) {
+          groups[date] = [];
+        }
+        groups[date].push(message);
+      });
+    });
+
+    // Sort messages within each date group
+    Object.keys(groups).forEach((date) => {
+      groups[date].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    });
+
+    return groups;
+  }, [data?.pages]);
+
   if (status === 'pending') {
     return <div>Loading...</div>;
   }
+
   if (status === 'error') {
     return <div>Something went wrong</div>;
   }
 
   return (
     <div
-      className="chat-window flex-1 flex flex-col py-4 overflow-y-auto"
+      className="chat-window flex-1 flex flex-col py-4 overflow-y-auto dark:bg-[#4C4D51]/20"
       ref={chatRef}
     >
-      {/* empty div to cover space */}
-      {hasNextPage === false ? <div className="flex-1" /> : null}
+      {hasNextPage === false && <div className="flex-1" />}
 
-      {/* show button to load previous message if there are */}
-      {hasNextPage ? (
+      {hasNextPage && (
         <div className="flex justify-center">
           {isFetchingNextPage ? (
             <div className="h-6 w-6 text-zinc-500 border-1 rounded-full animate-spin my-4" />
@@ -65,22 +119,28 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
             </button>
           )}
         </div>
-      ) : null}
+      )}
 
-      {/* render messages */}
       <div className="flex flex-col-reverse mt-auto">
-        {data?.pages.map((group, i) => (
-          <React.Fragment key={i}>
-            {group?.messages.map((message) => (
-              <MessageBubble
-                message={message}
-                isSentByCurrentUser={message.senderId === user?.id}
-                canDeleteMessage={message.senderId === user?.id}
-                key={message.id}
-              />
-            ))}
-          </React.Fragment>
-        ))}
+        {Object.entries(groupedMessages)
+          .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+          .map(([date, messages]) => (
+            <div key={date} className="flex flex-col">
+              <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
+                {formatDateLabel(date)}
+              </div>
+              <div className="flex flex-col">
+                {messages.map((message) => (
+                  <MessageBubble
+                    key={message.id}
+                    message={message}
+                    isSentByCurrentUser={message.senderId === user?.id}
+                    canDeleteMessage={message.senderId === user?.id}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
       <div ref={bottomRef} />
     </div>

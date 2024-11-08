@@ -27,6 +27,8 @@ export interface OneOnOneChat {
   createdAt: string;
   updatedAt: string;
   lastMessageAt: string;
+  initiator: ChatUser;
+  participant: ChatUser;
   // "deletedForInitiator": null,
   // "deletedForParticipant": null,
 }

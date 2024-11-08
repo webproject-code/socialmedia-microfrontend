@@ -7,7 +7,7 @@ type SocketContextType = {
   joinChat: (chatId: string, chatType: string) => void;
   startTyping: (chatId: string, name: string) => void;
   stopTyping: (chatId: string, name: string) => void;
-  sendMessage: (chatId: string, content: string) => void;
+  sendMessage: (chatId: string, senderId: string, content: string) => void;
   sendGroupMessage: (chatId: string, content: string) => void;
 };
 
@@ -80,8 +80,8 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (socket) socket.emit('userStoppedTyping', { chatId, name });
   };
 
-  const sendMessage = (chatId: string, content: string) => {
-    if (socket) socket.emit(`sendMessage`, { chatId, content });
+  const sendMessage = (chatId: string, senderId: string, content: string) => {
+    if (socket) socket.emit(`sendMessage`, { chatId, senderId, content });
   };
 
   const sendGroupMessage = (chatId: string, content: string) => {

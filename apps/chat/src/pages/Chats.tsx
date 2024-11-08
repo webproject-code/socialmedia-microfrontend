@@ -12,7 +12,7 @@ const Chats: React.FC = () => {
   if (!data) redirect('/');
   else {
     return (
-      <Container className="bg-light-primary dark:bg-dark-primary h-full w-full flex flex-col">
+      <Container className="h-full">
         <Outlet />
       </Container>
     );

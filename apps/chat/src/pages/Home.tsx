@@ -1,45 +1,90 @@
-import React from 'react';
-
 import { useLogin } from '@social-media/api';
-import { Box, Button, Stack } from '@social-media/evoke-ui';
+import { Button, Stack } from '@social-media/evoke-ui';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
-  const { data: user, mutate } = useLogin();
+  const { mutate, isPending } = useLogin();
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  const [buttonText, setButtonText] = useState('Login');
+  const [activeUser, setActiveUser] = useState<string | null>(null);
 
-  const loginHandler = () => {
-    mutate({
-      email: 'kspatelsimform100@gmail.com',
-      password: '123456789',
-    });
+  useEffect(() => {
+    if (isPending) {
+      setButtonText('Logging in...');
+    } else if (token) {
+      setButtonText('Logout');
+    } else {
+      setButtonText('Login');
+    }
+  }, [isPending, token]);
+
+  const loginHandler = (email: string, password: string) => {
+    setActiveUser(email);
+    mutate(
+      {
+        email,
+        password,
+      },
+      {
+        onSuccess: () => {
+          setButtonText('Logout');
+          navigate(`/chats/one-on-one/672da82b1d3b7fdecd52310c`);
+        },
+      }
+    );
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem('token');
+    setActiveUser(null);
+    setButtonText('Login');
   };
 
   return (
-    <Box className="bg-light-primary dark:bg-dark-primary h-screen w-screen">
+    <div className="h-screen bg-light-primary dark:bg-dark-primary flex items-center justify-center">
       <Stack
+        spacing="medium"
         justify="center"
         align="center"
+        className="text-center rounded-lg shadow-lg p-8 bg-white dark:bg-gray-800"
         direction="column"
-        className="h-full w-full"
       >
-        {!user ? (
-          <Box>
-            <h2 className="dark:text-white text-4xl font-semibold">
-              Welcome to the Chat Microfrontend
-            </h2>
-            <Button onClick={loginHandler}>Login</Button>
-          </Box>
+        <h1 className="text-3xl font-bold dark:text-white">
+          Welcome to Chat Microfrontend
+        </h1>
+
+        {!token ? (
+          <div className="flex gap-4">
+            <Button
+              className="w-fit"
+              onClick={() =>
+                loginHandler('kspatelsimform100@gmail.com', '12345678')
+              }
+              disabled={isPending}
+            >
+              {isPending && activeUser === 'kspatelsimform100@gmail.com'
+                ? 'Logging in User 1...'
+                : 'Login as User 1'}
+            </Button>
+            <Button
+              className="w-fit"
+              onClick={() => loginHandler('vanshita@gmail.com', '12345678')}
+              disabled={isPending}
+            >
+              {isPending && activeUser === 'vanshita@gmail.com'
+                ? 'Logging in User 2...'
+                : 'Login as User 2'}
+            </Button>
+          </div>
         ) : (
-          <Box>
-            <h2 className="dark:text-white text-4xl font-semibold">
-              Home page of Chat Microfrontend
-            </h2>
-            <Button onClick={() => navigate('/chats')}>Chats</Button>
-          </Box>
+          <Button className="w-fit" onClick={logoutHandler}>
+            {buttonText}
+          </Button>
         )}
       </Stack>
-    </Box>
+    </div>
   );
 };
 

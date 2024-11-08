@@ -35,13 +35,19 @@ const OneOnOneChat = () => {
 
   if (data && user && chatId) {
     const name =
-      data.initiatorId === user.id ? data.participantId : data.initiatorId;
+      data.initiatorId === user.id
+        ? data.participant.name
+        : data.initiator.name;
+    const avatarUrl =
+      data.initiatorId === user.id
+        ? data.participant.profilePicture
+        : data.initiator.profilePicture;
     return (
-      <>
-        <ChatHeader chatType={chatType} name={name} />
+      <div className="bg-light-primary dark:bg-dark-primary min-h-screen w-full flex flex-col">
+        <ChatHeader chatType={chatType} name={name} avatarUrl={avatarUrl} />
         <ChatWindow chatType={chatType} chatId={chatId} />
         <MessageInput chatType={chatType} chatId={chatId} />
-      </>
+      </div>
     );
   }
 };
