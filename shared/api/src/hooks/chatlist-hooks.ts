@@ -82,6 +82,10 @@ export const useFriendsWithNoChat = (searchTerm: string, userId: string) => {
         ? lastPage.pagination.nextCursor
         : undefined,
     initialPageParam: '',
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+    refetchOnMount: true, // Refetch when component mounts
   });
 
   // Flatten the pages into a single array
