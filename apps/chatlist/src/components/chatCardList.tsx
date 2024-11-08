@@ -12,7 +12,7 @@ import { useStore } from 'auth/Module';
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useStore();
-  const currentUserId = user?.id;
+  const currentUserId = user?.id || '672c92f5b5c8bd867f52cbb6';
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { chats, isLoading, isFetchingNextPage, bottomRef } =
     useChatList(debouncedSearchTerm);
@@ -117,7 +117,7 @@ export const ChatCardList = () => {
       <CreateChatModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        currentUserId={currentUserId!}
+        currentUserId={currentUserId}
       />
     </Box>
   );

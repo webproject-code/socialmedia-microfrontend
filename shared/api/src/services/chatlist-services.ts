@@ -13,7 +13,7 @@ import { login } from './auth-services';
 
 export const CallLoginFn = async () => {
   const userData = await login({
-    email: 'adwaniritz@gmail.com',
+    email: 'kspatelsimform100@gmail.com',
     password: '12345678',
   });
   if (userData) {
@@ -25,7 +25,7 @@ export const fetchChatList: ChatsListService['fetchChatList'] = async (
   searchTerm,
   cursor
 ) => {
-  // CallLoginFn();
+  CallLoginFn();
   const { data } = await apiClient.get<ChatsListServiceResponse>(
     `/users/chats?query=${searchTerm ? searchTerm : ''}&cursor=${
       cursor ? cursor : ''
