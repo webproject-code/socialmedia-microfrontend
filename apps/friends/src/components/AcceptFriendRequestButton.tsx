@@ -23,7 +23,7 @@ const AcceptFriendRequestButton: React.FC<AcceptFriendRequestButtonProps> = ({
       className="p-1.5 sm:px-4 sm:py-2"
       onClick={() => acceptOrRejectFriendRequest('ACCEPTED')}
     >
-      <FaCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+      <FaCheck className="w-4 h-4" />
       <p className="hidden sm:block">Accept</p>
     </Button>
   );

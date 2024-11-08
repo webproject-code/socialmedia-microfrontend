@@ -91,7 +91,7 @@ const Friends: React.FC = () => {
           )}
           {!isFriendRequestsLoading && friendRequests?.length === 0 && (
             <IllustrationImage
-              src={`../assets/images/${
+              src={`assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
               }-no-results-found-image.svg`}
               alt="no results"
@@ -108,6 +108,7 @@ const Friends: React.FC = () => {
                   cardType="request"
                   currentUserId={currentUserId}
                   friendRequestId={request.id}
+                  userId={request.sender.id}
                 />
               ))}
               <div ref={friendRequestsBottomRef} />
@@ -123,7 +124,7 @@ const Friends: React.FC = () => {
           )}
           {!isSuggestedFriendsLoading && suggestedFriends.length === 0 && (
             <IllustrationImage
-              src={`../assets/images/${
+              src={`assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
               }-no-results-found-image.svg`}
               alt="no results"
@@ -154,7 +155,7 @@ const Friends: React.FC = () => {
           {isUsersLoading && <FriendsListCardSkeleton cardType="search" />}
           {!searchTerm && (
             <IllustrationImage
-              src={`../assets/images/${
+              src={`assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
               }-search-image.svg`}
               alt="search"
@@ -162,7 +163,7 @@ const Friends: React.FC = () => {
           )}
           {searchTerm && !isUsersLoading && users.length === 0 && (
             <IllustrationImage
-              src={`../assets/images/${
+              src={`assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
               }-no-results-found-image.svg`}
               alt="no results"
