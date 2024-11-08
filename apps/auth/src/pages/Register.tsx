@@ -41,7 +41,7 @@ const Register: React.FC = () => {
           {/* Image for larger screens */}
           <Box className="hidden md:block">
             <img
-              src={`../assets/images/${
+              src={`assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
               }-register-image.svg`}
               alt="logo"

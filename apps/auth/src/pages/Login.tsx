@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       />
       <Box className="hidden md:block">
         <img
-          src={`../assets/images/${
+          src={`assets/images/${
             theme.isDarkTheme ? 'dark' : 'light'
           }-login-image.svg`}
           alt="logo"
