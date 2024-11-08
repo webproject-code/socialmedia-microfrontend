@@ -1,4 +1,7 @@
-import { useAcceptOrRejectFriendRequest } from '@social-media/api';
+import {
+  useAcceptFriendRequest,
+  useRejectFriendRequest,
+} from '@social-media/api';
 import { Button, Stack } from '@social-media/evoke-ui';
 
 type AcceptRequestButtonProps = {
@@ -12,7 +15,12 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
   friendId,
   friendRequestId,
 }) => {
-  const { mutate: updateFriendRequest } = useAcceptOrRejectFriendRequest(
+  const { mutate: acceptFriendRequest } = useAcceptFriendRequest(
+    userId,
+    friendId,
+    friendRequestId
+  );
+  const { mutate: rejectFriendRequest } = useRejectFriendRequest(
     userId,
     friendId,
     friendRequestId
@@ -21,13 +29,13 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
     <Stack direction={{ xs: 'column', sm: 'row' }} spacing="small">
       <Button
         className="dark:text-dark-primary"
-        onClick={() => updateFriendRequest('ACCEPTED')}
+        onClick={() => acceptFriendRequest('ACCEPTED')}
       >
         Approve
       </Button>
       <Button
         className="dark:text-dark-secondary"
-        onClick={() => updateFriendRequest('REJECTED')}
+        onClick={() => rejectFriendRequest('REJECTED')}
         variant="outline"
       >
         Delete
