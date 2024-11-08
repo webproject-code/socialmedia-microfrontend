@@ -1,1 +1,3 @@
-export { default } from './app/app';
+import { ChatsList } from './pages/chatsList';
+
+export { ChatsList };
