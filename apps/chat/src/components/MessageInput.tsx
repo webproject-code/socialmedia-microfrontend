@@ -31,7 +31,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
     content: string;
   }) => {
     if (chatType === 'ONE_ON_ONE') {
-      console.log(chatId, senderId, content);
       sendMessage(chatId, senderId, content);
     } else if (chatType === 'GROUP') {
       sendGroupMessage(chatId, content);
@@ -66,7 +65,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
 
   const onSubmit = (values: z.infer<typeof MessageInputSchema>) => {
     if (values.content.trim() && user) {
-      console.log(user.id);
       onSend({ chatId, senderId: user.id, content: values.content });
       reset();
       setFocus('content');

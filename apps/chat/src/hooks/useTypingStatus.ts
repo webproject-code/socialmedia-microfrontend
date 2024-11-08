@@ -23,7 +23,6 @@ export const useTypingStatus = () => {
 
     // Handle user started typing
     const handleUserTyping = ({ name }: { name: string }) => {
-      console.log(name);
       setTypingUsers((prevUsers) => {
         // Check if user is already in the list
         const userIndex = prevUsers.findIndex((user) => user.name === name);
