@@ -7,12 +7,17 @@ export interface ChatUser {
   isDeleted: boolean;
 }
 
+export enum ChatType {
+  ONE_ON_ONE = 'ONE_ON_ONE',
+  GROUP = 'GROUP',
+}
+
 export interface Message {
   id: string;
   content: string;
   senderId: string;
   oneOnOneChatId: string;
-  groupChatId: null;
+  groupChatId: string;
   createdAt: string;
   updatedAt: string;
   isDeleted: boolean;

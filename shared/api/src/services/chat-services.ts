@@ -25,7 +25,9 @@ export const updateOneOnOneChatSettings: IChatServices['updateOneOnOneChatSettin
   async (chatId, settings) => {
     await apiClient.patch<OneOnOneChatSettings>(
       `${ONE_ON_ONE_CHAT_ENDPOINT}/${chatId}/settings`,
-      settings
+      {
+        settings,
+      }
     );
 
     return 'Chat settings updated successfully!';

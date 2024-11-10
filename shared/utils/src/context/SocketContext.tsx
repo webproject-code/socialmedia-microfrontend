@@ -7,8 +7,20 @@ type SocketContextType = {
   joinChat: (chatId: string, chatType: string) => void;
   startTyping: (chatId: string, name: string) => void;
   stopTyping: (chatId: string, name: string) => void;
-  sendMessage: (chatId: string, senderId: string, content: string) => void;
-  sendGroupMessage: (chatId: string, content: string) => void;
+  sendMessage: (
+    chatId: string,
+    senderId: string,
+    content: string,
+    vanishMode: boolean
+  ) => void;
+  deleteMessage: (
+    chatId: string,
+    messageId: string,
+    senderId: string,
+    vanishMode: boolean
+  ) => void;
+  sendGroupMessage: (chatId: string, senderId: string, content: string) => void;
+  deleteGroupMessage: (chatId: string, messageId: string) => void;
 };
 
 const SocketContext = createContext<SocketContextType>({
@@ -26,7 +38,13 @@ const SocketContext = createContext<SocketContextType>({
   sendMessage: () => {
     return;
   },
+  deleteMessage: () => {
+    return;
+  },
   sendGroupMessage: () => {
+    return;
+  },
+  deleteGroupMessage: () => {
     return;
   },
 });
@@ -41,14 +59,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const socketInstance = io(
-      'https://social-media-backend-j5dj.onrender.com',
-      {
-        auth: {
-          token: token,
-        },
-      }
-    );
+    const socketInstance = io('http://localhost:3000', {
+      auth: {
+        token: token,
+      },
+    });
 
     socketInstance.on('connect', () => {
       setIsConnected(true);
@@ -83,12 +98,36 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (socket) socket.emit('userStoppedTyping', { chatId, name });
   };
 
-  const sendMessage = (chatId: string, senderId: string, content: string) => {
-    if (socket) socket.emit(`sendMessage`, { chatId, senderId, content });
+  const sendMessage = (
+    chatId: string,
+    senderId: string,
+    content: string,
+    vanishMode: boolean
+  ) => {
+    if (socket)
+      socket.emit(`sendMessage`, { chatId, senderId, content, vanishMode });
   };
 
-  const sendGroupMessage = (chatId: string, content: string) => {
-    if (socket) socket.emit(`sendGroupMessage`, { chatId, content });
+  const deleteMessage = (
+    chatId: string,
+    messageId: string,
+    senderId: string,
+    vanishMode: boolean
+  ) => {
+    if (socket)
+      socket.emit(`deleteMessage`, { chatId, messageId, senderId, vanishMode });
+  };
+
+  const deleteGroupMessage = (chatId: string, messageId: string) => {
+    if (socket) socket.emit(`deleteGroupMessage`, { chatId, messageId });
+  };
+
+  const sendGroupMessage = (
+    chatId: string,
+    senderId: string,
+    content: string
+  ) => {
+    if (socket) socket.emit(`sendGroupMessage`, { chatId, senderId, content });
   };
 
   return (
@@ -100,7 +139,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         startTyping,
         stopTyping,
         sendMessage,
+        deleteMessage,
         sendGroupMessage,
+        deleteGroupMessage,
       }}
     >
       {children}

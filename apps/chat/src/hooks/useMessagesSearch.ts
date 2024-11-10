@@ -1,4 +1,5 @@
 import {
+  ChatType,
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
@@ -12,12 +13,12 @@ export const useMessagesSearch = () => {
     if (!currentChatId) return;
 
     try {
-      if (currentChatType === 'ONE_ON_ONE') {
+      if (currentChatType === ChatType.ONE_ON_ONE) {
         const { messages } = await getOneOnOneChatMessages(currentChatId, {
           search: query,
         });
         setSearchResults(messages);
-      } else if (currentChatType === 'GROUP') {
+      } else if (currentChatType === ChatType.GROUP) {
         const { messages } = await getGroupChatMessages(currentChatId, {
           search: query,
         });

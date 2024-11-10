@@ -7,12 +7,16 @@ const Chats: React.FC = () => {
   const { data, isLoading } = useProfile();
 
   if (isLoading) {
-    return <div>Fetching profile</div>;
+    return (
+      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
+        Fetching profile
+      </Container>
+    );
   }
   if (!data) redirect('/');
   else {
     return (
-      <Container className="h-full">
+      <Container className="h-full bg-light-primary dark:bg-dark-primary">
         <Outlet />
       </Container>
     );

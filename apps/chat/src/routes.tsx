@@ -3,6 +3,7 @@ import Chats from './pages/Chats';
 import GroupChat from './pages/GroupChat'; // Import your GroupChat component
 import Home from './pages/Home';
 import OneOnOneChat from './pages/OneOnOneChat'; // Import your OneOnOneChat component
+import { SocketProvider } from '@social-media/utils';
 
 export const routes: RouteObject[] = [
   {
@@ -11,7 +12,11 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/chats',
-    element: <Chats />, // Parent Chats component
+    element: (
+      <SocketProvider>
+        <Chats />
+      </SocketProvider>
+    ), // Parent Chats component
     children: [
       {
         path: 'one-on-one/:chatId', // Nested route for one-on-one chat

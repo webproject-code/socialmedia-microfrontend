@@ -1,14 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useProfile } from '@social-media/api';
+import { ChatType, OneOnOneChat, useProfile } from '@social-media/api';
 import { Button, Input } from '@social-media/evoke-ui';
 import { useSocket } from '@social-media/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaPaperPlane } from 'react-icons/fa';
 import * as z from 'zod';
 
 interface MessageInputProps {
-  chatType: 'ONE_ON_ONE' | 'GROUP';
+  chatType: ChatType;
   chatId: string;
 }
 
@@ -18,6 +19,12 @@ const MessageInputSchema = z.object({
 
 const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
   const { data: user } = useProfile();
+  const queryClient = useQueryClient();
+
+  let chatData: OneOnOneChat | undefined;
+  if (chatType === ChatType.ONE_ON_ONE) {
+    chatData = queryClient.getQueryData<OneOnOneChat>(['one-on-one', chatId]);
+  }
   const { startTyping, stopTyping, sendMessage, sendGroupMessage } =
     useSocket();
 
@@ -30,21 +37,17 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
     senderId: string;
     content: string;
   }) => {
-    if (chatType === 'ONE_ON_ONE') {
-      sendMessage(chatId, senderId, content);
+    if (chatType === ChatType.ONE_ON_ONE && chatData) {
+      sendMessage(chatId, senderId, content, chatData.vanishMode);
     } else if (chatType === 'GROUP') {
-      sendGroupMessage(chatId, content);
+      sendGroupMessage(chatId, senderId, content);
     }
   };
 
   const handleTyping = () => {
     if (chatId && user?.id) {
       startTyping(chatId, user.name);
-      setTimeout(
-        () => stopTyping(chatId, user.name),
-
-        3000
-      );
+      setTimeout(() => stopTyping(chatId, user.name), 3000);
     }
   };
 

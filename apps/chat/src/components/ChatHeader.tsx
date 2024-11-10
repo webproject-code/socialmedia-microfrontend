@@ -4,18 +4,24 @@ import React from 'react';
 // import { useMessagesSearch } from '../hooks/useMessagesSearch';
 // import { useChatStore } from '../store/useChatStore';
 import { useTypingStatus } from '../hooks/useTypingStatus';
+import { ChatType } from '@social-media/api';
+import ChatSettings from './ChatSettings';
 
 interface ChatHeaderProps {
-  chatType: string;
+  chatType: ChatType;
   name: string;
   avatarUrl: string;
 }
-const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarUrl }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({
+  name,
+  avatarUrl,
+  chatType,
+}) => {
   // const [isSearchActive, setIsSearchActive] = useState(false);
   // const [query, setQuery] = useState('');
   // const { searchMessages } = useMessagesSearch();
   // const { setSearchResults } = useChatStore();
-  const { typingMessage } = useTypingStatus();
+  const { typingMessage } = useTypingStatus({ chatType });
 
   // const handleSearchToggle = () => {
   //   setIsSearchActive((prev) => !prev);
@@ -50,10 +56,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatarUrl }) => {
           )}
         </div>
       </div>
-      {/* <Button className="w-fit" variant={'icon'} onClick={handleSearchToggle}>
-        <FaSearch />
-      </Button>
-      {isSearchActive && (
+      <ChatSettings chatType={chatType} />
+
+      {/* {isSearchActive && (
         <Input
           name="search-messages"
           type="text"

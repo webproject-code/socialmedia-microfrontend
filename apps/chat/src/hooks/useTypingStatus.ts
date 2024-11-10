@@ -1,3 +1,4 @@
+import { ChatType } from '@social-media/api';
 import { useSocket } from '@social-media/utils';
 import { useEffect, useState } from 'react';
 
@@ -6,7 +7,11 @@ interface TypingUser {
   timestamp: number;
 }
 
-export const useTypingStatus = () => {
+interface TypingStatus {
+  chatType: ChatType;
+}
+
+export const useTypingStatus = ({ chatType }: TypingStatus) => {
   const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
   const { socket } = useSocket();
 
@@ -64,7 +69,10 @@ export const useTypingStatus = () => {
   // Format typing indicator message
   const typingMessage = (() => {
     if (typingUsers.length === 0) return '';
-    if (typingUsers.length === 1) return `${typingUsers[0].name} is typing...`;
+    if (typingUsers.length === 1 && chatType === 'ONE_ON_ONE')
+      return `is typing...`;
+    if (typingUsers.length === 1 && chatType === 'GROUP')
+      return `${typingUsers[0].name} is typing...`;
     if (typingUsers.length === 2) {
       return `${typingUsers[0].name} and ${typingUsers[1].name} are typing...`;
     }

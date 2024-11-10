@@ -1,21 +1,26 @@
-import { Message, useProfile } from '@social-media/api';
+import { ChatType, Message, useProfile } from '@social-media/api';
 import React, { ElementRef, useRef, useMemo } from 'react';
 import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
+import { Container } from '@social-media/evoke-ui';
 
 interface ChatWindowProps {
   chatId: string;
-  chatType: 'ONE_ON_ONE' | 'GROUP';
-  groupOwnerId?: string;
+  chatType: ChatType;
+  isGroupOwner?: boolean;
 }
 
 interface MessagesByDate {
   [date: string]: Array<Message>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({
+  chatId,
+  chatType,
+  isGroupOwner,
+}) => {
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
   const { data: user } = useProfile();
@@ -92,11 +97,21 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
   }, [data?.pages]);
 
   if (status === 'pending') {
-    return <div>Loading...</div>;
+    return (
+      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
+        <div className="flex-1 justify-center items-center">Loading...</div>
+      </Container>
+    );
   }
 
   if (status === 'error') {
-    return <div>Something went wrong</div>;
+    return (
+      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
+        <div className="flex-1 justify-center items-center">
+          Something went wrong while fetching messages...
+        </div>
+      </Container>
+    );
   }
 
   return (
@@ -135,7 +150,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chatId, chatType }) => {
                     key={message.id}
                     message={message}
                     isSentByCurrentUser={message.senderId === user?.id}
-                    canDeleteMessage={message.senderId === user?.id}
+                    canDeleteMessage={
+                      message.senderId === user?.id || Boolean(isGroupOwner)
+                    }
                   />
                 ))}
               </div>

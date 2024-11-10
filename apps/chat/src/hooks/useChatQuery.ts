@@ -1,4 +1,5 @@
 import {
+  ChatType,
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
@@ -7,7 +8,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface UseChatQueryOptions {
   chatId: string;
-  chatType: 'ONE_ON_ONE' | 'GROUP';
+  chatType: ChatType;
 }
 
 // custom hook to fetch messages using infinite query
@@ -16,9 +17,9 @@ export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
 
   // function to fetch messages
   const getMessages = ({ pageParam = '' }) => {
-    if (chatType === 'ONE_ON_ONE') {
+    if (chatType === ChatType.ONE_ON_ONE) {
       return getOneOnOneChatMessages(chatId, { cursor: pageParam });
-    } else if (chatType === 'GROUP') {
+    } else if (chatType === ChatType.GROUP) {
       return getGroupChatMessages(chatId, { cursor: pageParam });
     }
   };
@@ -31,7 +32,8 @@ export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
       getNextPageParam: (lastPage) => {
         return lastPage?.pagination.nextCursor;
       },
-      refetchInterval: isConnected ? false : 1000,
+      // refetchInterval: isConnected ? false : 1000,
+      refetchOnWindowFocus: false,
     });
 
   return {

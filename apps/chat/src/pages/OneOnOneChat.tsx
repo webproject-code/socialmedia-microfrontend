@@ -1,15 +1,16 @@
-import { useOneOnOneChat, useProfile } from '@social-media/api';
+import { ChatType, useOneOnOneChat, useProfile } from '@social-media/api';
 import { useSocket } from '@social-media/utils';
 import { useEffect } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import ChatHeader from '../components/ChatHeader';
 import ChatWindow from '../components/ChatWindow';
 import MessageInput from '../components/MessageInput';
+import { Container } from '@social-media/evoke-ui';
 
 const OneOnOneChat = () => {
   const { chatId } = useParams();
   const { joinChat } = useSocket();
-  const chatType = 'ONE_ON_ONE';
+  const chatType = ChatType.ONE_ON_ONE;
 
   if (!chatId) {
     redirect('/');
@@ -23,14 +24,22 @@ const OneOnOneChat = () => {
     if (chatId && chatType) {
       joinChat(chatId, chatType);
     }
-  }, [joinChat, chatId]);
+  }, [joinChat, chatId, chatType]);
 
   if (isLoading) {
-    return <div>Loading chat...</div>;
+    return (
+      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
+        Fetching chat details
+      </Container>
+    );
   }
 
   if (error) {
-    return <div>Something went wrong</div>;
+    return (
+      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
+        something went wrong
+      </Container>
+    );
   }
 
   if (data && user && chatId) {
@@ -43,7 +52,7 @@ const OneOnOneChat = () => {
         ? data.participant.profilePicture
         : data.initiator.profilePicture;
     return (
-      <div className="bg-light-primary dark:bg-dark-primary min-h-screen w-full flex flex-col">
+      <div className="min-h-screen w-full flex flex-col">
         <ChatHeader chatType={chatType} name={name} avatarUrl={avatarUrl} />
         <ChatWindow chatType={chatType} chatId={chatId} />
         <MessageInput chatType={chatType} chatId={chatId} />
