@@ -38,16 +38,34 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
   } = useFriendshipStatus(currentUserId, userId);
 
   return (
-    <Card className="bg-transparent cursor-pointer">
+    <Card
+      role="article"
+      aria-label={`Friend card for ${name}`}
+      tabIndex={0}
+      className="bg-transparent cursor-pointer outline-none
+      focus-visible:ring-2
+      focus-visible:ring-light-secondary
+      focus-visible:ring-offset-2
+      dark:focus-visible:ring-dark-secondary
+      dark:focus-visible:ring-offset-dark-primary
+      "
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          navigate(`/users/${userId}`);
+        }
+      }}
+    >
       <Card.Content className="flex py-4 px-1 items-center justify-between gap-4">
         <div
           className="flex gap-3 items-center h-full w-full"
           onClick={() => navigate(`/users/${userId}`)}
+          role="button"
         >
           <img
             className="w-11 h-11 rounded-full ring-1 ring-secondary"
             src={profile}
-            alt="profile"
+            alt={`${name}'s profile picture`}
           />
           <div className="flex flex-col">
             <h6>{name}</h6>
@@ -55,25 +73,26 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
         </div>
 
         {cardType === 'request' &&
-        friendRequestId &&
-        requestStatus === 'PENDING' ? (
-          <div className="flex gap-2">
-            <RejectFriendRequestButton
-              userId={currentUserId}
-              friendId={userId}
-              friendRequestId={friendRequestId}
-              onReject={() => setRequestStatus('REJECTED')}
-            />
-            <AcceptFriendRequestButton
-              userId={currentUserId}
-              friendId={userId}
-              friendRequestId={friendRequestId}
-              onAccept={() => setRequestStatus('ACCEPTED')}
-            />
-          </div>
-        ) : (
-          <span className="text-gray-500">{requestStatus}</span>
-        )}
+          (friendRequestId && requestStatus === 'PENDING' ? (
+            <div className="flex gap-2">
+              <RejectFriendRequestButton
+                userId={currentUserId}
+                friendId={userId}
+                friendRequestId={friendRequestId}
+                name={name}
+                onReject={() => setRequestStatus('REJECTED')}
+              />
+              <AcceptFriendRequestButton
+                userId={currentUserId}
+                friendId={userId}
+                friendRequestId={friendRequestId}
+                name={name}
+                onAccept={() => setRequestStatus('ACCEPTED')}
+              />
+            </div>
+          ) : (
+            <span className="text-gray-500">{requestStatus}</span>
+          ))}
 
         {cardType === 'add' && isFriendshipStatusSuccess && (
           <SendOrCancelRequestButton

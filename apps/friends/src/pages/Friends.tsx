@@ -25,7 +25,10 @@ import IllustrationImage from '../components/IllustrationImage';
 
 const Friends: React.FC = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const searchParams = new URLSearchParams(window.location.search);
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get('searchTerm') || ''
+  );
   const theme = useTheme();
 
   const { data: profileData } = useProfile();
@@ -56,29 +59,70 @@ const Friends: React.FC = () => {
     isFetchingNextPage: isFetchingNextUsers,
   } = useUsers(activeTab === 'search' ? { query: searchTerm } : {});
 
-  const handleSearch = (searchTerm: string) => {
-    setSearchTerm(searchTerm);
+  const handleTabChange = (tab: string) => {
+    const searchParams = new URLSearchParams();
+    searchParams.set('activeTab', tab);
+    // Only include search term in URL for search tab
+    if (tab === 'search' && searchTerm !== '') {
+      searchParams.set('searchTerm', searchTerm);
+    }
+    navigate(`${pathname}?${searchParams.toString()}`);
+  };
+
+  const handleSearch = (term: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    setSearchTerm(term);
+    searchParams.set('searchTerm', term);
+    if (term === '') {
+      searchParams.delete('searchTerm');
+    }
+    navigate(`${pathname}?${searchParams.toString()}`);
   };
 
   return (
-    <Box className="bg-light-primary dark:bg-dark-primary dark:text-white w-screen h-screen text-sm lg:text-md">
-      <Tabs defaultValue={activeTab} className="h-full border-0" border>
-        <TabsList className="mb-4 h-fit justify-between sm:justify-start text-lg">
+    <Box
+      role="main"
+      className="bg-light-primary dark:bg-dark-primary dark:text-white w-full h-full text-sm lg:text-md"
+    >
+      <Tabs
+        defaultValue={activeTab}
+        className="h-full border-light-silverSteel/30 dark:border-dark-silverSteel/30"
+        border
+      >
+        <TabsList
+          aria-label="Friendship management sections"
+          className="mb-2 h-fit justify-between sm:justify-start text-lg"
+        >
           <TabsTrigger
             value="requests"
-            onClick={() => navigate(`${pathname}?activeTab=requests`)}
+            aria-label="Friend requests section"
+            className={`${
+              activeTab === 'requests' &&
+              'text-light-secondary dark:text-dark-secondary'
+            }`}
+            onClick={() => handleTabChange('requests')}
           >
             <span className="font-semibold">Requests</span>
           </TabsTrigger>
           <TabsTrigger
             value="suggestedFriends"
-            onClick={() => navigate(`${pathname}?activeTab=suggestedFriends`)}
+            aria-label="Suggested friends section"
+            className={`${
+              activeTab === 'suggestedFriends' &&
+              'text-light-secondary dark:text-dark-secondary'
+            }`}
+            onClick={() => handleTabChange('suggestedFriends')}
           >
             <span className="font-semibold">Suggested Friends</span>
           </TabsTrigger>
           <TabsTrigger
             value="search"
-            onClick={() => navigate(`${pathname}?activeTab=search`)}
+            aria-label="Search section"
+            className={`${
+              activeTab === 'search' &&
+              'text-light-secondary dark:text-dark-secondary'
+            }`}
+            onClick={() => handleTabChange('search')}
           >
             <span className="font-semibold">Search</span>
           </TabsTrigger>
@@ -112,7 +156,11 @@ const Friends: React.FC = () => {
                 />
               ))}
               <div ref={friendRequestsBottomRef} />
-              {isFetchingNextFriendRequests && <Spinner />}
+              {isFetchingNextFriendRequests && (
+                <div className="flex my-3 justify-center">
+                  <Spinner />
+                </div>
+              )}
             </ScrollArea>
           )}
         </TabsContent>
@@ -144,14 +192,18 @@ const Friends: React.FC = () => {
                 />
               ))}
               <div ref={suggestedFriendsBottomRef} />
-              {isFetchingNextSuggestedFriends && <Spinner />}
+              {isFetchingNextSuggestedFriends && (
+                <div className="flex my-3 justify-center">
+                  <Spinner />
+                </div>
+              )}
             </ScrollArea>
           )}
         </TabsContent>
 
         {/* Search Tab */}
         <TabsContent value="search" className="h-[90%]">
-          <FriendSearch onSearch={handleSearch} />
+          <FriendSearch onSearch={handleSearch} searchTerm={searchTerm} />
           {isUsersLoading && <FriendsListCardSkeleton cardType="search" />}
           {!searchTerm && (
             <IllustrationImage
@@ -183,7 +235,11 @@ const Friends: React.FC = () => {
                 />
               ))}
               <div ref={usersBottomRef} />
-              {isFetchingNextUsers && <Spinner />}
+              {isFetchingNextUsers && (
+                <div className="flex my-3 justify-center">
+                  <Spinner />
+                </div>
+              )}
             </ScrollArea>
           )}
         </TabsContent>

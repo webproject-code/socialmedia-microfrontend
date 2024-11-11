@@ -252,18 +252,40 @@ export const useCancelFriendRequest = (
   });
 };
 
-// Accept or reject friend request
-export const useAcceptOrRejectFriendRequest = (
+// Accept friend request
+export const useAcceptFriendRequest = (
   userId: string,
   friendId: string,
   friendRequestId: string
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (status: 'ACCEPTED' | 'REJECTED') =>
-      acceptOrRejectFriendRequest(friendRequestId, status),
-    onSuccess: (data) => {
-      queryClient.setQueryData(['friendshipStatus', userId, friendId], data);
+    mutationFn: () => acceptOrRejectFriendRequest(friendRequestId, 'ACCEPTED'),
+    onSuccess: () => {
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: friendRequestId,
+        status: 'FRIENDS',
+      });
+      queryClient.invalidateQueries({ queryKey: ['friends', userId] });
+      queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
+    },
+  });
+};
+
+// Reject friend request
+export const useRejectFriendRequest = (
+  userId: string,
+  friendId: string,
+  friendRequestId: string
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => acceptOrRejectFriendRequest(friendRequestId, 'REJECTED'),
+    onSuccess: () => {
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: friendRequestId,
+        status: 'NOT_FRIENDS',
+      });
     },
   });
 };

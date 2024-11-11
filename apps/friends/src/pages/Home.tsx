@@ -16,7 +16,7 @@ const Home: React.FC = () => {
       },
       {
         onSuccess: () => {
-          navigate(`/friends`);
+          navigate(`/friends?activeTab=requests`);
         },
       }
     );

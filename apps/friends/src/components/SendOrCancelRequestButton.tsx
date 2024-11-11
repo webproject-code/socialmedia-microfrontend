@@ -28,15 +28,31 @@ const SendOrCancelRequestButton: React.FC<SendOrCancelRequestButtonProps> = ({
     friendshipStatus.friendRequestId
   );
 
+  const handleAction = () => {
+    if (friendshipStatus.status === FriendshipStatus.REQUEST_SENT)
+      cancelFriendRequest();
+    else sendFriendRequest();
+  };
+
   return (
     <Button
-      className="w-fit dark:text-dark-primary px-2"
-      onClick={() => {
-        if (friendshipStatus.status === FriendshipStatus.REQUEST_SENT)
-          cancelFriendRequest();
-        else sendFriendRequest();
-      }}
+      className="w-fit dark:text-dark-primary px-2  focus-visible:ring-2
+      focus-visible:ring-light-primary
+      focus-visible:ring-offset-2
+      dark:focus-visible:ring-dark-primary
+      dark:focus-visible:ring-offset-light-secondary
+      outline-none"
+      onClick={handleAction}
       disabled={disabled}
+      aria-label={
+        friendshipStatus.status === FriendshipStatus.REQUEST_SENT
+          ? 'Cancel friend request'
+          : 'Send friend request'
+      }
+      onKeyDown={(e) => {
+        e.stopPropagation();
+        if (e.key === 'Enter') handleAction();
+      }}
     >
       {friendshipStatus &&
       friendshipStatus.status === FriendshipStatus.REQUEST_SENT ? (
