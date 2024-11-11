@@ -6,6 +6,7 @@ import EditProfileButton from './EditProfileButton';
 import { useStore } from '@social-media/utils';
 import FriendStatusButton from './FriendStatusButton';
 import ProfileInfoSkeleton from './ProfileInfoSkeleton';
+import LogoutButton from './LogoutButton';
 
 const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
   profile,
@@ -41,7 +42,10 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
           </p>
           {/* Edit Profile Button */}
           {isOwner ? (
-            <EditProfileButton ownerProfile={profile} />
+            <Stack spacing="small">
+              <EditProfileButton ownerProfile={profile} />
+              <LogoutButton />
+            </Stack>
           ) : (
             <FriendStatusButton userId={user.id} friendId={profile.id} />
           )}

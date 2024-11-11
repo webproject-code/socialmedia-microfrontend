@@ -1,5 +1,4 @@
 import { Skeleton, Stack } from '@social-media/evoke-ui';
-import React from 'react';
 
 const ProfileInfoSkeleton = () => {
   return (
@@ -15,7 +14,10 @@ const ProfileInfoSkeleton = () => {
           direction={{ xs: 'column', sm: 'row' }}
         >
           <Skeleton variant="text" width="120px" height="24px" />
-          <Skeleton variant="rectangular" width="100px" height="36px" />
+          <Stack spacing="small">
+            <Skeleton variant="rectangular" width="100px" height="36px" />
+            <Skeleton variant="rectangular" width="100px" height="36px" />
+          </Stack>
         </Stack>
 
         {/* Friends Count, Email, and Bio Skeleton */}
