@@ -7,9 +7,12 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { IoIosWarning } from 'react-icons/io';
 
 import UploadImageWrapper from '../UploadImageWrapper';
-import { registrationStepTwoSchema } from '../../schemas';
-import { useStore } from '../../store/store';
-import { Spinner } from '@social-media/utils';
+
+import {
+  Spinner,
+  registrationStepTwoSchema,
+  useStore,
+} from '@social-media/utils';
 
 const RegisterStepTwoForm: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);

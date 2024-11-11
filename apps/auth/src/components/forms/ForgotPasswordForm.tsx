@@ -1,10 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForgotPassword } from '@social-media/api';
 import { Controller, useForm } from 'react-hook-form';
-import { forgotPasswordSchema } from '../../schemas';
 import { z } from 'zod';
 import { Box, Button, Input } from '@social-media/evoke-ui';
-import { Spinner, StatusMessageBox } from '@social-media/utils';
+import {
+  Spinner,
+  StatusMessageBox,
+  forgotPasswordSchema,
+} from '@social-media/utils';
 
 const ForgotPasswordForm = () => {
   const { data: message, mutate, error, isPending } = useForgotPassword();

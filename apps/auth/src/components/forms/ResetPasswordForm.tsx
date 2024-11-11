@@ -2,9 +2,12 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useResetPassword } from '@social-media/api';
 import { Controller, useForm } from 'react-hook-form';
-import { resetPasswordSchema } from '../../schemas';
 import { Box, Button, Input } from '@social-media/evoke-ui';
-import { Spinner, StatusMessageBox } from '@social-media/utils';
+import {
+  Spinner,
+  StatusMessageBox,
+  resetPasswordSchema,
+} from '@social-media/utils';
 import { useSearchParams } from 'react-router-dom';
 
 const ResetPasswordForm = () => {

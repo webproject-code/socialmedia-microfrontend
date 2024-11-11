@@ -1,5 +1,5 @@
 import { Box, Card, Stack } from '@social-media/evoke-ui';
-import { useStore } from '../store/store';
+import { useStore } from '@social-media/utils';
 import UserProfileCard from '../components/UserProfileCard';
 import AuthLinks from '../components/AuthLinks';
 
