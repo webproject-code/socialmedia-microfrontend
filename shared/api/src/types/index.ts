@@ -65,22 +65,30 @@ export interface ChatsListService {
   createOneOnOneChat(
     initiatorId: string,
     participantId: string
-  ): Promise<{
-    id: string;
-    initiatorId: string;
-    participantId: string;
-    vanishMode: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    lastMessageAt: Date;
-    // deletedForInitiator: null,
-    // deletedForParticipant: null
-  }>;
+  ): Promise<// {
+  //   id: string;
+  //   initiatorId: string;
+  //   participantId: string;
+  //   vanishMode: boolean;
+  //   createdAt: Date;
+  //   updatedAt: Date;
+  //   lastMessageAt: Date;
+  //   // deletedForInitiator: null,
+  //   // deletedForParticipant: null
+  // }
+  ChatInfo>;
 
-  checkOneOnOneChatStatus(user1Id: string, user2Id: string): Promise<ChatInfo>;
+  checkOneOnOneChatStatus(
+    user1Id: string,
+    user2Id: string
+  ): Promise<checkOneOnOneChat>;
 
   createGroupChat(groupData: groupData): Promise<createGroupChatResponse>;
 }
+
+export type checkOneOnOneChat = {
+  data: null | ChatInfo;
+};
 
 export type ChatInfo = {
   id: string;
@@ -118,8 +126,7 @@ export type FriendsWithNochatResponse = Awaited<
 >;
 
 export type createOneOnOneChatResponse = Awaited<
-  | ReturnType<ChatsListService['createOneOnOneChat']>
-  | ReturnType<ChatsListService['checkOneOnOneChatStatus']>
+  ReturnType<ChatsListService['createOneOnOneChat']>
 >;
 
 export type checkOneOnOneChatStatusResponse = Awaited<

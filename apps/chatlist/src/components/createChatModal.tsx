@@ -2,11 +2,12 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreateOneOnOneChat, useFriendsWithNoChat } from '@social-media/api';
 import { CreateGroupChatForm } from './forms/createGroupChatForm';
-import { Box, Button, Input, Modal, ScrollArea } from '@social-media/evoke-ui';
-import { Spinner, useDebounce } from '@social-media/utils';
-import { FaPlus } from 'react-icons/fa';
-import { LuSearch } from 'react-icons/lu';
+import { Box, Button, Input, Modal } from '@social-media/evoke-ui';
+import { Spinner, useDebounce, useTheme } from '@social-media/utils';
+import { RxCross2 } from 'react-icons/rx';
 import { FriendCard } from './friendCard';
+import { LuSearch } from 'react-icons/lu';
+import { FriendListSkeleton } from './chatListSkeleton';
 
 interface CreateChatModalProps {
   isModalOpen: boolean;
@@ -19,10 +20,11 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
   setIsModalOpen,
   currentUserId,
 }) => {
-  const [groupChat, setGroupChat] = useState<boolean>(false);
+  const [groupChat, setGroupChat] = useState(false);
   const [memberIds, setMemberIds] = useState<{ id: string; name: string }[]>(
     []
   );
+  const { isDarkTheme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { friends, isLoading, isFetchingNextPage, bottomRef } =
@@ -51,7 +53,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
   const GroupClickHandle = (id: string, name: string) => {
     setMemberIds((prev) => {
       if (prev.some((member) => member.id === id)) {
-        return prev;
+        return prev.filter((member) => member.id !== id);
       }
       return [...prev, { id, name }];
     });
@@ -70,71 +72,89 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
       closeOnOutsideClick
       onClose={() => setIsModalOpen(false)}
       showCross
-      size="full"
+      size="lg"
+      className=""
+      scrollBehaviour
       isOpen={isModalOpen}
     >
-      <Modal.Header>
-        <h2 className="text-xl font-semibold font-primary dark:text-white text-light-secondary">
-          New Chat
-        </h2>
-      </Modal.Header>
-      <Modal.Content>
-        <Box className="w-full px-4">
-          <Input
-            type="text"
-            name="search"
-            value={searchTerm}
-            onChange={handleChange}
-            placeholder={'Search Here...'}
-          >
-            <LuSearch />
-          </Input>
-        </Box>
-        <Box className="p-2 px-4">
-          <Button
-            role="button"
-            type="button"
-            onClick={() => {
-              setGroupChat(!groupChat);
-              setMemberIds([]);
-            }}
-            variant={groupChat ? 'destructive' : 'outline'}
-            className={
-              groupChat
-                ? 'border-2 border-red-600/50 text-red-600 bg-transparent hover:text-light-primary hover:bg-red-600'
-                : 'dark:text-dark-secondary dark:border-dark-secondary/50 hover:bg-light-secondary hover:text-light-primary dark:hover:bg-dark-secondary dark:hover:text-dark-primary border-light-secondary/50 text-light-secondary'
-            }
-          >
-            {groupChat ? (
-              'Cancel Group'
-            ) : (
-              <>
-                <FaPlus className="mr-2" />
-                New Group
-              </>
+      <div className="bg-white dark:bg-gray-900 rounded-sm shadow-xl max-w-2xl w-full mx-auto">
+        {/* <Modal.Header> */}
+        <div className="border-b border-gray-200 dark:border-gray-800 p-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-light-secondary dark:text-dark-lavender">
+              {groupChat ? 'Create Group Chat' : 'New Chat'}
+            </h2>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="text-light-silverSteel/50 hover:text-light-silverSteel dark:text-dark-silverSteel/50 dark:hover:text-dark-silverSteel"
+            >
+              <RxCross2 className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+        {/* </Modal.Header> */}
+        <Modal.Content className="h-96">
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-4">
+              {!groupChat && (
+                <Button
+                  onClick={() => {
+                    setGroupChat(!groupChat);
+                    setMemberIds([]);
+                  }}
+                  className="dark:text-dark-primary dark:bg-dark-secondary focus-visible:ring-2
+      focus-visible:ring-light-secondary
+      focus-visible:ring-offset-2
+      dark:focus-visible:ring-dark-secondary
+      dark:focus-visible:ring-offset-dark-primary
+      outline-none"
+                  variant={'solid'}
+                >
+                  Create Group
+                </Button>
+              )}
+            </div>
+
+            {groupChat && (
+              <CreateGroupChatForm
+                ownerId={currentUserId}
+                memberList={memberIds}
+                setMemberList={setMemberIds}
+                onCancel={() => setGroupChat(!groupChat)}
+              />
             )}
-          </Button>
-        </Box>
-        {groupChat && (
-          <CreateGroupChatForm
-            ownerId={currentUserId}
-            memberList={memberIds}
-            setMemberList={setMemberIds}
-          />
-        )}
-        {isLoading ? (
-          <Box className="flex justify-center items-center mt-2 h-[calc(100vh-200px)]">
-            <Spinner />
-          </Box>
-        ) : (
-          <Box className="w-full h-[calc(100vh-200px)]">
-            {friends?.length === 0 ? (
-              <Box className="flex justify-center h-full w-full items-center text-light-secondary dark:text-dark-secondary">
-                <span>User Not Found</span>
-              </Box>
-            ) : (
-              <ScrollArea className="h-[calc(100vh-150px)] px-2">
-                <Box className="flex flex-col w-full h-full mt-2">
+            <div className="relative my-2 mt-6">
+              <Input
+                type="text"
+                name="search"
+                value={searchTerm}
+                onChange={handleChange}
+                placeholder={'Search Here...'}
+                aria-label="Search chats"
+              >
+                <LuSearch />
+              </Input>
+            </div>
+
+            <div className="mt-4">
+              {isLoading ? (
+                <Box className="flex flex-col h-full w-full px-2">
+                  <FriendListSkeleton />
+                </Box>
+              ) : friends?.length === 0 ? (
+                <Box className="flex justify-center items-center">
+                  <img
+                    src={
+                      isDarkTheme
+                        ? './assets/Images/dark-no-results-found-image 1.svg'
+                        : './assets/Images/light-no-results-found-image 1.svg'
+                    }
+                    alt="search not found"
+                    className="object-fill h-[60%] w-[60%]"
+                  />
+                </Box>
+              ) : (
+                <div className="space-y-1">
                   {friends.map((user) => (
                     <FriendCard
                       key={user.id}
@@ -146,18 +166,17 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                   ))}
                   <div ref={bottomRef}>
                     {isFetchingNextPage && (
-                      <div className="flex justify-center flex-col items-center">
+                      <div className="flex justify-center items-center py-4">
                         <Spinner />
-                        <span>Loading more...</span>
                       </div>
                     )}
                   </div>
-                </Box>
-              </ScrollArea>
-            )}
-          </Box>
-        )}
-      </Modal.Content>
+                </div>
+              )}
+            </div>
+          </div>
+        </Modal.Content>
+      </div>
     </Modal>
   );
 };

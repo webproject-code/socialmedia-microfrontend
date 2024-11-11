@@ -4,3 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+
+[aria-label='modal'] {
+  @apply bg-opacity-25;
+}

@@ -1,16 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Input, ScrollArea } from '@social-media/evoke-ui';
 import { Chat, useChatList } from '@social-media/api';
-import { Spinner, useDebounce } from '@social-media/utils';
+import { Spinner, useDebounce, useTheme } from '@social-media/utils';
 import { CreateChatModal } from './createChatModal';
 import { ChatCard } from './chatCard';
 import { LuSearch } from 'react-icons/lu';
 import { FaPlus } from 'react-icons/fa';
 
 import { useStore } from 'auth/Module';
+import { ChatListSkeleton } from './chatListSkeleton';
 
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { isDarkTheme } = useTheme();
   const { user } = useStore();
   const currentUserId = user?.id || '672c92f5b5c8bd867f52cbb6';
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -33,11 +35,7 @@ export const ChatCardList = () => {
         chatId={chat.id}
         key={chat.id}
         name={chat.name}
-        lastMessage={
-          isOneOnOne && chat.messages.length > 0 && chat.messages[0].content
-            ? chat.messages[0].content
-            : ''
-        }
+        lastMessage={chat.messages.length > 0 ? chat.messages[0].content : ''}
         lastMessageTime={chat.lastMessageAt}
         profileImage={
           isOneOnOne
@@ -73,7 +71,12 @@ export const ChatCardList = () => {
           role="button"
           aria-label="create new chat"
           onClick={() => setIsModalOpen((prev) => !prev)}
-          className="dark:bg-dark-secondary"
+          className="dark:bg-dark-secondary focus-visible:ring-2
+      focus-visible:ring-light-secondary
+      focus-visible:ring-offset-2
+      dark:focus-visible:ring-dark-secondary
+      dark:focus-visible:ring-offset-dark-primary
+      outline-none"
         >
           <FaPlus
             role="img"
@@ -82,34 +85,36 @@ export const ChatCardList = () => {
         </Button>
       </Box>
       {isLoading ? (
-        <Box className="flex justify-center h-[calc(100vh-100px)] w-full items-center">
-          <Spinner aria-label="Loading chats" />
+        <Box className="flex flex-col h-[calc(100vh-100px)] w-full px-2">
+          <ChatListSkeleton />
         </Box>
       ) : (
         <Box className="w-full h-[calc(100vh-100px)]">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-100px)] full items-center text-light-secondary dark:text-dark-secondary">
-              <span>Chats Not Found</span>
+            <Box className="flex justify-center h-[calc(100vh-100px)] w-[100%] items-center text-light-secondary dark:text-dark-secondary">
+              <img
+                src={
+                  isDarkTheme
+                    ? './assets/Images/dark-no-results-found-image 1.svg'
+                    : './assets/Images/light-no-results-found-image 1.svg'
+                }
+                alt="search not found"
+                className="object-fill h-[60%] w-[60%]"
+              />
             </Box>
           ) : (
             <ScrollArea className="h-[calc(100vh-100px)] border-none px-2">
-              {isLoading ? (
-                <Box className="flex justify-center h-full w-full items-center">
-                  <Spinner aria-label="Loading chats" />
-                </Box>
-              ) : (
-                <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
-                  {chats.map(renderChatCard)}
-                  <div ref={bottomRef}>
-                    {isFetchingNextPage && (
-                      <div className="flex justify-center flex-col items-center">
-                        <Spinner />
-                        <span>Loading more...</span>
-                      </div>
-                    )}
-                  </div>
-                </Box>
-              )}
+              <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
+                {chats.map(renderChatCard)}
+                <div ref={bottomRef}>
+                  {isFetchingNextPage && (
+                    <div className="flex justify-center flex-col items-center">
+                      <Spinner />
+                      <span>Loading more...</span>
+                    </div>
+                  )}
+                </div>
+              </Box>
             </ScrollArea>
           )}
         </Box>

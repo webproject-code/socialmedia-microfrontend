@@ -63,7 +63,7 @@ export const FriendCard: React.FC<FriendCardProps> = ({
             </Box>
             <Box className="flex flex-col items-end gap-1 sm:gap-2 flex-shrink-0">
               <IoChatbubbleEllipses
-                size={30}
+                size={25}
                 className="fill-light-secondary dark:fill-dark-secondary"
               />
             </Box>

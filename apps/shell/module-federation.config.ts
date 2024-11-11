@@ -14,7 +14,7 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: [],
+  remotes: [['chatlist', 'https://chatlist-mfe.netlify.app']],
 };
 
 export default config;

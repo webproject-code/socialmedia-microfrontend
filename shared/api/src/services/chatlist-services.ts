@@ -1,3 +1,4 @@
+import axios from 'axios';
 import apiClient from '../axios/axios-instance';
 import {
   ChatsListService,
@@ -8,6 +9,7 @@ import {
   FriendsWithNochatResponse,
 } from '../types';
 import { login } from './auth-services';
+import { environment } from '../environments/environment';
 
 // const userId = '66b30bbeaea1612592e8609b';
 
@@ -25,7 +27,7 @@ export const fetchChatList: ChatsListService['fetchChatList'] = async (
   searchTerm,
   cursor
 ) => {
-  CallLoginFn();
+  // CallLoginFn();
   const { data } = await apiClient.get<ChatsListServiceResponse>(
     `/users/chats?query=${searchTerm ? searchTerm : ''}&cursor=${
       cursor ? cursor : ''
@@ -46,7 +48,10 @@ export const fetchFriendWithNoChat: ChatsListService['fetchFriendWithNoChat'] =
 
 export const createOneOnOneChat: ChatsListService['createOneOnOneChat'] =
   async (initiatorId, participantId) => {
-    const hasChat = await checkOneOnOneChatStatus(initiatorId, participantId);
+    const { data: hasChat } = await checkOneOnOneChatStatus(
+      initiatorId,
+      participantId
+    );
     if (hasChat) {
       return hasChat;
     }
@@ -62,12 +67,36 @@ export const createOneOnOneChat: ChatsListService['createOneOnOneChat'] =
 
 export const checkOneOnOneChatStatus: ChatsListService['checkOneOnOneChatStatus'] =
   async (userId1: string, userId2: string) => {
-    const { data } = await apiClient.get<checkOneOnOneChatStatusResponse>(
-      `/chats/one-on-one/${userId1}/${userId2}`
-    );
-    return data;
-  };
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return {
+        success: false,
+        error: 'Authentication token not found',
+      };
+    }
+    try {
+      const response = await axios.get<checkOneOnOneChatStatusResponse>(
+        `/chats/one-on-one/${userId1}/${userId2}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          baseURL: environment.apiURL,
+        }
+      );
 
+      return {
+        data: response.data,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          return error.response.data;
+        }
+      }
+    }
+  };
 export const createGroupChat: ChatsListService['createGroupChat'] = async (
   groupData
 ) => {
