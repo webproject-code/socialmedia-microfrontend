@@ -2,7 +2,7 @@ import { z } from 'zod';
 import {
   registrationStepOneSchema,
   registrationStepTwoSchema,
-} from '../schemas';
+} from '../schemas/auth-schema';
 import { StateCreator } from 'zustand';
 
 // Define the structure for each step using Zod inference
