@@ -1,5 +1,5 @@
 import { useUser } from '@social-media/api';
-import { Box } from '@social-media/evoke-ui';
+import { Stack } from '@social-media/evoke-ui';
 import UserNotFound from '../components/UserNotFound';
 import { useParams } from 'react-router-dom';
 import ProfileInfo from '../components/ProfileInfo';
@@ -27,7 +27,7 @@ const UserProfile = () => {
   const isOwner = user?.id === visitedUser?.id;
 
   return (
-    <Box className="bg-light-primary dark:bg-dark-primary dark:text-white max-h-auto min-h-screen w-screen p-4 sm:p-10 space-y-8">
+    <Stack direction="column" spacing="xxlarge" className="h-full w-full">
       {visitedUser ? (
         <>
           <ProfileInfo profile={visitedUser} isOwner={isOwner} />
@@ -36,7 +36,7 @@ const UserProfile = () => {
       ) : (
         <UserNotFound />
       )}
-    </Box>
+    </Stack>
   );
 };
 

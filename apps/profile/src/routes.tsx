@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import Home from './pages/Home';
 import { NotFoundPage } from '@social-media/utils';
-import UserProfile from './pages/UserProfile';
+import ProfileWrapper from './components/ProfileWrapper';
 
 export const routes: RouteObject[] = [
   {
@@ -10,7 +10,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/users/:id',
-    element: <UserProfile />,
+    element: <ProfileWrapper />,
   },
   {
     path: '*',

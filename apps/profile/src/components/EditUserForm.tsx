@@ -4,9 +4,8 @@ import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { editProfileSchema } from '../schema';
 import { Spinner, StatusMessageBox } from '@social-media/utils';
-import { useStore } from '@social-media/utils';
+import { useStore, editProfileSchema } from '@social-media/utils';
 
 const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   // Initialize preview state with the existing profile picture URL
