@@ -11,9 +11,10 @@ import {
   ResetPassword,
 } from 'auth/Module';
 
+import { UserProfile } from 'profile/Module';
+
 import { NotFoundPage } from '@social-media/utils';
 import Friends from './pages/Friends';
-import Profile from './pages/Profile';
 
 export const routes: RouteObject[] = [
   {
@@ -56,7 +57,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: '/users/:id',
-            element: <Profile />,
+            element: <UserProfile />,
           },
         ],
       },

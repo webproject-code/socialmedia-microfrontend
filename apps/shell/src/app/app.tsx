@@ -1,5 +1,5 @@
-import '@social-media/evoke-ui/dist/styles.css';
 import '../styles.css';
+import '@social-media/evoke-ui/dist/styles.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { routes } from '../routes';
 

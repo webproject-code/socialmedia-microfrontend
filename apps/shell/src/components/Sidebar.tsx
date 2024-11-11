@@ -35,7 +35,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="flex w-full md:w-24 flex-row md:flex-col items-center bg-light-background dark:bg-dark-background p-4 md:py-8 md:space-y-6 border-t md:border-t-0 md:border-r border-gray-300 dark:border-gray-700">
+    <aside className="flex w-full md:w-24 flex-row md:flex-col items-center p-4 md:py-8 md:space-y-6 border-t md:border-t-0 md:border-r border-gray-300 dark:border-gray-700">
       <img
         src="assets/Logo.svg"
         alt="logo"
