@@ -3,7 +3,7 @@ import { Box } from '@social-media/evoke-ui';
 import UserNotFound from '../components/UserNotFound';
 import { useParams } from 'react-router-dom';
 import ProfileInfo from '../components/ProfileInfo';
-import { useStore } from '../store/store';
+import { useStore } from '@social-media/utils';
 import ProfileTabs from '../components/ProfileTabs';
 import ProfileSkeleton from '../components/ProfileSkeleton';
 import { useEffect } from 'react';

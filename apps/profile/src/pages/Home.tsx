@@ -1,13 +1,12 @@
 import { useLogin } from '@social-media/api';
 import { Button, Stack } from '@social-media/evoke-ui';
+import { useStore } from '@social-media/utils';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from '../store/store';
 
 const Home: React.FC = () => {
   const { mutate, isPending } = useLogin();
-  const { setUser, setVisitedUser } = useStore();
-  const token = localStorage.getItem('token');
+  const { isAuthenticated, login, logout, setVisitedUser } = useStore();
   const navigate = useNavigate();
   const [buttonText, setButtonText] = useState('Login');
   const [activeUser, setActiveUser] = useState<string | null>(null);
@@ -15,12 +14,12 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (isPending) {
       setButtonText('Logging in...');
-    } else if (token) {
+    } else if (isAuthenticated) {
       setButtonText('Logout');
     } else {
       setButtonText('Login');
     }
-  }, [isPending, token]);
+  }, [isPending, isAuthenticated]);
 
   const loginHandler = (email: string, password: string) => {
     setActiveUser(email);
@@ -32,7 +31,7 @@ const Home: React.FC = () => {
       {
         onSuccess: (data) => {
           setButtonText('Logout');
-          setUser(data);
+          login({ isAuthenticated: true, user: data });
           navigate(`/users/${data.id}`);
         },
       }
@@ -41,7 +40,7 @@ const Home: React.FC = () => {
 
   const logoutHandler = () => {
     localStorage.removeItem('token');
-    setUser(null);
+    logout();
     setVisitedUser(null);
     setActiveUser(null);
     setButtonText('Login');
@@ -60,7 +59,7 @@ const Home: React.FC = () => {
           Welcome to Profile Microfrontend
         </h1>
 
-        {!token ? (
+        {!isAuthenticated ? (
           <div className="flex gap-4">
             <Button
               className="w-fit"

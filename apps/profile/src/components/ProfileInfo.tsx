@@ -3,7 +3,7 @@ import { IoMdMail } from 'react-icons/io';
 import ProfileFriendsCount from './ProfileFriendsCount';
 import { UserProfile } from '@social-media/api';
 import EditProfileButton from './EditProfileButton';
-import { useStore } from '../store/store';
+import { useStore } from '@social-media/utils';
 import FriendStatusButton from './FriendStatusButton';
 import ProfileInfoSkeleton from './ProfileInfoSkeleton';
 
