@@ -17,7 +17,7 @@ import {
   sendFriendRequest,
 } from '../services/friends-services';
 import { FriendRequest, QueryPagination } from '../types';
-import { useInfiniteScroll } from '@social-media/utils';
+import { useInfiniteScroll } from '../axios/useInfiniteScroll';
 import { useCallback, useMemo } from 'react';
 
 // Fetch users to add friend
