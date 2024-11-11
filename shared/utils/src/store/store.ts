@@ -13,7 +13,8 @@ export const useStore = create<AuthSlice & RegistrationFormSlice>()(
         ...createAuthSlice(...args),
         ...createRegistrationFormSlice(...args),
       }),
-      { name: 'auth-mfe-store' }
-    )
+      { name: 'social-media-store' }
+    ),
+    { name: 'social-media-store' }
   )
 );
