@@ -4,9 +4,9 @@ import { Outlet } from 'react-router-dom';
 
 const Layout: React.FC = () => {
   return (
-    <div className="bg-silverSteel dark:bg-primary w-screen h-screen flex flex-col-reverse md:flex-row dark:text-white">
+    <div className="flex h-screen w-screen flex-col-reverse md:flex-row bg-silverSteel dark:bg-primary dark:text-white">
       <Sidebar />
-      <div className="flex-grow h-full">
+      <div className="flex-grow p-4 overflow-auto">
         <Outlet />
       </div>
     </div>
