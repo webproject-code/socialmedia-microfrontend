@@ -2,8 +2,8 @@ import { RouteObject } from 'react-router-dom';
 
 import { NotFoundPage } from '@social-media/utils';
 
-import Friends from './pages/Friends';
 import Home from './pages/Home';
+import FriendsWrapper from './components/FriendsWrapper';
 
 export const routes: RouteObject[] = [
   {
@@ -12,7 +12,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/friends',
-    element: <Friends />,
+    element: <FriendsWrapper />,
   },
   {
     path: '*',

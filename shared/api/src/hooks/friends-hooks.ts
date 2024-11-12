@@ -257,7 +257,7 @@ export const useCancelFriendRequest = (
   });
 };
 
-// accept or reject friend request
+// Accept friend request
 export const useAcceptFriendRequest = (
   userId: string,
   friendId: string,
@@ -265,8 +265,7 @@ export const useAcceptFriendRequest = (
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (status: 'ACCEPTED' | 'REJECTED') =>
-      acceptOrRejectFriendRequest(friendRequestId, status),
+    mutationFn: () => acceptOrRejectFriendRequest(friendRequestId, 'ACCEPTED'),
     onSuccess: () => {
       queryClient.setQueryData(['friendshipStatus', userId, friendId], {
         friendRequestId: friendRequestId,
@@ -278,6 +277,7 @@ export const useAcceptFriendRequest = (
   });
 };
 
+// Reject friend request
 export const useRejectFriendRequest = (
   userId: string,
   friendId: string,
@@ -285,8 +285,7 @@ export const useRejectFriendRequest = (
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (status: 'REJECTED') =>
-      acceptOrRejectFriendRequest(friendRequestId, status),
+    mutationFn: () => acceptOrRejectFriendRequest(friendRequestId, 'REJECTED'),
     onSuccess: () => {
       queryClient.setQueryData(['friendshipStatus', userId, friendId], {
         friendRequestId: friendRequestId,
