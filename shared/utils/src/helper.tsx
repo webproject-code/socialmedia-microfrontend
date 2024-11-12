@@ -1,4 +1,4 @@
-export function formatDate(dateString: Date): string {
+export function formatDate(dateString: string): string {
   const date = new Date(dateString);
 
   // Check if the date is valid

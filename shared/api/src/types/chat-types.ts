@@ -31,11 +31,12 @@ export interface OneOnOneChat {
   vanishMode: boolean;
   createdAt: string;
   updatedAt: string;
-  lastMessageAt: Date;
+  lastMessageAt: string;
   initiator: ChatUser;
   participant: ChatUser;
   name: string;
   messages: Message[];
+  unreadCount: number;
   type: ChatType.ONE_ON_ONE;
   // "deletedForInitiator": null,
   // "deletedForParticipant": null,
@@ -53,10 +54,11 @@ export interface GroupChat {
   groupIcon: string;
   createdAt: string;
   updateAt: string;
-  lastMessageAt: Date;
+  lastMessageAt: string;
   messages: Message[];
   memberIds: string[];
   type: ChatType.GROUP;
+  unreadCount: number;
 }
 
 export interface GroupChatSettings {

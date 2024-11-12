@@ -7,16 +7,16 @@ import { ChatCard } from './chatCard';
 import { LuSearch } from 'react-icons/lu';
 import { FaPlus } from 'react-icons/fa';
 
-import { useStore } from 'auth/Module';
+// import { useStore } from 'auth/Module';
 import { ChatListSkeleton } from './chatListSkeleton';
 
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { isDarkTheme } = useTheme();
-  const { user } = useStore();
-  const currentUserId = user?.id || '672c92f5b5c8bd867f52cbb6';
+  // const { user } = useStore();
+  const currentUserId = '672c92f5b5c8bd867f52cbb6';
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const { chats, isLoading, isFetchingNextPage, bottomRef } =
+  const { chats, isLoading, isFetchingNextPage, bottomRef, updateUnreadCount } =
     useChatList(debouncedSearchTerm);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleChange = useCallback(
@@ -44,6 +44,8 @@ export const ChatCardList = () => {
               : chat.initiator.profilePicture
             : chat.groupIcon
         }
+        unreadCount={chat.unreadCount}
+        updateCount={updateUnreadCount}
       />
     );
   }, []);

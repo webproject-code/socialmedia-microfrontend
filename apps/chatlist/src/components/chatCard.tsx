@@ -8,10 +8,12 @@ import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 interface ChatCardProps {
   name: string;
   lastMessage: string;
-  lastMessageTime: Date;
+  lastMessageTime: string;
   profileImage: string;
   chatId: string;
   type: ChatType;
+  unreadCount: number;
+  updateCount: (chatId: string, newUnreadCount: number) => void;
 }
 
 export const ChatCard: React.FC<ChatCardProps> = ({
@@ -21,6 +23,8 @@ export const ChatCard: React.FC<ChatCardProps> = ({
   profileImage,
   chatId,
   type,
+  unreadCount = 0,
+  updateCount,
 }) => {
   const formattedMessageTime = formatDate(lastMessageTime);
   const navigate = useNavigate();
@@ -28,7 +32,8 @@ export const ChatCard: React.FC<ChatCardProps> = ({
   const activeChat = pathname.split('/')[3] === chatId;
   const handleCardClick = useCallback(() => {
     navigate(`${type === 'ONE_ON_ONE' ? 'one-on-one' : 'group'}/${chatId}`);
-  }, [navigate, chatId, type]);
+    updateCount(chatId, 0);
+  }, [navigate, chatId, type, updateCount]);
 
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -39,7 +44,7 @@ export const ChatCard: React.FC<ChatCardProps> = ({
     },
     [handleCardClick]
   );
-  const unreadCount = 3;
+
   return (
     <>
       <Card

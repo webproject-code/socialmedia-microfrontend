@@ -59,6 +59,7 @@ export type ChatInfo = {
   createdAt: Date;
   updatedAt: Date;
   lastMessageAt: Date;
+  unreadCount: number;
   // deletedForInitiator: null,
   // deletedForParticipant: null
 };

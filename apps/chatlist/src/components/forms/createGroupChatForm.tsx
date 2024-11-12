@@ -17,6 +17,7 @@ interface GroupChatFormProps {
     React.SetStateAction<{ id: string; name: string }[]>
   >;
   onCancel: () => void;
+  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DefaultGroupIcon = 'assets/Images/people.png';
@@ -26,6 +27,7 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
   memberList,
   setMemberList,
   onCancel,
+  closeModal,
 }) => {
   type FormType = z.infer<typeof createGroupChatSchema>;
   const [groupIcon, setGroupIcon] = useState<string>(DefaultGroupIcon);
@@ -89,6 +91,7 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
     if (data.groupIcon && data.memberIds.length !== 0) {
       mutate(data, {
         onSuccess(data) {
+          closeModal(false);
           navigate(`/chats/group/${data.id}`);
         },
       });
@@ -148,7 +151,7 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
             aria-label="Upload group icon"
           />
           {errors.groupIcon && (
-            <p className="absolute -bottom-6 left-1/2 -translate-RxCross2-1/2 whitespace-nowrap text-sm text-red-500">
+            <p className="absolute inset-0 flex items-center justify-center text-center -bottom-36  -translate-RxCross2-1/2 whitespace-nowrap text-sm text-red-500">
               {errors.groupIcon.message}
             </p>
           )}
