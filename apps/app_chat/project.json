@@ -1,7 +1,7 @@
 {
-  "name": "chat",
+  "name": "app_chat",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/chat/src",
+  "sourceRoot": "apps/app_chat/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -11,11 +11,11 @@
       "defaultConfiguration": "production",
       "options": {
         "target": "web",
-        "outputPath": "dist/apps/chat",
-        "main": "apps/chat/src/main.ts",
-        "tsConfig": "apps/chat/tsconfig.app.json",
-        "rspackConfig": "apps/chat/rspack.config.ts",
-        "assets": ["apps/chat/src/favicon.ico", "apps/chat/src/assets"]
+        "outputPath": "dist/apps/app_chat",
+        "main": "apps/app_chat/src/main.ts",
+        "tsConfig": "apps/app_chat/tsconfig.app.json",
+        "rspackConfig": "apps/app_chat/rspack.config.ts",
+        "assets": ["apps/app_chat/src/favicon.ico", "apps/app_chat/src/assets"]
       },
       "configurations": {
         "development": {
@@ -25,20 +25,20 @@
           "mode": "production",
           "optimization": true,
           "sourceMap": false,
-          "rspackConfig": "apps/chat/rspack.config.prod.ts"
+          "rspackConfig": "apps/app_chat/rspack.config.prod.ts"
         }
       }
     },
     "serve": {
       "executor": "@nx/rspack:module-federation-dev-server",
       "options": {
-        "buildTarget": "chat:build:development",
-        "port": 4202
+        "buildTarget": "app_chat:build:development",
+        "port": 4207
       },
       "configurations": {
         "development": {},
         "production": {
-          "buildTarget": "chat:build:production"
+          "buildTarget": "app_chat:build:production"
         }
       }
     },
@@ -46,14 +46,14 @@
       "executor": "@nx/rspack:module-federation-static-server",
       "defaultConfiguration": "production",
       "options": {
-        "serveTarget": "chat:serve"
+        "serveTarget": "app_chat:serve"
       },
       "configurations": {
         "development": {
-          "serveTarget": "chat:serve:development"
+          "serveTarget": "app_chat:serve:development"
         },
         "production": {
-          "serveTarget": "chat:serve:production"
+          "serveTarget": "app_chat:serve:production"
         }
       }
     }

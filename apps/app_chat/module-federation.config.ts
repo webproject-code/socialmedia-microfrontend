@@ -1,7 +1,7 @@
 import { ModuleFederationConfig } from '@nx/rspack/module-federation';
 
 const config: ModuleFederationConfig = {
-  name: 'chat',
+  name: 'app_chat',
 
   exposes: {
     './Module': './src/remote-entry.ts',

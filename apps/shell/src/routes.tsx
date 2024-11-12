@@ -13,8 +13,10 @@ import {
 
 import { UserProfile } from 'profile/Module';
 import { Friends } from 'friends/Module';
-import { ChatsList } from 'chatlist/Module';
+import { OneOnOneChat, GroupChat } from 'app_chat/Module';
 import { ErrorFallback, NotFoundPage } from '@social-media/utils';
+
+import ChatLayout from './pages/ChatLayout';
 
 export const routes: RouteObject[] = [
   {
@@ -62,7 +64,17 @@ export const routes: RouteObject[] = [
           },
           {
             path: '/chats',
-            element: <ChatsList />,
+            element: <ChatLayout />,
+            children: [
+              {
+                path: 'one-on-one/:chatId', // Nested route for one-on-one chat
+                element: <OneOnOneChat />,
+              },
+              {
+                path: 'group/:chatId', // Nested route for group chat
+                element: <GroupChat />,
+              },
+            ],
           },
         ],
       },
