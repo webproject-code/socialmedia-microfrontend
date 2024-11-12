@@ -1,5 +1,5 @@
 import { Button, Stack } from '@social-media/evoke-ui';
-import { useStore } from '../store/store';
+import { useStore } from '@social-media/utils';
 import { useLogout } from '@social-media/api';
 
 const UserProfileCard: React.FC = () => {
