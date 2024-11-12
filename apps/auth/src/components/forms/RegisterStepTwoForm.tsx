@@ -7,8 +7,7 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { IoIosWarning } from 'react-icons/io';
 
 import UploadImageWrapper from '../UploadImageWrapper';
-import { registrationStepTwoSchema } from '../../schemas';
-import { useStore } from '../../store/store';
+import { useStore, registrationStepTwoSchema } from '@social-media/utils';
 import { Spinner } from '@social-media/utils';
 
 const RegisterStepTwoForm: React.FC = () => {

@@ -14,7 +14,16 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: [],
+  remotes: ['auth', 'profile'],
+  shared: (library, defaultConfig) => {
+    if (library === '@social-media/evoke-ui') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+    return defaultConfig;
+  },
 };
 
 export default config;

@@ -1,0 +1,24 @@
+import { useSendFriendRequest } from '@social-media/api';
+import { Button } from '@social-media/evoke-ui';
+
+type AddFriendButtonProps = {
+  userId: string;
+  friendId: string;
+};
+
+const AddFriendButton: React.FC<AddFriendButtonProps> = ({
+  userId,
+  friendId,
+}) => {
+  const { mutate: sendFriendRequest } = useSendFriendRequest(userId, friendId);
+  return (
+    <Button
+      className="w-fit dark:text-dark-primary"
+      onClick={() => sendFriendRequest()}
+    >
+      Add Friend
+    </Button>
+  );
+};
+
+export default AddFriendButton;

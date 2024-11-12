@@ -4,11 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Input, Stack } from '@social-media/evoke-ui';
-
-import { loginSchema } from '../schemas';
 import { useLogin } from '@social-media/api';
-import { useStore } from '../store/store';
-import { Spinner } from '@social-media/utils';
+import { Spinner, loginSchema, useStore } from '@social-media/utils';
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();

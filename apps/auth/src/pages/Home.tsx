@@ -1,5 +1,5 @@
 import { Box, Card, Stack } from '@social-media/evoke-ui';
-import { useStore } from '../store/store';
+import { useStore } from '@social-media/utils';
 import UserProfileCard from '../components/UserProfileCard';
 import AuthLinks from '../components/AuthLinks';
 
@@ -15,8 +15,8 @@ const Home: React.FC = () => {
         className="h-full w-full"
       >
         {!isAuthenticated && (
-          <Box>
-            <h2 className="dark:text-white text-4xl font-semibold">
+          <Box className="text-center">
+            <h2 className="dark:text-white text-2xl md:text-4xl font-semibold">
               Welcome to the Auth Microfrontend
             </h2>
           </Box>

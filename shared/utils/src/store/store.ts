@@ -4,16 +4,21 @@ import {
   RegistrationFormSlice,
   createRegistrationFormSlice,
 } from './registrationFormSlice';
+import { ProfileSlice, createProfileSlice } from './profileSlice';
 import { devtools, persist } from 'zustand/middleware';
 
-export const useStore = create<AuthSlice & RegistrationFormSlice>()(
+export const useStore = create<
+  AuthSlice & RegistrationFormSlice & ProfileSlice
+>()(
   devtools(
     persist(
       (...args) => ({
         ...createAuthSlice(...args),
         ...createRegistrationFormSlice(...args),
+        ...createProfileSlice(...args),
       }),
-      { name: 'auth-mfe-store' }
-    )
+      { name: 'social-media-store' }
+    ),
+    { name: 'social-media-store' }
   )
 );
