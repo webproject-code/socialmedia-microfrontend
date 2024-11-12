@@ -12,9 +12,8 @@ import {
 } from 'auth/Module';
 
 import { UserProfile } from 'profile/Module';
-
-import { NotFoundPage } from '@social-media/utils';
-import Friends from './pages/Friends';
+import { Friends } from 'friends/Module';
+import { ErrorFallback, NotFoundPage } from '@social-media/utils';
 
 export const routes: RouteObject[] = [
   {
@@ -42,6 +41,7 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     element: <PrivateRoute />, // Wraps the private routes
+    errorElement: <ErrorFallback />,
     children: [
       {
         path: '/',
