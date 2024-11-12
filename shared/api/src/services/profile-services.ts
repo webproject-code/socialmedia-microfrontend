@@ -5,13 +5,13 @@ import {
   UserProfile,
 } from '../types';
 
-// fetch logged in user profile
+// Fetch logged in user's profile
 export const fetchProfile: IProfileService['fetchProfile'] = async () => {
   const { data } = await apiClient.get<UserProfile>('/users/me');
   return data;
 };
 
-// fetch single user
+// Fetch a particular user's details
 export const fetchUser: IProfileService['fetchUser'] = async (
   userId: string
 ) => {
@@ -19,7 +19,7 @@ export const fetchUser: IProfileService['fetchUser'] = async (
   return data;
 };
 
-// update profile
+// Update profile
 export const updateProfile: IProfileService['updateProfile'] = async (
   profileData
 ) => {
@@ -38,7 +38,7 @@ export const updateProfile: IProfileService['updateProfile'] = async (
   return data;
 };
 
-// fetch friendship status
+// Fetch friendship status
 export const fetchFriendshipStatus: IProfileService['fetchFriendshipStatus'] =
   async (userId: string, friendId: string) => {
     const { data } = await apiClient.get<FriendshipStatusResponse>(
