@@ -22,6 +22,18 @@ const config: ModuleFederationConfig = {
         strictVersion: false,
       };
     }
+    if (library === 'socket.io-client') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+    if (library === '@hookform/resolvers/zod') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
     return defaultConfig;
   },
 };
