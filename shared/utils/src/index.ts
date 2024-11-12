@@ -10,4 +10,5 @@ export * from './hooks/useTheme';
 export * from './helper';
 export * from './hooks/useOrigin';
 export * from './hooks/useDebounce';
-export * from './hooks/useInfiniteScroll';
+
+export * from './schemas/chatlist-schema';

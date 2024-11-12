@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { createGroupChatSchema } from '../../schemas';
+import { createGroupChatSchema } from '@social-media/utils';
 import { useEffect, useState } from 'react';
 import { useCreateGroupChat } from '@social-media/api';
 import { useNavigate } from 'react-router-dom';

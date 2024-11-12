@@ -95,8 +95,8 @@ export const ChatCardList = () => {
               <img
                 src={
                   isDarkTheme
-                    ? './assets/Images/dark-no-results-found-image 1.svg'
-                    : './assets/Images/light-no-results-found-image 1.svg'
+                    ? 'assets/Images/dark-no-results-found-image 1.svg'
+                    : 'assets/Images/light-no-results-found-image 1.svg'
                 }
                 alt="search not found"
                 className="object-fill h-[60%] w-[60%]"
