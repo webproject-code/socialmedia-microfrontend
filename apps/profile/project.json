@@ -1,7 +1,7 @@
 {
-  "name": "auth",
+  "name": "profile",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/auth/src",
+  "sourceRoot": "apps/profile/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -11,11 +11,11 @@
       "defaultConfiguration": "production",
       "options": {
         "target": "web",
-        "outputPath": "dist/apps/auth",
-        "main": "apps/auth/src/main.ts",
-        "tsConfig": "apps/auth/tsconfig.app.json",
-        "rspackConfig": "apps/auth/rspack.config.ts",
-        "assets": ["apps/auth/src/favicon.ico", "apps/auth/src/assets"]
+        "outputPath": "dist/apps/profile",
+        "main": "apps/profile/src/main.ts",
+        "tsConfig": "apps/profile/tsconfig.app.json",
+        "rspackConfig": "apps/profile/rspack.config.ts",
+        "assets": ["apps/profile/src/favicon.ico", "apps/profile/src/assets"]
       },
       "configurations": {
         "development": {
@@ -25,20 +25,20 @@
           "mode": "production",
           "optimization": true,
           "sourceMap": false,
-          "rspackConfig": "apps/auth/rspack.config.prod.ts"
+          "rspackConfig": "apps/profile/rspack.config.prod.ts"
         }
       }
     },
     "serve": {
       "executor": "@nx/rspack:module-federation-dev-server",
       "options": {
-        "buildTarget": "auth:build:development",
+        "buildTarget": "profile:build:development",
         "port": 4201
       },
       "configurations": {
         "development": {},
         "production": {
-          "buildTarget": "auth:build:production"
+          "buildTarget": "profile:build:production"
         }
       }
     },
@@ -46,14 +46,14 @@
       "executor": "@nx/rspack:module-federation-static-server",
       "defaultConfiguration": "production",
       "options": {
-        "serveTarget": "auth:serve"
+        "serveTarget": "profile:serve"
       },
       "configurations": {
         "development": {
-          "serveTarget": "auth:serve:development"
+          "serveTarget": "profile:serve:development"
         },
         "production": {
-          "serveTarget": "auth:serve:production"
+          "serveTarget": "profile:serve:production"
         }
       }
     }

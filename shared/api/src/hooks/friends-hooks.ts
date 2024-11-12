@@ -200,8 +200,13 @@ export const useRemoveFriend = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => removeFriend(userId, friendId),
-    onSuccess: (data) => {
-      queryClient.setQueryData(['friendshipStatus', userId, friendId], data);
+    onSuccess: () => {
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: null,
+        status: 'NOT_FRIENDS',
+      });
+      queryClient.invalidateQueries({ queryKey: ['friends', userId] });
+      queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
     },
   });
 };
@@ -211,13 +216,13 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => sendFriendRequest(userId, friendId),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.setQueryData(
         ['friendshipStatus', userId, friendId],
         (oldData: FriendRequest) => {
           if (oldData) {
             return {
-              ...oldData,
+              friendRequestId: data.friendRequest.id,
               status: 'REQUEST_SENT',
             };
           }
@@ -252,8 +257,8 @@ export const useCancelFriendRequest = (
   });
 };
 
-// Accept or reject friend request
-export const useAcceptOrRejectFriendRequest = (
+// accept or reject friend request
+export const useAcceptFriendRequest = (
   userId: string,
   friendId: string,
   friendRequestId: string
@@ -262,8 +267,31 @@ export const useAcceptOrRejectFriendRequest = (
   return useMutation({
     mutationFn: (status: 'ACCEPTED' | 'REJECTED') =>
       acceptOrRejectFriendRequest(friendRequestId, status),
-    onSuccess: (data) => {
-      queryClient.setQueryData(['friendshipStatus', userId, friendId], data);
+    onSuccess: () => {
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: friendRequestId,
+        status: 'FRIENDS',
+      });
+      queryClient.invalidateQueries({ queryKey: ['friends', userId] });
+      queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
+    },
+  });
+};
+
+export const useRejectFriendRequest = (
+  userId: string,
+  friendId: string,
+  friendRequestId: string
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (status: 'REJECTED') =>
+      acceptOrRejectFriendRequest(friendRequestId, status),
+    onSuccess: () => {
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: friendRequestId,
+        status: 'NOT_FRIENDS',
+      });
     },
   });
 };

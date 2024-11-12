@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
 import {
   fetchFriendshipStatus,
   fetchProfile,
@@ -31,6 +30,7 @@ export const useProfileUpdate = () => {
     mutationFn: (profileData: EditUser) => updateProfile(profileData),
     onSuccess: (data: UserProfile) => {
       queryClient.setQueryData(['profile'], data);
+      queryClient.setQueryData(['user', data.id], data);
     },
   });
 };

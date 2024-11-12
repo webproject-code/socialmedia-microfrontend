@@ -25,5 +25,5 @@ export interface IAuthService {
     confirmPassword: string;
     profilePicture: File | undefined;
   }): Promise<User>;
-  logout(): void;
+  logout(): Promise<string>;
 }
