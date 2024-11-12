@@ -5,21 +5,27 @@ import {
 } from '@social-media/api';
 import { useChatStore } from '../store/useChatStore';
 
-export const useMessagesSearch = () => {
-  const { currentChatId, currentChatType, searchResults, setSearchResults } =
-    useChatStore();
+interface MessageSearchOptions {
+  chatType: ChatType;
+  chatId: string;
+}
+export const useMessagesSearch = ({
+  chatId,
+  chatType,
+}: MessageSearchOptions) => {
+  const { searchResults, setSearchResults } = useChatStore();
 
   const searchMessages = async (query: string) => {
-    if (!currentChatId) return;
+    if (!chatId) return;
 
     try {
-      if (currentChatType === ChatType.ONE_ON_ONE) {
-        const { messages } = await getOneOnOneChatMessages(currentChatId, {
+      if (chatType === ChatType.ONE_ON_ONE) {
+        const { messages } = await getOneOnOneChatMessages(chatId, {
           search: query,
         });
         setSearchResults(messages);
-      } else if (currentChatType === ChatType.GROUP) {
-        const { messages } = await getGroupChatMessages(currentChatId, {
+      } else if (chatType === ChatType.GROUP) {
+        const { messages } = await getGroupChatMessages(chatId, {
           search: query,
         });
         setSearchResults(messages);

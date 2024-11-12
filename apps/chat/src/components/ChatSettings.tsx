@@ -1,48 +1,66 @@
-import {
-  ChatType,
-  OneOnOneChat,
-  OneOnOneChatSettings,
-  useOneOnOneChatUpdate,
-} from '@social-media/api';
+import { ChatType } from '@social-media/api';
 import { Button } from '@social-media/evoke-ui';
-import { useQueryClient } from '@tanstack/react-query';
+import { Dropdown } from '@social-media/utils';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { FaEllipsisV, FaHandSparkles, FaSearch, FaUsers } from 'react-icons/fa';
 
 interface ChatSettingsProps {
   chatType: ChatType;
+  onSearchClick: () => void;
+  onVanishModeToggle: () => void;
+  isVanishModeEnabled?: boolean;
+  onGroupInfoClick: () => void;
 }
 
-const ChatSettings: React.FC<ChatSettingsProps> = ({ chatType }) => {
-  const { chatId } = useParams();
-  const queryClient = useQueryClient();
-  const { mutate, isPending } = useOneOnOneChatUpdate(chatId!);
-  let chatData: OneOnOneChat | undefined;
+const ChatSettings: React.FC<ChatSettingsProps> = ({
+  chatType,
+  onSearchClick,
+  onVanishModeToggle,
+  isVanishModeEnabled,
+  onGroupInfoClick,
+}) => {
+  const getDropdownItems = () => {
+    const commonItems = [
+      {
+        icon: <FaSearch className="text-dark-lavender" />,
+        label: 'Search in chat',
+        onClick: onSearchClick,
+        divider: true,
+      },
+    ];
 
-  if (chatType === ChatType.ONE_ON_ONE) {
-    chatData = queryClient.getQueryData<OneOnOneChat>(['one-on-one', chatId]);
-  }
+    const oneOnOneItems = [
+      {
+        icon: <FaHandSparkles className="text-dark-lavender" />,
+        label: `${isVanishModeEnabled ? 'Disable' : 'Enable'} vanish mode`,
+        onClick: onVanishModeToggle,
+      },
+    ];
 
-  const updateChatSettings = () => {
-    let settings: OneOnOneChatSettings;
-    if (chatType === ChatType.ONE_ON_ONE) {
-      settings = {
-        vanishMode: !chatData?.vanishMode,
-      };
-      mutate(settings);
-    }
+    const groupItems = [
+      {
+        icon: <FaUsers className="text-dark-lavender" />,
+        label: 'Group info',
+        onClick: onGroupInfoClick,
+      },
+    ];
+
+    return [
+      ...commonItems,
+      ...(chatType === ChatType.ONE_ON_ONE ? oneOnOneItems : groupItems),
+    ];
   };
 
   return (
-    <Button className="w-fit" onClick={updateChatSettings} disabled={isPending}>
-      Turn
-      {chatData?.vanishMode ? (
-        <span className="text-red-500">Off</span>
-      ) : (
-        <span className="text-green-500">On</span>
-      )}
-      Vanish Mode
-    </Button>
+    <Dropdown
+      trigger={
+        <Button className="w-fit" variant="icon">
+          <FaEllipsisV className="dark:text-dark-lavender dark:hover:text-dark-secondary/90" />
+        </Button>
+      }
+      align="right"
+      items={getDropdownItems()}
+    />
   );
 };
 

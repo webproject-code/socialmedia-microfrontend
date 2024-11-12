@@ -10,7 +10,7 @@ import {
 } from '../types/chat-types';
 
 const ONE_ON_ONE_CHAT_ENDPOINT = '/chats/one-on-one';
-const GROUP_CHAT_ENDPOINT = '/chats/groups';
+const GROUP_CHAT_ENDPOINT = '/chats/group';
 
 export const getOneOnOneChat: IChatServices['getOneOnOneChat'] = async (
   chatId
@@ -23,14 +23,14 @@ export const getOneOnOneChat: IChatServices['getOneOnOneChat'] = async (
 
 export const updateOneOnOneChatSettings: IChatServices['updateOneOnOneChatSettings'] =
   async (chatId, settings) => {
-    await apiClient.patch<OneOnOneChatSettings>(
+    const { data } = await apiClient.patch<OneOnOneChat>(
       `${ONE_ON_ONE_CHAT_ENDPOINT}/${chatId}/settings`,
       {
         settings,
       }
     );
 
-    return 'Chat settings updated successfully!';
+    return data;
   };
 
 export const getOneOnOneChatMessages: IChatServices['getOneOnOneChatMessages'] =
@@ -58,7 +58,7 @@ export const updateGroupChat: IChatServices['updateGroupChat'] = async (
   settings: GroupChatSettings
 ) => {
   const { name, groupDescription, groupIcon } = settings;
-  await apiClient.patch<GroupChatSettings>(
+  const { data } = await apiClient.patch<GroupChat>(
     `${GROUP_CHAT_ENDPOINT}/${chatId}/settings`,
     {
       settings: {
@@ -74,7 +74,7 @@ export const updateGroupChat: IChatServices['updateGroupChat'] = async (
     }
   );
 
-  return 'Chat settings updated successfully!';
+  return data;
 };
 
 export const getGroupChatMessages: IChatServices['getGroupChatMessages'] =

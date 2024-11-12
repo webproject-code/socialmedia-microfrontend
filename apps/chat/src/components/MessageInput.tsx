@@ -95,6 +95,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
                 placeholder="Enter message..."
                 error={!!errors.content}
                 errorMessage={errors.content?.message}
+                autoComplete="off"
               />
             )}
           />

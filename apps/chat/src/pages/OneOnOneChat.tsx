@@ -1,11 +1,11 @@
 import { ChatType, useOneOnOneChat, useProfile } from '@social-media/api';
+import { Container } from '@social-media/evoke-ui';
 import { useSocket } from '@social-media/utils';
 import { useEffect } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import ChatHeader from '../components/ChatHeader';
 import ChatWindow from '../components/ChatWindow';
 import MessageInput from '../components/MessageInput';
-import { Container } from '@social-media/evoke-ui';
 
 const OneOnOneChat = () => {
   const { chatId } = useParams();
@@ -53,7 +53,12 @@ const OneOnOneChat = () => {
         : data.initiator.profilePicture;
     return (
       <div className="min-h-screen w-full flex flex-col">
-        <ChatHeader chatType={chatType} name={name} avatarUrl={avatarUrl} />
+        <ChatHeader
+          chatType={chatType}
+          chatId={chatId}
+          name={name}
+          avatarUrl={avatarUrl}
+        />
         <ChatWindow chatType={chatType} chatId={chatId} />
         <MessageInput chatType={chatType} chatId={chatId} />
       </div>

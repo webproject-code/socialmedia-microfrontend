@@ -27,16 +27,9 @@ export const useOneOnOneChatUpdate = (chatId: string) => {
   return useMutation({
     mutationFn: (settings: OneOnOneChatSettings) =>
       updateOneOnOneChatSettings(chatId, settings),
-    onSuccess: () => {
-      queryClient.setQueryData(
-        ['one-on-one', chatId],
-        (oldData: OneOnOneChat) => {
-          return {
-            ...oldData,
-            vanishMode: !oldData.vanishMode,
-          };
-        }
-      );
+    onSuccess: (data: OneOnOneChat) => {
+      console.log(data);
+      queryClient.setQueryData(['one-on-one', chatId], data);
     },
   });
 };

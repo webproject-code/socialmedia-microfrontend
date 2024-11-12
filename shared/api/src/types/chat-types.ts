@@ -65,13 +65,16 @@ export interface IChatServices {
   updateOneOnOneChatSettings(
     chatId: string,
     settings: OneOnOneChatSettings
-  ): Promise<string>;
+  ): Promise<OneOnOneChat>;
   getOneOnOneChatMessages(
     chatId: string,
     params?: QueryPagination
   ): Promise<PaginatedResponse<'messages', Message[]>>;
   getGroupChat(chatId: string): Promise<GroupChat>;
-  updateGroupChat(chatId: string, settings: GroupChatSettings): Promise<string>;
+  updateGroupChat(
+    chatId: string,
+    settings: GroupChatSettings
+  ): Promise<GroupChat>;
   getGroupChatMessages(
     chatId: string,
     params?: QueryPagination

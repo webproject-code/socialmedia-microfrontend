@@ -64,7 +64,10 @@ const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
         >
           Cancel
         </Button>
-        <Button className="w-fit " onClick={handleDelete}>
+        <Button
+          className="w-fit dark:bg-red-500 dark:text-dark-lavender hover:bg-red-700"
+          onClick={handleDelete}
+        >
           Delete
         </Button>
       </Modal.Footer>

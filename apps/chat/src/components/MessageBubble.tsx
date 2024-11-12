@@ -88,13 +88,13 @@ const MessageContainer: React.FC<MessageContainerProps> = ({
 const MessageAvatar: React.FC<{ profilePicture: string }> = ({
   profilePicture,
 }) => (
-  <Avatar style={{ width: '36px', height: '36px' }}>
+  <Avatar className="h-6 w-6">
     <AvatarImage src={profilePicture} />
   </Avatar>
 );
 
 const SenderName: React.FC<{ name: string }> = ({ name }) => (
-  <h3 className="font-semibold dark:text-dark-primary">{name}</h3>
+  <h3 className="text-sm font-semibold dark:text-dark-primary">{name}</h3>
 );
 
 const MessageContent: React.FC<{ content: string; isDeleted: boolean }> = ({
@@ -114,7 +114,7 @@ const MessageTimestamp: React.FC<{ timestamp: string }> = ({ timestamp }) => (
 
 const getMessageContainerStyles = (isSentByCurrentUser: boolean): string => {
   const baseStyles =
-    'px-4 py-2 rounded-xl max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl';
+    'px-4 py-2 rounded-lg max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl';
   const conditionalStyles = isSentByCurrentUser
     ? 'rounded-tr-none dark:bg-dark-secondary'
     : 'rounded-tl-none dark:bg-dark-lavender';
@@ -125,7 +125,7 @@ const getMessageContainerStyles = (isSentByCurrentUser: boolean): string => {
 const getMessageTextStyles = (isDeleted: boolean): string => {
   return `font-primary ${
     isDeleted ? 'italic text-gray-500' : 'text-black'
-  } break-words`;
+  } break-words text-sm`;
 };
 
 const formatMessageTime = (timestamp: string): string => {
