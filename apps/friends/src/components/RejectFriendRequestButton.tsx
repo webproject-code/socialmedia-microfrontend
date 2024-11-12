@@ -33,12 +33,7 @@ const RejectFriendRequestButton: React.FC<RejectFriendRequestButtonProps> = ({
     <Button
       variant="outline"
       aria-label={`Reject friend request from ${name}`}
-      className="p-1 sm:px-4 sm:py-2 focus-visible:ring-2
-      focus-visible:ring-light-secondary
-      focus-visible:ring-offset-2
-      dark:focus-visible:ring-dark-secondary
-      dark:focus-visible:ring-offset-dark-primary
-      outline-none"
+      className="p-1 sm:px-4 sm:py-2 dark:text-dark-lavender focus-ring outline-none"
       onClick={handleReject}
       tabIndex={0}
       onKeyDown={(e) => {

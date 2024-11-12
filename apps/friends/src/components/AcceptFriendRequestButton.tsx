@@ -33,12 +33,7 @@ const AcceptFriendRequestButton: React.FC<AcceptFriendRequestButtonProps> = ({
   return (
     <Button
       aria-label={`Accept friend request from ${name}`}
-      className="p-1.5 sm:px-4 sm:py-2  focus-visible:ring-2
-      focus-visible:ring-light-secondary
-      focus-visible:ring-offset-2
-      dark:focus-visible:ring-dark-secondary
-      dark:focus-visible:ring-offset-dark-primary
-      outline-none"
+      className="p-1.5 sm:px-4 sm:py-2 focus-ring"
       tabIndex={0}
       onClick={handleAccept}
       onKeyDown={(e) => {

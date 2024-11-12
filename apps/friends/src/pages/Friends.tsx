@@ -99,7 +99,7 @@ const Friends: React.FC = () => {
             className={`${
               activeTab === 'requests' &&
               'text-light-secondary dark:text-dark-secondary'
-            }`}
+            } outline-none focus-ring`}
             onClick={() => handleTabChange('requests')}
           >
             <span className="font-semibold">Requests</span>
@@ -110,7 +110,7 @@ const Friends: React.FC = () => {
             className={`${
               activeTab === 'suggestedFriends' &&
               'text-light-secondary dark:text-dark-secondary'
-            }`}
+            } outline-none focus-ring`}
             onClick={() => handleTabChange('suggestedFriends')}
           >
             <span className="font-semibold">Suggested Friends</span>
@@ -121,7 +121,7 @@ const Friends: React.FC = () => {
             className={`${
               activeTab === 'search' &&
               'text-light-secondary dark:text-dark-secondary'
-            }`}
+            } outline-none focus-ring`}
             onClick={() => handleTabChange('search')}
           >
             <span className="font-semibold">Search</span>

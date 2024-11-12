@@ -11,3 +11,13 @@
 html {
   overflow: hidden;
 }
+
+@layer components {
+  .focus-ring {
+    @apply focus-visible:ring-2
+           focus-visible:ring-light-secondary
+           focus-visible:ring-offset-2
+           dark:focus-visible:ring-dark-secondary
+           dark:focus-visible:ring-offset-dark-primary;
+  }
+}

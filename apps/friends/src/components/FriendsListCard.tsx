@@ -42,12 +42,8 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
       role="article"
       aria-label={`Friend card for ${name}`}
       tabIndex={0}
-      className="bg-transparent cursor-pointer outline-none
-      focus-visible:ring-2
-      focus-visible:ring-light-secondary
-      focus-visible:ring-offset-2
-      dark:focus-visible:ring-dark-secondary
-      dark:focus-visible:ring-offset-dark-primary
+      className="bg-transparent cursor-pointer outline-none transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20
+      focus-ring
       "
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -58,7 +54,7 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
     >
       <Card.Content className="flex py-4 px-1 items-center justify-between gap-4">
         <div
-          className="flex gap-3 items-center h-full w-full"
+          className="flex gap-3 items-center h-full w-full px-2"
           onClick={() => navigate(`/users/${userId}`)}
           role="button"
         >
@@ -91,7 +87,17 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
               />
             </div>
           ) : (
-            <span className="text-gray-500">{requestStatus}</span>
+            <span
+              className={`px-3 py-1 rounded-md border
+                ${
+                  requestStatus === 'ACCEPTED'
+                    ? 'text-green-500 dark:text-green-400 border-green-500 dark:border-green-400'
+                    : 'text-red-500 dark:text-red-400 border-red-500 dark:border-red-400'
+                }
+              `}
+            >
+              {requestStatus}
+            </span>
           ))}
 
         {cardType === 'add' && isFriendshipStatusSuccess && (
