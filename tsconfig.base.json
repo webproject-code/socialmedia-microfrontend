@@ -18,6 +18,7 @@
       "@social-media/api": ["shared/api/src/index.ts"],
       "@social-media/utils": ["shared/utils/src/index.ts"],
       "auth/Module": ["apps/auth/src/remote-entry.ts"],
+      "friends/Module": ["apps/friends/src/remote-entry.ts"],
       "profile/Module": ["apps/profile/src/remote-entry.ts"]
     }
   },
