@@ -22,4 +22,5 @@ export type QueryPagination = {
   query?: string;
   cursor?: string;
   take?: string;
+  search?: string;
 };

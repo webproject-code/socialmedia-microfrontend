@@ -13,6 +13,7 @@ import {
 
 import { UserProfile } from 'profile/Module';
 import { Friends } from 'friends/Module';
+import { ChatsList } from 'chatlist/Module';
 import { ErrorFallback, NotFoundPage } from '@social-media/utils';
 
 export const routes: RouteObject[] = [
@@ -58,6 +59,10 @@ export const routes: RouteObject[] = [
           {
             path: '/users/:id',
             element: <UserProfile />,
+          },
+          {
+            path: '/chats',
+            element: <ChatsList />,
           },
         ],
       },
