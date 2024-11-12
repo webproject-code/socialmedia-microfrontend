@@ -4,9 +4,11 @@ export * from './components/StatusMessageBox';
 export * from './components/NotFoundPage';
 export * from './components/ErrorBoundary';
 export * from './components/ErrorFallback';
+export * from './components/Dropdown';
 
 export * from './context/ThemeContext';
 export * from './context/ReactQueryContext';
+export * from './context/SocketContext';
 
 export * from './helper';
 
