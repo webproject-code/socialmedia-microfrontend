@@ -27,7 +27,7 @@ export const fetchChatList: ChatsListService['fetchChatList'] = async (
   searchTerm,
   cursor
 ) => {
-  // CallLoginFn();
+  CallLoginFn();
   const { data } = await apiClient.get<ChatsListServiceResponse>(
     `/users/chats?query=${searchTerm ? searchTerm : ''}&cursor=${
       cursor ? cursor : ''
