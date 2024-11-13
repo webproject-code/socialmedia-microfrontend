@@ -26,11 +26,11 @@ const prodConfig: ModuleFederationConfig = {
    * ]
    */
   remotes: [
-    ['auth', 'https://social-media-auth-app.netlify.app/remoteEntry.js'],
-    ['profile', 'https://profile-mfe.netlify.app/remoteEntry.js'],
-    ['friends', 'https://friends-mfe.netlify.app/remoteEntry.js'],
-    ['app_chat', 'https://chat-mfe.netlify.app/remoteEntry.js'],
-    ['chat-list', 'https://chatlist-mfe.netlify.app/remoteEntry.js'],
+    ['auth', 'auth@https://social-media-auth-app.netlify.app/remoteEntry.js'],
+    ['profile', 'profile@https://profile-mfe.netlify.app/remoteEntry.js'],
+    ['friends', 'friends@https://friends-mfe.netlify.app/remoteEntry.js'],
+    ['app_chat', 'app_chat@https://chat-mfe.netlify.app/remoteEntry.js'],
+    ['chatlist', 'chatlist@https://chatlist-mfe.netlify.app/remoteEntry.js'],
   ],
 };
 
@@ -43,5 +43,8 @@ const prodConfig: ModuleFederationConfig = {
 export default composePlugins(
   withNx(),
   withReact(),
-  withModuleFederation(prodConfig, { dts: false })
+  withModuleFederation(prodConfig, {
+    dts: false,
+    runtime: false,
+  })
 );
