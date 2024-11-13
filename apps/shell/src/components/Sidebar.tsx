@@ -48,7 +48,7 @@ const Sidebar: React.FC = () => {
               to={to}
               className={`${
                 pathname === to
-                  ? 'text-primary dark:text-secondary'
+                  ? 'text-light-secondary dark:text-dark-secondary'
                   : 'text-gray-500 dark:text-gray-400'
               } group-hover:text-primary dark:group-hover:text-secondary`}
               aria-label={label}
