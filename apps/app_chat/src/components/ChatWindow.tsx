@@ -4,7 +4,7 @@ import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
-import { Container } from '@social-media/evoke-ui';
+import { Container, ScrollArea } from '@social-media/evoke-ui';
 
 interface ChatWindowProps {
   chatId: string;
@@ -135,7 +135,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           )}
         </div>
       )}
-
       <div className="flex flex-col-reverse mt-auto">
         {Object.entries(groupedMessages)
           .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())

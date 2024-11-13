@@ -1,10 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  addGroupChatMembers,
   getGroupChat,
+  getGroupMembers,
   getOneOnOneChat,
+  removeGroupChatMembers,
+  updateGroupChat,
   updateOneOnOneChatSettings,
 } from '../services/chat-services';
 import { OneOnOneChat, OneOnOneChatSettings } from '../types';
+import { GroupSettingsFormData } from '@social-media/utils';
 
 export const useOneOnOneChat = (chatId: string) => {
   return useQuery({
@@ -22,6 +27,13 @@ export const useGroupChat = (chatId: string) => {
   });
 };
 
+export const useGroupMembers = (chatId: string) => {
+  return useQuery({
+    queryKey: ['group-members', chatId],
+    queryFn: () => getGroupMembers(chatId),
+  });
+};
+
 export const useOneOnOneChatUpdate = (chatId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -30,6 +42,74 @@ export const useOneOnOneChatUpdate = (chatId: string) => {
     onSuccess: (data: OneOnOneChat) => {
       console.log(data);
       queryClient.setQueryData(['one-on-one', chatId], data);
+    },
+  });
+};
+
+export const useGroupChatUpdate = (chatId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      settings,
+      groupIcon,
+    }: {
+      settings: GroupSettingsFormData;
+      groupIcon?: File;
+    }) =>
+      updateGroupChat(
+        chatId,
+        {
+          name: settings.name,
+          groupDescription: settings.groupDescription,
+        },
+        groupIcon
+      ),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['group', chatId], data);
+    },
+  });
+};
+
+export const useAddMembers = (chatId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      ownerId,
+      memberIds,
+    }: {
+      ownerId: string;
+      memberIds: string[];
+    }) => {
+      return addGroupChatMembers(chatId, ownerId, memberIds);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['group-members', chatId],
+      });
+    },
+  });
+};
+
+export const useRemoveMembers = (chatId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      ownerId,
+      memberId,
+    }: {
+      ownerId: string;
+      memberId: string;
+    }) => removeGroupChatMembers(chatId, ownerId, memberId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['group-members', chatId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['group', chatId],
+      });
     },
   });
 };

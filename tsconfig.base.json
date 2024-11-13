@@ -18,7 +18,7 @@
       "@social-media/api": ["shared/api/src/index.ts"],
       "@social-media/utils": ["shared/utils/src/index.ts"],
       "auth/Module": ["apps/auth/src/remote-entry.ts"],
-      "chat/Module": ["apps/chat/src/remote-entry.ts"]
+      "app_chat/Module": ["apps/app_chat/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,3 +1,4 @@
+import { GroupSettingsFormData } from '@social-media/utils';
 import { PaginatedResponse, QueryPagination } from './utils-types';
 
 export interface ChatUser {
@@ -5,6 +6,10 @@ export interface ChatUser {
   name: string;
   profilePicture: string;
   isDeleted: boolean;
+}
+
+export interface GroupMember extends ChatUser {
+  bio: string;
 }
 
 export enum ChatType {
@@ -73,12 +78,16 @@ export interface IChatServices {
   getGroupChat(chatId: string): Promise<GroupChat>;
   updateGroupChat(
     chatId: string,
-    settings: GroupChatSettings
+    settings: GroupSettingsFormData,
+    groupIcon?: File
   ): Promise<GroupChat>;
   getGroupChatMessages(
     chatId: string,
     params?: QueryPagination
   ): Promise<PaginatedResponse<'messages', Message[]>>;
+  getGroupMembers(
+    chatId: string
+  ): Promise<PaginatedResponse<'members', GroupMember[]>>;
   addGroupChatMembers(
     chatId: string,
     ownerId: string,

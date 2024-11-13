@@ -4,8 +4,8 @@ import {
   FriendRequest,
   PaginatedResponse,
   Friend,
-  FriendRequests,
   QueryPagination,
+  User,
 } from '../types';
 
 // fetch friends
@@ -21,19 +21,19 @@ export const fetchFriends: IFriendsService['fetchFriends'] = async (
   return data;
 };
 
-// fetch friend requests
+// Fetch friend requests
 export const fetchFriendRequests: IFriendsService['fetchFriendRequests'] =
   async (userId: string, params?: QueryPagination) => {
     const { query = '', cursor = '', take = '' } = params || {};
     const { data } = await apiClient.get<
-      PaginatedResponse<'friendRequests', FriendRequests>
+      PaginatedResponse<'friendRequests', FriendRequest[]>
     >(
       `/users/${userId}/friend-requests?cursor=${cursor}&take=${take}&query=${query}`
     );
     return data;
   };
 
-// fetch suggested friends
+// Fetch suggested friends
 export const fetchSuggestedFriends: IFriendsService['fetchSuggestedFriends'] =
   async (userId: string, params?: QueryPagination) => {
     const { query = '', cursor = '', take = '' } = params || {};
@@ -45,7 +45,7 @@ export const fetchSuggestedFriends: IFriendsService['fetchSuggestedFriends'] =
     return data;
   };
 
-// fetch mutual friends
+// Fetch mutual friends
 export const fetchMutualFriends: IFriendsService['fetchMutualFriends'] = async (
   userId: string,
   friendId: string,
@@ -60,7 +60,7 @@ export const fetchMutualFriends: IFriendsService['fetchMutualFriends'] = async (
   return data;
 };
 
-//  send friend request
+// Send friend request
 export const sendFriendRequest: IFriendsService['sendFriendRequest'] = async (
   userId: string,
   friendId: string
@@ -75,27 +75,42 @@ export const sendFriendRequest: IFriendsService['sendFriendRequest'] = async (
   return data;
 };
 
-// accept or reject friend request
+// Accept or reject friend request
 export const acceptOrRejectFriendRequest: IFriendsService['acceptOrRejectFriendRequest'] =
-  async (friendId: string, status: 'ACCEPTED' | 'REJECTED') => {
-    await apiClient.put<string>(`/friend-requests/${friendId}`, {
+  async (friendRequestId: string, status: 'ACCEPTED' | 'REJECTED') => {
+    await apiClient.put<string>(`/friend-requests/${friendRequestId}`, {
       status,
     });
     return 'Friend request Updated!';
   };
 
-// cancle friend request
-export const cancleFriendRequest: IFriendsService['cancleFriendRequest'] =
-  async (friendId: string) => {
-    await apiClient.delete(`/friend-requests/${friendId}`);
+// Cancel friend request
+export const cancelFriendRequest: IFriendsService['cancelFriendRequest'] =
+  async (friendRequestId: string) => {
+    await apiClient.delete(`/friend-requests/${friendRequestId}`);
     return 'Friend request Cancelled!';
   };
 
-// remove friend
+// Remove friend
 export const removeFriend: IFriendsService['removeFriend'] = async (
   userId: string,
   friendId: string
 ) => {
   await apiClient.post(`/users/${userId}/unfriend/${friendId}`);
   return 'Friend removed successfully';
+};
+
+// Fetch users to add friend
+export const fetchUsers: IFriendsService['fetchUsers'] = async (
+  params: QueryPagination
+) => {
+  const { query = '', cursor = '', take = '' } = params || {};
+
+  if (params?.query) {
+    const { data } = await apiClient.get<PaginatedResponse<'users', User[]>>(
+      `/users?cursor=${cursor}&take=${take}&query=${query}`
+    );
+    return data;
+  }
+  return null;
 };
