@@ -8,26 +8,13 @@ import {
   createOneOnOneChatResponse,
   FriendsWithNochatResponse,
 } from '../types';
-import { login } from './auth-services';
+
 import { environment } from '../environments/environment';
-
-// const userId = '66b30bbeaea1612592e8609b';
-
-export const CallLoginFn = async () => {
-  const userData = await login({
-    email: 'kspatelsimform100@gmail.com',
-    password: '12345678',
-  });
-  if (userData) {
-    localStorage.setItem('token', userData.accessToken);
-  }
-};
 
 export const fetchChatList: ChatsListService['fetchChatList'] = async (
   searchTerm,
   cursor
 ) => {
-  CallLoginFn();
   const { data } = await apiClient.get<ChatsListServiceResponse>(
     `/users/chats?query=${searchTerm ? searchTerm : ''}&cursor=${
       cursor ? cursor : ''
@@ -87,7 +74,7 @@ export const checkOneOnOneChatStatus: ChatsListService['checkOneOnOneChatStatus'
       );
 
       return {
-        data: response.data,
+        data: response.data.data,
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
