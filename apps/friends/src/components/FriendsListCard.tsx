@@ -2,12 +2,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { Card, Divider } from '@social-media/evoke-ui';
 
-import { useFriendshipStatus } from '@social-media/api';
-
 import AcceptFriendRequestButton from './AcceptFriendRequestButton';
 import RejectFriendRequestButton from './RejectFriendRequestButton';
-import SendOrCancelRequestButton from './SendOrCancelRequestButton';
 import { useState } from 'react';
+import CancelFriendRequestButton from './CancelFriendRequestButton';
+import SendFriendRequestButton from './SendFriendRequestButton';
 
 interface FriendsListCardProps {
   profile: string;
@@ -15,7 +14,7 @@ interface FriendsListCardProps {
   cardType: 'request' | 'add' | 'search';
   currentUserId: string;
   userId: string;
-  friendRequestId?: string;
+  incomingRequestId?: string;
 }
 
 const FriendsListCard: React.FC<FriendsListCardProps> = ({
@@ -24,27 +23,24 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
   cardType,
   userId,
   currentUserId,
-  friendRequestId,
+  incomingRequestId,
 }) => {
   const navigate = useNavigate();
   const [requestStatus, setRequestStatus] = useState<
     'PENDING' | 'ACCEPTED' | 'REJECTED'
   >('PENDING');
-
-  const {
-    data: friendshipStatusResponse,
-    isLoading: isFriendshipStatusLoading,
-    isSuccess: isFriendshipStatusSuccess,
-  } = useFriendshipStatus(currentUserId, userId);
+  const [isFriendRequestSent, setIsFriendRequestSent] = useState(false);
+  const [friendRequestId, setFriendRequestId] = useState('');
 
   return (
     <Card
       role="article"
       aria-label={`Friend card for ${name}`}
       tabIndex={0}
-      className="bg-transparent cursor-pointer outline-none transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20
-      focus-ring
-      "
+      className={`bg-transparent cursor-pointer outline-none focus-ring ${
+        cardType === 'search' &&
+        'transition-colors hover:bg-light-secondary/10 dark:hover:bg-dark-secondary/20'
+      }`}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -52,9 +48,9 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
         }
       }}
     >
-      <Card.Content className="flex py-4 px-1 items-center justify-between gap-4">
+      <Card.Content className="flex py-3 items-center justify-between gap-4 px-1">
         <div
-          className="flex gap-3 items-center h-full w-full px-2"
+          className="flex gap-3 items-center h-full w-full"
           onClick={() => navigate(`/users/${userId}`)}
           role="button"
         >
@@ -69,19 +65,19 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
         </div>
 
         {cardType === 'request' &&
-          (friendRequestId && requestStatus === 'PENDING' ? (
+          (incomingRequestId && requestStatus === 'PENDING' ? (
             <div className="flex gap-2">
               <RejectFriendRequestButton
                 userId={currentUserId}
                 friendId={userId}
-                friendRequestId={friendRequestId}
+                incomingRequestId={incomingRequestId}
                 name={name}
                 onReject={() => setRequestStatus('REJECTED')}
               />
               <AcceptFriendRequestButton
                 userId={currentUserId}
                 friendId={userId}
-                friendRequestId={friendRequestId}
+                incomingRequestId={incomingRequestId}
                 name={name}
                 onAccept={() => setRequestStatus('ACCEPTED')}
               />
@@ -100,21 +96,31 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
             </span>
           ))}
 
-        {cardType === 'add' && isFriendshipStatusSuccess && (
-          <SendOrCancelRequestButton
-            userId={currentUserId}
-            friendId={userId}
-            disabled={isFriendshipStatusLoading}
-            friendshipStatus={friendshipStatusResponse}
-          />
-        )}
+        {cardType === 'add' &&
+          (isFriendRequestSent && friendRequestId ? (
+            <CancelFriendRequestButton
+              userId={currentUserId}
+              friendId={userId}
+              onCancel={() => setIsFriendRequestSent(false)}
+              friendRequestId={friendRequestId}
+            />
+          ) : (
+            <SendFriendRequestButton
+              userId={currentUserId}
+              friendId={userId}
+              onSend={(requestId) => {
+                setFriendRequestId(requestId);
+                setIsFriendRequestSent(true);
+              }}
+            />
+          ))}
       </Card.Content>
       <Divider
         alignment="horizontal"
         textAlign="center"
         type="solid"
         variant="fullWidth"
-        className="border-b-0 border-gray-400"
+        className="border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
       />
     </Card>
   );

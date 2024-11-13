@@ -84,14 +84,10 @@ const Friends: React.FC = () => {
       role="main"
       className="bg-light-primary dark:bg-dark-primary dark:text-white w-full h-full text-sm lg:text-md"
     >
-      <Tabs
-        defaultValue={activeTab}
-        className="h-full border-light-silverSteel/30 dark:border-dark-silverSteel/30"
-        border
-      >
+      <Tabs defaultValue={activeTab} className="h-full p-0">
         <TabsList
           aria-label="Friendship management sections"
-          className="mb-2 h-fit justify-between sm:justify-start text-lg"
+          className="mb-0 h-fit py-2 sm:py-4 justify-between sm:justify-start text-lg bg-gray-200 dark:bg-dark-modalColor/40 border border-b-0 rounded-t-md border-light-silverSteel/30 dark:border-dark-silverSteel/3"
         >
           <TabsTrigger
             value="requests"
@@ -129,9 +125,14 @@ const Friends: React.FC = () => {
         </TabsList>
 
         {/* Friend Requests Tab */}
-        <TabsContent value="requests" className="h-[90%]">
+        <TabsContent
+          value="requests"
+          className="h-[90%] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md"
+        >
           {isFriendRequestsLoading && (
-            <FriendsListCardSkeleton cardType="request" />
+            <div className="p-2 h-[95%] overflow-hidden">
+              <FriendsListCardSkeleton cardType="request" />
+            </div>
           )}
           {!isFriendRequestsLoading && friendRequests?.length === 0 && (
             <IllustrationImage
@@ -151,7 +152,7 @@ const Friends: React.FC = () => {
                   name={request.sender.name}
                   cardType="request"
                   currentUserId={currentUserId}
-                  friendRequestId={request.id}
+                  incomingRequestId={request.id}
                   userId={request.sender.id}
                 />
               ))}
@@ -166,9 +167,14 @@ const Friends: React.FC = () => {
         </TabsContent>
 
         {/* Suggested Friends Tab */}
-        <TabsContent value="suggestedFriends" className="h-[90%]">
+        <TabsContent
+          value="suggestedFriends"
+          className="h-[90%] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md"
+        >
           {isSuggestedFriendsLoading && (
-            <FriendsListCardSkeleton cardType="add" />
+            <div className="p-2 h-[95%] overflow-hidden">
+              <FriendsListCardSkeleton cardType="add" />
+            </div>
           )}
           {!isSuggestedFriendsLoading && suggestedFriends.length === 0 && (
             <IllustrationImage
@@ -202,9 +208,16 @@ const Friends: React.FC = () => {
         </TabsContent>
 
         {/* Search Tab */}
-        <TabsContent value="search" className="h-[90%]">
+        <TabsContent
+          value="search"
+          className="h-[90%] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md px-3"
+        >
           <FriendSearch onSearch={handleSearch} searchTerm={searchTerm} />
-          {isUsersLoading && <FriendsListCardSkeleton cardType="search" />}
+          {isUsersLoading && (
+            <div className="p-2 h-[95%] overflow-hidden">
+              <FriendsListCardSkeleton cardType="search" />
+            </div>
+          )}
           {!searchTerm && (
             <IllustrationImage
               src={`assets/images/${

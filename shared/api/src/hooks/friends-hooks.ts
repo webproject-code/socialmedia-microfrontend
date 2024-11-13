@@ -268,6 +268,7 @@ export const useAcceptFriendRequest = (
       });
       queryClient.invalidateQueries({ queryKey: ['friends', userId] });
       queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
+      queryClient.invalidateQueries({ queryKey: ['friendRequests', userId] });
     },
   });
 };
@@ -286,6 +287,7 @@ export const useRejectFriendRequest = (
         friendRequestId: friendRequestId,
         status: 'NOT_FRIENDS',
       });
+      queryClient.invalidateQueries({ queryKey: ['friendRequests', userId] });
     },
   });
 };

@@ -7,7 +7,7 @@ import { useRejectFriendRequest } from '@social-media/api';
 interface RejectFriendRequestButtonProps {
   userId: string;
   friendId: string;
-  friendRequestId: string;
+  incomingRequestId: string;
   name: string;
   onReject: () => void;
 }
@@ -15,14 +15,14 @@ interface RejectFriendRequestButtonProps {
 const RejectFriendRequestButton: React.FC<RejectFriendRequestButtonProps> = ({
   userId,
   friendId,
-  friendRequestId,
+  incomingRequestId,
   name,
   onReject,
 }) => {
   const { mutate: acceptOrRejectFriendRequest } = useRejectFriendRequest(
     userId,
     friendId,
-    friendRequestId
+    incomingRequestId
   );
 
   const handleReject = () => {
@@ -33,7 +33,7 @@ const RejectFriendRequestButton: React.FC<RejectFriendRequestButtonProps> = ({
     <Button
       variant="outline"
       aria-label={`Reject friend request from ${name}`}
-      className="p-1 sm:px-4 sm:py-2 dark:text-dark-lavender focus-ring outline-none"
+      className="p-1 sm:px-3 focus-ring outline-none"
       onClick={handleReject}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -41,7 +41,7 @@ const RejectFriendRequestButton: React.FC<RejectFriendRequestButtonProps> = ({
         if (e.key === 'Enter') handleReject();
       }}
     >
-      <RxCross2 className="w-4 h-4 sm:w-5 sm:h-5" />
+      <RxCross2 className="w-4 h-4" />
       <p className="hidden sm:block">Reject</p>
     </Button>
   );
