@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   acceptOrRejectFriendRequest,
   cancelFriendRequest,
@@ -8,15 +13,60 @@ import {
   sendFriendRequest,
 } from '../services/friends-services';
 import { FriendRequest, QueryPagination } from '../types';
+import { useCallback, useMemo } from 'react';
+import { useInfiniteScroll } from '../axios/useInfiniteScroll';
 
 // fetch friends
 export const useFriends = (userId: string, params?: QueryPagination) => {
-  return useQuery({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery({
     queryKey: ['friends', userId],
-    queryFn: () => fetchFriends(userId, params),
+    queryFn: ({ pageParam }) =>
+      fetchFriends(userId, { ...params, cursor: pageParam }),
+    getNextPageParam: (lastPage) =>
+      lastPage.pagination.hasNextPage
+        ? lastPage.pagination.nextCursor
+        : undefined,
+    initialPageParam: '',
     gcTime: 1000 * 60 * 10,
     staleTime: 1000 * 60 * 10,
   });
+
+  // Flatten the pages into a single array
+  const friends = useMemo(() => {
+    if (!data?.pages) return [];
+    const allFriends = data.pages.flatMap((page) => page.friends);
+    return [...new Set(allFriends)];
+  }, [data?.pages]);
+
+  // Handler for loading more data
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  // Using custom hook to trigger loading more data when reaching the bottom
+  const bottomRef = useInfiniteScroll(loadMore);
+
+  return {
+    friends,
+    isLoading,
+    isFetchingNextPage,
+    isError,
+    error,
+    hasNextPage,
+    bottomRef,
+    refetch,
+  };
 };
 
 // mutual friends

@@ -74,10 +74,10 @@ const Home: React.FC = () => {
             </Button>
             <Button
               className="w-fit"
-              onClick={() => loginHandler('vanshita@gmail.com', '12345678')}
+              onClick={() => loginHandler('ritesh@gmail.com', '12345678')}
               disabled={isPending}
             >
-              {isPending && activeUser === 'vanshita@gmail.com'
+              {isPending && activeUser === 'ritesh@gmail.com'
                 ? 'Logging in User 2...'
                 : 'Login as User 2'}
             </Button>

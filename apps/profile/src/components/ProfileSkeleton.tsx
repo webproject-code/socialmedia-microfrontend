@@ -4,7 +4,7 @@ import ProfileInfoSkeleton from './ProfileInfoSkeleton';
 
 const ProfileSkeleton = () => {
   return (
-    <Stack direction="column" spacing="xxlarge" className="w-full h-full">
+    <Stack direction="column" spacing="medium" className="w-full h-full">
       <ProfileInfoSkeleton />
       <Stack direction="column" spacing="large" className="px-2">
         <Stack spacing="medium">

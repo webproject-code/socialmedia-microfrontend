@@ -16,7 +16,10 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
   const closeModal = () => setIsOpen(false);
   return (
     <div>
-      <Button onClick={openModal} className="w-fit text-nowrap">
+      <Button
+        onClick={openModal}
+        className="xs:w-full sm:w-fit text-nowrap flex-1"
+      >
         Edit Profile
       </Button>
       {isOpen && (

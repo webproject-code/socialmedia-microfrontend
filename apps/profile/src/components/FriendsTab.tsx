@@ -1,7 +1,7 @@
 import { Box, Grid, ScrollArea, Stack } from '@social-media/evoke-ui';
 import FriendsCard from './FriendsCard';
 import { useFriends } from '@social-media/api';
-import { useTheme } from '@social-media/utils';
+import { Spinner, useTheme } from '@social-media/utils';
 import FriendsListSkeleton from './FriendsListSkeleton';
 
 type FriendsTabProps = {
@@ -9,14 +9,13 @@ type FriendsTabProps = {
 };
 
 const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
-  const { data: friendDetails } = useFriends(userId);
+  const { friends, bottomRef, isFetchingNextPage } = useFriends(userId);
   const theme = useTheme();
-
-  if (!friendDetails) {
+  if (!friends) {
     return <FriendsListSkeleton />;
   }
 
-  return friendDetails.friends.length === 0 ? (
+  return friends.length === 0 ? (
     <Stack
       align="center"
       justify="center"
@@ -42,16 +41,19 @@ const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
       </Box>
     </Stack>
   ) : (
-    <ScrollArea className="h-full w-full">
+    <ScrollArea className="h-full">
       <Grid
         spacing={'medium'}
         columns={{ sm: 1, md: 2, lg: 3 }}
         columnSpacing={'medium'}
       >
-        {friendDetails.friends.map((friend) => {
+        {friends.map((friend) => {
           return <FriendsCard key={friend.id} friend={friend} />;
         })}
       </Grid>
+      <div ref={bottomRef} className="flex justify-center">
+        {isFetchingNextPage && <Spinner />}
+      </div>
     </ScrollArea>
   );
 };

@@ -26,7 +26,9 @@ const LogoutButton: React.FC = () => {
 
   return (
     <>
-      <Button onClick={openModal}>Logout</Button>
+      <Button onClick={openModal} className="xs:w-full sm:w-fit flex-1">
+        Logout
+      </Button>
       {isOpen && (
         <Modal
           size={'lg'}

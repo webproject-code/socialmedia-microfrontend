@@ -30,7 +30,7 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
         onClick={handleClick}
       >
         <img
-          className="w-11 h-11 rounded-full ring-1 ring-secondary"
+          className="w-11 h-11 rounded-full"
           src={friend.profilePicture}
           alt="profile"
         />
