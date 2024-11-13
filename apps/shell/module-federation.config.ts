@@ -14,7 +14,13 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: ['auth', 'profile', 'friends', 'chatlist', 'app_chat'],
+  remotes: [
+    ['auth', 'auth@https://social-media-auth-app.netlify.app/remoteEntry.js'],
+    ['profile', 'profile@https://profile-mfe.netlify.app/remoteEntry.js'],
+    ['friends', 'friends@https://friends-mfe.netlify.app/remoteEntry.js'],
+    ['app_chat', 'app_chat@https://chat-mfe.netlify.app/remoteEntry.js'],
+    ['chatlist', 'chatlist@https://chatlist-mfe.netlify.app/remoteEntry.js'],
+  ],
   shared: (library, defaultConfig) => {
     if (library === '@social-media/evoke-ui') {
       return {
