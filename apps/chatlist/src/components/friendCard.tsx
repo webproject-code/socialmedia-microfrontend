@@ -50,7 +50,11 @@ export const FriendCard: React.FC<FriendCardProps> = ({
           <Box className="flex items-center justify-between gap-2 sm:gap-4">
             <Box className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
               <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
-                <AvatarImage src={profilePicture} alt={name} />
+                <AvatarImage
+                  src={profilePicture}
+                  alt={name}
+                  className="ring-0 shadow-lg"
+                />
               </Avatar>
               <Box className="flex flex-col min-w-0">
                 <h6 className="font-bold font-primary text-sm sm:text-base truncate">
@@ -70,7 +74,10 @@ export const FriendCard: React.FC<FriendCardProps> = ({
           </Box>
         </Card.Content>
       </Card>
-      <Divider alignment="horizontal" className="my-1" />
+      <Divider
+        alignment="horizontal"
+        className="my-1 border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+      />
     </>
   );
 };

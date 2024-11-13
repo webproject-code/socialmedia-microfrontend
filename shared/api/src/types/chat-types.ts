@@ -35,6 +35,7 @@ export interface OneOnOneChat {
   participant: ChatUser;
   name: string;
   messages: Message[];
+  unreadCount: number;
   type: ChatType.ONE_ON_ONE;
   lastMessageAt: string;
   // "deletedForInitiator": null,
@@ -53,9 +54,11 @@ export interface GroupChat {
   groupIcon: string;
   createdAt: string;
   updateAt: string;
+  lastMessageAt: string;
   messages: Message[];
   memberIds: string[];
   type: ChatType.GROUP;
+  unreadCount: number;
 }
 
 export interface GroupChatSettings {

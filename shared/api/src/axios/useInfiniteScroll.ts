@@ -19,7 +19,6 @@ export const useInfiniteScroll = (
     },
     [onReachBottom]
   );
-
   useEffect(() => {
     if (!targetRef.current) return;
 

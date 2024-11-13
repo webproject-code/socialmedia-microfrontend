@@ -44,6 +44,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
       { initiatorId: currentUserId, participantId: id },
       {
         onSuccess: (data) => {
+          setIsModalOpen(false);
           navigate(`/chats/one-on-one/${data.id}`);
         },
       }
@@ -121,6 +122,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                 memberList={memberIds}
                 setMemberList={setMemberIds}
                 onCancel={() => setGroupChat(!groupChat)}
+                closeModal={setIsModalOpen}
               />
             )}
             <div className="relative my-2 mt-6">

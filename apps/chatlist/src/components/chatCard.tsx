@@ -8,10 +8,12 @@ import { KeyboardEvent as ReactKeyboardEvent } from 'react';
 interface ChatCardProps {
   name: string;
   lastMessage: string;
-  lastMessageTime: Date;
+  lastMessageTime: string;
   profileImage: string;
   chatId: string;
   type: ChatType;
+  unreadCount: number;
+  updateCount: (chatId: string, newUnreadCount: number) => void;
 }
 
 export const ChatCard: React.FC<ChatCardProps> = ({
@@ -21,6 +23,8 @@ export const ChatCard: React.FC<ChatCardProps> = ({
   profileImage,
   chatId,
   type,
+  unreadCount = 0,
+  updateCount,
 }) => {
   const formattedMessageTime = formatDate(lastMessageTime);
   const navigate = useNavigate();
@@ -28,7 +32,8 @@ export const ChatCard: React.FC<ChatCardProps> = ({
   const activeChat = pathname.split('/')[3] === chatId;
   const handleCardClick = useCallback(() => {
     navigate(`${type === 'ONE_ON_ONE' ? 'one-on-one' : 'group'}/${chatId}`);
-  }, [navigate, chatId, type]);
+    updateCount(chatId, 0);
+  }, [navigate, chatId, type, updateCount]);
 
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -39,7 +44,7 @@ export const ChatCard: React.FC<ChatCardProps> = ({
     },
     [handleCardClick]
   );
-  const unreadCount = 3;
+
   return (
     <>
       <Card
@@ -58,12 +63,16 @@ export const ChatCard: React.FC<ChatCardProps> = ({
         onKeyDown={handleKeyDown}
         aria-label={'chat'}
       >
-        <Card.Content className="p-2 sm:p-3">
+        <Card.Content className="p-2">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             {/* Left side - Avatar and Text */}
             <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
               <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
-                <AvatarImage src={profileImage} alt={name} />
+                <AvatarImage
+                  src={profileImage}
+                  alt={name}
+                  className="ring-0 shadow-lg"
+                />
               </Avatar>
 
               <div className="flex flex-col min-w-0">
@@ -90,7 +99,10 @@ export const ChatCard: React.FC<ChatCardProps> = ({
           </div>
         </Card.Content>
       </Card>
-      <Divider alignment="horizontal" className="my-1" />
+      <Divider
+        alignment="horizontal"
+        className="my-1 border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+      />
     </>
   );
 };
