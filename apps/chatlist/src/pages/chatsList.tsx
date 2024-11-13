@@ -4,7 +4,7 @@ import { ChatCardList } from '../components/chatCardList';
 export const ChatsList = () => {
   return (
     <Container>
-      <Box className="p-2">
+      <Box className="p-0">
         <ChatCardList />
       </Box>
     </Container>

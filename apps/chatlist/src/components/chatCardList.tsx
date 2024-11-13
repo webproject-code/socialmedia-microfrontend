@@ -1,5 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Input, ScrollArea } from '@social-media/evoke-ui';
+import {
+  Avatar,
+  AvatarImage,
+  Box,
+  Button,
+  Divider,
+  Input,
+  ScrollArea,
+} from '@social-media/evoke-ui';
 import { Chat, useChatList } from '@social-media/api';
 import { Spinner, useDebounce, useTheme } from '@social-media/utils';
 import { CreateChatModal } from './createChatModal';
@@ -9,6 +17,7 @@ import { FaPlus } from 'react-icons/fa';
 
 // import { useStore } from 'auth/Module';
 import { ChatListSkeleton } from './chatListSkeleton';
+import { useChatlistSocketListen } from '../hooks/useChatlistSocketListen';
 
 export const ChatCardList = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,7 +25,8 @@ export const ChatCardList = () => {
   // const { user } = useStore();
   const currentUserId = '672c92f5b5c8bd867f52cbb6';
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const { chats, isLoading, isFetchingNextPage, bottomRef, updateUnreadCount } =
+  const { updateUnreadCount } = useChatlistSocketListen();
+  const { chats, isLoading, isFetchingNextPage, bottomRef } =
     useChatList(debouncedSearchTerm);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleChange = useCallback(
@@ -51,8 +61,29 @@ export const ChatCardList = () => {
   }, []);
 
   return (
-    <Box className="p-0">
-      <Box className="flex gap-4 items-center py-2 mx-4">
+    <>
+      <Box className="flex gap-4 justify-stretch items-center py-3 px-2">
+        <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
+          <AvatarImage
+            src={'https://mui.com/static/images/avatar/2.jpg'}
+            alt={'user-profile'}
+            className="ring-0 shadow-lg"
+          />
+        </Avatar>
+        <Box className="p-0">
+          <h6 className="font-secondary font-bold text-light-secondary text-xl dark:text-dark-lavender">
+            Bujange Bapek
+          </h6>
+          <p className="font-secondary font-semibold text-sm dark:text-dark-secondary">
+            My Account
+          </p>
+        </Box>
+      </Box>
+      <Divider
+        alignment="horizontal"
+        className="my-1 border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+      />
+      <Box className="flex gap-4 items-center py-2 mx-2">
         <Box className="w-full">
           <Input
             type="text"
@@ -105,7 +136,7 @@ export const ChatCardList = () => {
               />
             </Box>
           ) : (
-            <ScrollArea className="h-[calc(100vh-100px)] border-none px-2">
+            <ScrollArea className="h-[calc(100vh-100px)] border-none">
               <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
                 {chats.map(renderChatCard)}
                 <div ref={bottomRef}>
@@ -126,6 +157,6 @@ export const ChatCardList = () => {
         setIsModalOpen={setIsModalOpen}
         currentUserId={currentUserId}
       />
-    </Box>
+    </>
   );
 };

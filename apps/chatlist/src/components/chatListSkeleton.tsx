@@ -11,7 +11,12 @@ export const ChatListSkeleton = () => {
                 {/* Left side - Avatar and Text */}
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                   {/* Avatar skeleton */}
-                  <Skeleton variant="circular" />
+                  <div className="w-10 h-10 sm:w-7 sm:h-7 mr-2">
+                    <Skeleton
+                      variant="circular"
+                      className="w-7 h-7 md:w-10 md:h-10"
+                    />
+                  </div>
                   {/* Text content skeleton */}
                   <div className="flex flex-col flex-1 gap-2">
                     {/* Name skeleton */}
