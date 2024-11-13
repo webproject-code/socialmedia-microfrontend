@@ -25,7 +25,13 @@ const prodConfig: ModuleFederationConfig = {
    *   ['app2', 'http://example.com/path/to/app2/remoteEntry.js'],
    * ]
    */
-  remotes: ['auth', 'profile', 'friends', 'chatlist', 'app_chat'],
+  remotes: [
+    ['auth', 'https://social-media-auth-app.netlify.app/remoteEntry.js'],
+    ['profile', 'https://profile-mfe.netlify.app/remoteEntry.js'],
+    ['friends', 'https://friends-mfe.netlify.app/remoteEntry.js'],
+    ['app_chat', 'https://chat-mfe.netlify.app/remoteEntry.js'],
+    ['chat-list', 'https://chatlist-mfe.netlify.app/remoteEntry.js'],
+  ],
 };
 
 // Nx plugins for rspack to build config object from Nx options and context.
