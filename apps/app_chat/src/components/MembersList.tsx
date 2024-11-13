@@ -55,11 +55,11 @@ const MembersList: React.FC<MembersListProps> = ({
               className="flex items-center justify-between py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900"
             >
               <div className="flex items-center space-x-3">
-                <Avatar size="sm">
+                <Avatar className="h-7 w-7">
                   <AvatarImage src={member.profilePicture} />
                 </Avatar>
                 <div className="flex flex-col">
-                  <p className="font-medium dark:text-dark-lavender truncate">
+                  <p className="dark:text-dark-lavender truncate">
                     {member.name} {member.id === ownerId && ` (Owner)`}
                   </p>
                   {member.bio && (

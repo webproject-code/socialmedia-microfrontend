@@ -11,4 +11,6 @@ export * from './context/SocketContext';
 export * from './hooks/useTheme';
 export * from './hooks/useOrigin';
 
+export * from './store/store';
+
 export * from './schemas/chat-schema';

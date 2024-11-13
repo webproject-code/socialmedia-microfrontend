@@ -1,18 +1,17 @@
 import {
   ChatType,
-  GroupChat,
   OneOnOneChat,
   useOneOnOneChatUpdate,
 } from '@social-media/api';
 import { Avatar, AvatarImage, Button, Input } from '@social-media/evoke-ui';
+import { useStore } from '@social-media/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { useMessagesSearch } from '../hooks/useMessagesSearch';
 import { useTypingStatus } from '../hooks/useTypingStatus';
-import { useChatStore } from '../store/useChatStore';
 import ChatSettings from './ChatSettings';
-import { useNavigate } from 'react-router-dom';
 import GroupChatInfoModal from './GroupChatInfoModal';
 
 interface ChatHeaderProps {
@@ -34,7 +33,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { setSearchResults } = useChatStore();
+  const { setSearchResults } = useStore();
 
   const { mutate } = useOneOnOneChatUpdate(chatId!);
   const { typingMessage } = useTypingStatus({ chatType });
