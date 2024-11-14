@@ -28,6 +28,7 @@ export const handleError = async (error: AxiosError): Promise<ApiError> => {
         };
         break;
       case 401:
+        window.location.href = '/auth/login';
         // const orignalRequest = error.config;
 
         // if (!isRefreshing) {

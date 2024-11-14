@@ -7,6 +7,7 @@ import {
 } from '../services/profile-services';
 import { EditUser, UserProfile } from '../types';
 
+// Fetch profile details of logged in user
 export const useProfile = () => {
   return useQuery({
     queryKey: ['profile'],
@@ -14,6 +15,7 @@ export const useProfile = () => {
   });
 };
 
+// Fetch a particular user's details
 export const useUser = (userId: string) => {
   return useQuery({
     queryKey: ['user', userId],
@@ -21,6 +23,7 @@ export const useUser = (userId: string) => {
   });
 };
 
+// Update profile
 export const useProfileUpdate = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -32,6 +35,7 @@ export const useProfileUpdate = () => {
   });
 };
 
+// Fetch friendship status
 export const useFriendshipStatus = (userId: string, friendId: string) => {
   return useQuery({
     queryKey: ['friendshipStatus', userId, friendId],
