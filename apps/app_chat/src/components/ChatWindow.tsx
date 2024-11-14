@@ -1,10 +1,14 @@
-import { ChatType, Message, useProfile } from '@social-media/api';
-import React, { ElementRef, useRef, useMemo } from 'react';
-import { useChatQuery } from '../hooks/useChatQuery';
-import { useChatScroll } from '../hooks/useChatScroll';
+import {
+  ChatType,
+  Message,
+  useChatQuery,
+  useChatScroll,
+  useProfile,
+} from '@social-media/api';
+import { Container } from '@social-media/evoke-ui';
+import React, { ElementRef, useMemo, useRef } from 'react';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
-import { Container } from '@social-media/evoke-ui';
 
 interface ChatWindowProps {
   chatId: string;
@@ -28,12 +32,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const chatRef = useRef<ElementRef<'div'>>(null);
   const bottomRef = useRef<ElementRef<'div'>>(null);
 
+  console.log('in chat window calling chat query');
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
       chatId,
       chatType,
     });
-
+  console.log(data, 'data in window');
   useChatSocket({ addKey, updateKey, chatId });
   useChatScroll({
     chatRef,

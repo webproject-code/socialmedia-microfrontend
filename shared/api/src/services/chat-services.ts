@@ -34,12 +34,14 @@ export const updateOneOnOneChatSettings: IChatServices['updateOneOnOneChatSettin
 
 export const getOneOnOneChatMessages: IChatServices['getOneOnOneChatMessages'] =
   async (chatId: string, params?: QueryPagination) => {
+    console.log('in chat service');
     const { search = '', cursor = '', take = '' } = params || {};
     const { data } = await apiClient.get<
       PaginatedResponse<'messages', Message[]>
     >(
       `${ONE_ON_ONE_CHAT_ENDPOINT}/${chatId}/messages?cursor=${cursor}&take=${take}&search=${search}`
     );
+    console.log(data);
     return data;
   };
 
@@ -77,6 +79,8 @@ export const updateGroupChat: IChatServices['updateGroupChat'] = async (
 
 export const getGroupChatMessages: IChatServices['getGroupChatMessages'] =
   async (chatId: string, params?: QueryPagination) => {
+    console.log('in chat service');
+
     const { search = '', cursor = '', take = '' } = params || {};
 
     const { data } = await apiClient.get<
@@ -84,6 +88,7 @@ export const getGroupChatMessages: IChatServices['getGroupChatMessages'] =
     >(
       `${GROUP_CHAT_ENDPOINT}/${chatId}/messages?cursor=${cursor}&take=${take}&search=${search}`
     );
+    console.log(data);
     return data;
   };
 
