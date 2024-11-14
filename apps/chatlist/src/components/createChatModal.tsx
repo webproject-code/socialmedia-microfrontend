@@ -145,15 +145,17 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                 </Box>
               ) : friends?.length === 0 ? (
                 <Box className="flex justify-center items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
-                  <img
-                    src={
-                      isDarkTheme
-                        ? 'assets/Images/dark-no-results-found-image.svg'
-                        : 'assets/Images/light-no-results-found-image.svg'
-                    }
-                    alt="search not found"
-                    className="object-fill h-[60%] w-[60%]"
-                  />
+                  <div className="w-[20%] md:w-[50%]">
+                    <img
+                      src={
+                        isDarkTheme
+                          ? 'assets/Images/dark-no-results-found-image.svg'
+                          : 'assets/Images/light-no-results-found-image.svg'
+                      }
+                      alt="search not found"
+                      className="object-fill h-[60%] w-[60%]"
+                    />
+                  </div>
                   <p className="font-primary">No User found !</p>
                 </Box>
               ) : (
