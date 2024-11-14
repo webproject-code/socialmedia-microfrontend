@@ -3,12 +3,14 @@ import { Box, Stack } from '@social-media/evoke-ui';
 import { IoChatbubbleEllipses } from 'react-icons/io5';
 
 import { useNavigate } from 'react-router-dom';
+import { checkOneOnOneChatStatus } from '@social-media/api';
 
 type FriendsCardProps = {
   friend: Friend;
+  userId: string;
 };
 
-const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
+const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -16,7 +18,11 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
   };
 
   const handleNavigateToChat = () => {
-    // Implement navigation to chat functionality here
+    checkOneOnOneChatStatus(userId, friend.id).then((response) => {
+      if (response.data) {
+        navigate(`/chats/one-on-one/${response.data.id}`);
+      }
+    });
   };
 
   return (
@@ -41,11 +47,8 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
           </p>
         </div>
       </div>
-      <Box className="p-4">
-        <IoChatbubbleEllipses
-          className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer"
-          onClick={handleNavigateToChat}
-        />
+      <Box className="p-4" onClick={handleNavigateToChat}>
+        <IoChatbubbleEllipses className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer" />
       </Box>
     </Stack>
   );
