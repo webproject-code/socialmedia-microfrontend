@@ -120,20 +120,21 @@ export const ChatCardList = () => {
           <ChatListSkeleton />
         </Box>
       ) : (
-        <Box className="w-full h-[calc(100vh-150px)]">
+        <div className="">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-120px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
-              <div className=" w-[20%] md:w-[50%]">
-                <img
-                  src={
-                    isDarkTheme
-                      ? 'assets/Images/dark-no-results-found-image.svg'
-                      : 'assets/Images/light-no-results-found-image.svg'
-                  }
-                  alt="search not found"
-                  className="object-fill "
-                />
-              </div>
+            <Box className="flex justify-center h-[calc(100vh-150px)] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
+              <img
+                src={
+                  isDarkTheme
+                    ? 'assets/Images/dark-no-results-found-image.svg'
+                    : 'assets/Images/light-no-results-found-image.svg'
+                }
+                width={300}
+                height={300}
+                alt="search not found"
+                className="object-fill"
+              />
+
               <p className="font-primary">No chats found !</p>
             </Box>
           ) : (
@@ -151,7 +152,7 @@ export const ChatCardList = () => {
               </Box>
             </ScrollArea>
           )}
-        </Box>
+        </div>
       )}
       <CreateChatModal
         isModalOpen={isModalOpen}
