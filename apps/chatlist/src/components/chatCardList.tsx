@@ -120,7 +120,7 @@ export const ChatCardList = () => {
           <ChatListSkeleton />
         </Box>
       ) : (
-        <Box className="w-full h-[calc(100vh-150px)]">
+        <Box className="w-full h-[calc(100vh-100px)]">
           {chats?.length === 0 ? (
             <Box className="flex justify-center h-[calc(100vh-100px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
               <img

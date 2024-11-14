@@ -165,6 +165,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                       email={user.email}
                       profilePicture={user.profilePicture}
                       onClickHandler={() => handleCardClick(user.id, user.name)}
+                      groupChat={groupChat}
                     />
                   ))}
                   <div ref={bottomRef}>
