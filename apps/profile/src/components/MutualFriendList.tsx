@@ -41,12 +41,16 @@ const MutualFriendList: React.FC<MutualFriendListProps> = ({
       <p>
         <span className="me-1">Followed By</span>
         <span className="text-light-secondary dark:text-dark-secondary ">
-          {data.mutualFriends.map((friend) => {
+          {data.mutualFriends.slice(0, 3).map((friend, index) => {
             return (
               <span key={friend.id}>
-                <Link to={`/users/${friend.id}`} className="font-semibold">
+                <Link
+                  to={`/users/${friend.id}`}
+                  className="font-semibold hover:underline"
+                >
                   {friend.name}
                 </Link>
+                {index < data.mutualFriends.length - 1 && ', '}
               </span>
             );
           })}
