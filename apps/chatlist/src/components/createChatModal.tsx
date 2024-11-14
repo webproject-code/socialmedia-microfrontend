@@ -154,7 +154,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                     alt="search not found"
                     className="object-fill h-[60%] w-[60%]"
                   />
-                  <p className="font-primary">No chats found !</p>
+                  <p className="font-primary">No User found !</p>
                 </Box>
               ) : (
                 <div className="space-y-1">
