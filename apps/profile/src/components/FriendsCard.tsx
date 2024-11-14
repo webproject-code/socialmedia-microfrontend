@@ -31,7 +31,8 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
     <Stack
       align="center"
       justify="between"
-      className="w-full border-2 border-light-silverSteel/10 dark:border-dark-silverSteel/10  rounded-md cursor-pointer dark:hover:bg-dark-modalColor/20 hover:bg-light-modalColor"
+      className="w-full border-2 border-light-silverSteel/10 dark:border-dark-silverSteel/10  rounded-md cursor-pointer dark:hover:bg-dark-modalColor/20 hover:bg-light-modalColor focus-ring outline-0"
+      tabIndex={0}
     >
       <div
         className="flex gap-4 items-center w-full cursor-pointer p-4"
@@ -51,7 +52,10 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
       </div>
       {!isOwner && (
         <Box className="p-4" onClick={handleNavigateToChat}>
-          <IoChatbubbleEllipses className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer" />
+          <IoChatbubbleEllipses
+            tabIndex={0}
+            className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer focus-ring outline-0"
+          />
         </Box>
       )}
     </Stack>

@@ -15,6 +15,7 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({
     <Button
       className="sm:w-[200px] dark:text-dark-primary "
       onClick={() => sendFriendRequest()}
+      tabIndex={0}
     >
       Add Friend
     </Button>
