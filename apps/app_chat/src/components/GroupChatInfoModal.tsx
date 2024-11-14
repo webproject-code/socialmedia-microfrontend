@@ -223,14 +223,16 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
                       Add Members
                     </Button>
                   ) : (
-                    <Button
-                      className="w-fit  dark:text-dark-secondary"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setIsAddingMembersOpen(false)}
-                    >
-                      Cancel
-                    </Button>
+                    isOwner && (
+                      <Button
+                        className="w-fit  dark:text-dark-secondary"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsAddingMembersOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                    )
                   )}
                 </div>
                 {isAddingMembersOpen ? (
