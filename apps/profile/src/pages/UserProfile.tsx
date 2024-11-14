@@ -27,7 +27,7 @@ const UserProfile = () => {
   const isOwner = user?.id === visitedUser?.id;
 
   return (
-    <Stack direction="column" spacing="xxlarge" className="h-full w-full">
+    <Stack direction="column" spacing="medium" className="h-full w-full">
       {visitedUser ? (
         <>
           <ProfileInfo profile={visitedUser} isOwner={isOwner} />

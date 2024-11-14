@@ -13,7 +13,7 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({
   const { mutate: sendFriendRequest } = useSendFriendRequest(userId, friendId);
   return (
     <Button
-      className="w-fit dark:text-dark-primary"
+      className="sm:w-[200px] dark:text-dark-primary "
       onClick={() => sendFriendRequest()}
     >
       Add Friend

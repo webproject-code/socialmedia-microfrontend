@@ -14,13 +14,13 @@ const UserNotFound: React.FC = () => {
       direction="column"
       align="center"
       justify="center"
-      className="bg-light-primary dark:bg-dark-primary min-h-screen w-screen p-4 md:p-10 max-w-4xl mx-auto text-light-silverSteel dark:text-dark-silverSteel"
+      className="h-full"
     >
       <FaUserSlash className=" w-24 h-24 mb-4" />
       <h1 className="font-secondary text-2xl md:text-3xl font-semibold mb-2">
         User Not Found
       </h1>
-      <p>
+      <p className="mt-2 text-sm text-light-silverSteel dark:text-dark-silverSteel">
         Sorry, the user you are looking for does not exist or has been removed.
       </p>
       <Button onClick={handleGoBack} className="w-fit mt-4">

@@ -12,7 +12,7 @@ const RemoveFriendButton: React.FC<RemoveFriendButtonProps> = ({
 }) => {
   const { mutate: removeFriend } = useRemoveFriend(userId, friendId);
   return (
-    <Button className="w-fit" onClick={() => removeFriend()}>
+    <Button className="xs:w-full sm:w-fit" onClick={() => removeFriend()}>
       Remove Friend
     </Button>
   );

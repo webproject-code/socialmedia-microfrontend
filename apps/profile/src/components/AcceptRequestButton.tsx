@@ -26,19 +26,19 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
     friendRequestId
   );
   return (
-    <Stack direction={{ xs: 'column', sm: 'row' }} spacing="small">
+    <Stack direction="row" spacing="small" className="w-full">
       <Button
-        className="dark:text-dark-primary"
+        className="dark:text-dark-primary sm:w-[200px]"
         onClick={() => acceptFriendRequest()}
       >
-        Approve
+        Accept
       </Button>
       <Button
-        className="dark:text-dark-secondary"
+        className="dark:text-dark-secondary sm:w-[200px]"
         onClick={() => rejectFriendRequest()}
         variant="outline"
       >
-        Delete
+        Reject
       </Button>
     </Stack>
   );

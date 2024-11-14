@@ -19,7 +19,7 @@ const CancelFriendButton: React.FC<CancelFriendButtonProps> = ({
   );
   return (
     <Button
-      className="w-fit dark:text-dark-primary"
+      className="sm:w-[200px] dark:text-dark-primary "
       onClick={() => cancelFriendRequest()}
     >
       Cancel Request
