@@ -152,10 +152,6 @@ export const routes: RouteObject[] = [
   },
   {
     path: '*',
-    element: (
-      <Suspense fallback={<div>Loading...</div>}>
-        <NotFoundPage />
-      </Suspense>
-    ),
+    element: <NotFoundPage />,
   },
 ];
