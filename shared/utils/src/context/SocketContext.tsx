@@ -59,7 +59,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const socketInstance = io('http://localhost:3000', {
+    const socketInstance = io('https://social-media-backend-j5dj.onrender.com', {
       auth: {
         token: token,
       },
