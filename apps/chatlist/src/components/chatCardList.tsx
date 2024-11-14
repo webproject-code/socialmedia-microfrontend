@@ -120,21 +120,22 @@ export const ChatCardList = () => {
           <ChatListSkeleton />
         </Box>
       ) : (
-        <Box className="w-full h-[calc(100vh-100px)]">
+        <Box className="w-full h-[calc(100vh-130px)]">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-100px)] w-[100%] items-center text-light-secondary dark:text-dark-secondary">
+            <Box className="flex justify-center h-[calc(100vh-130px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
               <img
                 src={
                   isDarkTheme
-                    ? 'assets/Images/dark-no-results-found-image 1.svg'
-                    : 'assets/Images/light-no-results-found-image 1.svg'
+                    ? 'assets/Images/dark-no-results-found-image.svg'
+                    : 'assets/Images/light-no-results-found-image.svg'
                 }
                 alt="search not found"
                 className="object-fill h-[60%] w-[60%]"
               />
+              <p className="font-primary">No chats found !</p>
             </Box>
           ) : (
-            <ScrollArea className="h-[calc(100vh-100px)] border-none">
+            <ScrollArea className="h-[calc(100vh-130px)] border-none">
               <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
                 {chats.map(renderChatCard)}
                 <div ref={bottomRef}>

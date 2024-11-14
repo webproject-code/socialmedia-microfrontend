@@ -44,7 +44,10 @@ export const ChatListSkeleton = () => {
               </div>
             </Card.Content>
           </Card>
-          <Divider alignment="horizontal" className="my-1" />
+          <Divider
+            alignment="horizontal"
+            className="my-1 border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+          />
         </div>
       ))}
     </div>
@@ -89,7 +92,10 @@ export const FriendListSkeleton = () => {
               </div>
             </Card.Content>
           </Card>
-          <Divider alignment="horizontal" className="my-1" />
+          <Divider
+            alignment="horizontal"
+            className="my-1 border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+          />
         </div>
       ))}
     </div>

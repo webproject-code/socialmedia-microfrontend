@@ -144,16 +144,17 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                   <FriendListSkeleton />
                 </Box>
               ) : friends?.length === 0 ? (
-                <Box className="flex justify-center items-center">
+                <Box className="flex justify-center items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
                   <img
                     src={
                       isDarkTheme
-                        ? 'assets/Images/dark-no-results-found-image 1.svg'
-                        : 'assets/Images/light-no-results-found-image 1.svg'
+                        ? 'assets/Images/dark-no-results-found-image.svg'
+                        : 'assets/Images/light-no-results-found-image.svg'
                     }
                     alt="search not found"
                     className="object-fill h-[60%] w-[60%]"
                   />
+                  <p className="font-primary">No chats found !</p>
                 </Box>
               ) : (
                 <div className="space-y-1">
