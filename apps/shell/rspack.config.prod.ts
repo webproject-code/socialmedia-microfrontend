@@ -45,6 +45,5 @@ export default composePlugins(
   withReact(),
   withModuleFederation(prodConfig, {
     dts: false,
-    runtime: false,
   })
 );
