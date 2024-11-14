@@ -15,6 +15,16 @@ const config: ModuleFederationConfig = {
    *
    */
   remotes: [],
+  shared: (library, defaultConfig) => {
+    if (library === 'socket.io-client') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+
+    return defaultConfig;
+  },
 };
 
 export default config;
