@@ -16,5 +16,5 @@ const config = {
 export default composePlugins(
   withNx(),
   withReact(),
-  withModuleFederation(config, { dts: true })
+  withModuleFederation(config, { dts: false })
 );

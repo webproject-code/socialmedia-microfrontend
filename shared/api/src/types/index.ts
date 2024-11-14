@@ -3,3 +3,4 @@ export * from './profile-types';
 export * from './utils-types';
 export * from './friends-types';
 export * from './chat-types';
+export * from './chatlist-types';

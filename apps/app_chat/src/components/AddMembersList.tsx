@@ -1,11 +1,10 @@
-import { Friend, useFriends } from '@social-media/api';
+import { useFriends } from '@social-media/api';
 import {
   Avatar,
   AvatarImage,
   Box,
   Button,
   Input,
-  Modal,
   ScrollArea,
 } from '@social-media/evoke-ui';
 import { useState } from 'react';
@@ -25,16 +24,7 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const {
-    friends,
-    bottomRef,
-    error,
-    hasNextPage,
-    isError,
-    isFetchingNextPage,
-    isLoading,
-    refetch,
-  } = useFriends(currentUserId, { query: searchQuery });
+  const { friends } = useFriends(currentUserId, { query: searchQuery });
 
   const filteredFriends = friends.filter(
     (friend) =>

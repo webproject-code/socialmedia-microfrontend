@@ -1,4 +1,3 @@
-import { GroupSettingsFormData } from '@social-media/utils';
 import { PaginatedResponse, QueryPagination } from './utils-types';
 
 export interface ChatUser {
@@ -36,9 +35,13 @@ export interface OneOnOneChat {
   vanishMode: boolean;
   createdAt: string;
   updatedAt: string;
-  lastMessageAt: string;
   initiator: ChatUser;
   participant: ChatUser;
+  name: string;
+  messages: Message[];
+  unreadCount: number;
+  type: ChatType.ONE_ON_ONE;
+  lastMessageAt: string;
   // "deletedForInitiator": null,
   // "deletedForParticipant": null,
 }
@@ -56,7 +59,10 @@ export interface GroupChat {
   createdAt: string;
   updateAt: string;
   lastMessageAt: string;
+  messages: Message[];
   memberIds: string[];
+  type: ChatType.GROUP;
+  unreadCount: number;
 }
 
 export interface GroupChatSettings {
@@ -78,7 +84,7 @@ export interface IChatServices {
   getGroupChat(chatId: string): Promise<GroupChat>;
   updateGroupChat(
     chatId: string,
-    settings: GroupSettingsFormData,
+    settings: GroupChatSettings,
     groupIcon?: File
   ): Promise<GroupChat>;
   getGroupChatMessages(

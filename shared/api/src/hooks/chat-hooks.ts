@@ -8,8 +8,11 @@ import {
   updateGroupChat,
   updateOneOnOneChatSettings,
 } from '../services/chat-services';
-import { OneOnOneChat, OneOnOneChatSettings } from '../types';
-import { GroupSettingsFormData } from '@social-media/utils';
+import {
+  GroupChatSettings,
+  OneOnOneChat,
+  OneOnOneChatSettings,
+} from '../types';
 
 export const useOneOnOneChat = (chatId: string) => {
   return useQuery({
@@ -40,7 +43,6 @@ export const useOneOnOneChatUpdate = (chatId: string) => {
     mutationFn: (settings: OneOnOneChatSettings) =>
       updateOneOnOneChatSettings(chatId, settings),
     onSuccess: (data: OneOnOneChat) => {
-      console.log(data);
       queryClient.setQueryData(['one-on-one', chatId], data);
     },
   });
@@ -54,14 +56,14 @@ export const useGroupChatUpdate = (chatId: string) => {
       settings,
       groupIcon,
     }: {
-      settings: GroupSettingsFormData;
+      settings: GroupChatSettings;
       groupIcon?: File;
     }) =>
       updateGroupChat(
         chatId,
         {
-          name: settings.name,
-          groupDescription: settings.groupDescription,
+          name: settings?.name,
+          groupDescription: settings?.groupDescription,
         },
         groupIcon
       ),

@@ -41,8 +41,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const { data: userData } = useProfile();
-  const { data: groupChat, isLoading: isGroupChatLoading } =
-    useGroupChat(groupId);
+  const { data: groupChat } = useGroupChat(groupId);
 
   const {
     handleSubmit,
@@ -56,8 +55,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
     },
   });
 
-  const { data: membersData, isLoading: isGroupMemberLoading } =
-    useGroupMembers(groupId);
+  const { data: membersData } = useGroupMembers(groupId);
   const updateSettingsMutation = useGroupChatUpdate(groupId);
   const addMembersMutation = useAddMembers(groupId);
   const removeMemberMutation = useRemoveMembers(groupId);

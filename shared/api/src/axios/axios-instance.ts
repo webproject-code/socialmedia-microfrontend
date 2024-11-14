@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { handleError } from './error-handlers';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: 'https://social-media-backend-j5dj.onrender.com/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },

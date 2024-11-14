@@ -47,3 +47,9 @@ export const register: IAuthService['register'] = async (data) => {
   );
   return user;
 };
+
+export const logout: IAuthService['logout'] = async () => {
+  await apiClient.post('/auth/logout');
+  localStorage.removeItem('token');
+  return "You've been logged out!";
+};

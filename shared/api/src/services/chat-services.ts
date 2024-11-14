@@ -1,4 +1,3 @@
-import { GroupSettingsFormData } from '@social-media/utils';
 import apiClient from '../axios/axios-instance';
 import { PaginatedResponse, QueryPagination } from '../types';
 import {
@@ -7,7 +6,6 @@ import {
   IChatServices,
   Message,
   OneOnOneChat,
-  OneOnOneChatSettings,
 } from '../types/chat-types';
 
 const ONE_ON_ONE_CHAT_ENDPOINT = '/chats/one-on-one';
@@ -56,7 +54,7 @@ export const getGroupChat: IChatServices['getGroupChat'] = async (
 
 export const updateGroupChat: IChatServices['updateGroupChat'] = async (
   chatId: string,
-  settings: GroupSettingsFormData,
+  settings: GroupChatSettings,
   groupIcon?: File
 ) => {
   const formData = new FormData();

@@ -4,7 +4,7 @@ import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
-import { Container, ScrollArea } from '@social-media/evoke-ui';
+import { Container } from '@social-media/evoke-ui';
 
 interface ChatWindowProps {
   chatId: string;
