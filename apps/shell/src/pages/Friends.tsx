@@ -1,12 +1,11 @@
-import TopbarForMobile from '../components/TopbarForMobile';
+import { Friends } from 'friends/Module';
 
-const Friends: React.FC = () => {
+const FriendsPage: React.FC = () => {
   return (
-    <div>
-      <TopbarForMobile title="Friends Management" />
-      Friends
+    <div className="p-2 md:p-4 h-full">
+      <Friends />
     </div>
   );
 };
 
-export default Friends;
+export default FriendsPage;

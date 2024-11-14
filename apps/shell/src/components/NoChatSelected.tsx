@@ -4,7 +4,7 @@ import React from 'react';
 const NoChatSelected: React.FC = () => {
   const theme = useTheme();
   return (
-    <div className="hidden md:flex flex-col items-center justify-center h-full p-6 text-center bg-gray-50 dark:bg-gray-900">
+    <div className="hidden md:flex flex-col items-center justify-center h-full p-6 text-center bg-gray-50 dark:bg-[#4C4D51]/20">
       <div className="mb-4">
         {/* Icon or Image Placeholder */}
         <img

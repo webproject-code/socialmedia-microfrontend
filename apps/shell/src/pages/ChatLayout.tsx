@@ -11,13 +11,13 @@ const ChatLayout: React.FC = () => {
 
   return (
     <SocketProvider>
-      <Grid className="w-full h-full" columns={12}>
+      <Grid className="w-full h-full" columns={12} spacing="small">
         <Grid.GridItem
-          columnSpan={{ xs: 12, md: 3 }}
+          columnSpan={{ xs: 12, md: 4, lg: 3 }}
           className="overflow-hidden md:block"
         >
           <div
-            className={`h-full sticky top-0 overflow-y-auto xs:${
+            className={`h-full sticky top-0 xs:${
               isAnyChatSelected && 'hidden'
             } md:block`}
           >
@@ -25,7 +25,7 @@ const ChatLayout: React.FC = () => {
           </div>
         </Grid.GridItem>
         <Grid.GridItem
-          columnSpan={{ xs: 12, md: 9 }}
+          columnSpan={{ xs: 12, md: 8, lg: 9 }}
           className="h-full overflow-auto"
         >
           {isAnyChatSelected ? <Outlet /> : <NoChatSelected />}
