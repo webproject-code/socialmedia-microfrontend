@@ -59,15 +59,17 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const socketInstance = io('https://social-media-backend-j5dj.onrender.com', {
-      auth: {
-        token: token,
-      },
-    });
+    const socketInstance = io(
+      'https://social-media-backend-j5dj.onrender.com',
+      {
+        auth: {
+          token: token,
+        },
+      }
+    );
 
     socketInstance.on('connect', () => {
       setIsConnected(true);
-      console.log('socket connected');
     });
 
     socketInstance.on('connect_error', (error) => {
@@ -76,7 +78,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     socketInstance.on('disconnect', () => {
       setIsConnected(false);
-      console.log('socket disconnected');
     });
 
     setSocket(socketInstance);

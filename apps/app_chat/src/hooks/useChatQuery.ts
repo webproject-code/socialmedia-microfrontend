@@ -3,7 +3,6 @@ import {
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
-// import { useSocket } from '@social-media/utils';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface UseChatQueryOptions {
@@ -13,8 +12,6 @@ interface UseChatQueryOptions {
 
 // custom hook to fetch messages using infinite query
 export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
-  // const { isConnected } = useSocket();
-
   // function to fetch messages
   const getMessages = ({ pageParam = '' }) => {
     if (chatType === ChatType.ONE_ON_ONE) {
