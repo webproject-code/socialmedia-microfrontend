@@ -4,6 +4,7 @@ import { IoChatbubbleEllipses } from 'react-icons/io5';
 
 import { useNavigate } from 'react-router-dom';
 import { checkOneOnOneChatStatus } from '@social-media/api';
+import { useStore } from '@social-media/utils';
 
 type FriendsCardProps = {
   friend: Friend;
@@ -12,7 +13,8 @@ type FriendsCardProps = {
 
 const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
   const navigate = useNavigate();
-
+  const { user } = useStore();
+  const isOwner = user?.id === friend.id;
   const handleClick = () => {
     navigate(`/users/${friend.id}`);
   };
@@ -47,9 +49,11 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
           </p>
         </div>
       </div>
-      <Box className="p-4" onClick={handleNavigateToChat}>
-        <IoChatbubbleEllipses className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer" />
-      </Box>
+      {!isOwner && (
+        <Box className="p-4" onClick={handleNavigateToChat}>
+          <IoChatbubbleEllipses className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer" />
+        </Box>
+      )}
     </Stack>
   );
 };
