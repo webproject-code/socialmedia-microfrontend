@@ -120,9 +120,9 @@ export const ChatCardList = () => {
           <ChatListSkeleton />
         </Box>
       ) : (
-        <Box className="w-full h-[calc(100vh-100px)]">
+        <Box className="w-full h-[calc(100vh-150px)]">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-130px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
+            <Box className="flex justify-center h-[calc(100vh-100px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
               <img
                 src={
                   isDarkTheme
