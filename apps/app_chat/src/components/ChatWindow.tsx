@@ -28,12 +28,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const chatRef = useRef<ElementRef<'div'>>(null);
   const bottomRef = useRef<ElementRef<'div'>>(null);
 
+  console.log('in chat window calling chat query');
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
       chatId,
       chatType,
     });
-
+  console.log(data, 'data in window');
   useChatSocket({ addKey, updateKey, chatId });
   useChatScroll({
     chatRef,
