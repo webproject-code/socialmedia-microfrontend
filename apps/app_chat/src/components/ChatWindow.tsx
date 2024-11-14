@@ -1,10 +1,14 @@
-import { ChatType, Message, useProfile } from '@social-media/api';
-import React, { ElementRef, useRef, useMemo } from 'react';
-import { useChatQuery } from '../hooks/useChatQuery';
-import { useChatScroll } from '../hooks/useChatScroll';
+import {
+  ChatType,
+  Message,
+  useChatQuery,
+  useChatScroll,
+  useProfile,
+} from '@social-media/api';
+import { Container } from '@social-media/evoke-ui';
+import React, { ElementRef, useMemo, useRef } from 'react';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
-import { Container } from '@social-media/evoke-ui';
 
 interface ChatWindowProps {
   chatId: string;
