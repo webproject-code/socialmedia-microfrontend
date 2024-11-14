@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   const loginHandler = () => {
     mutate(
       {
-        email: 'yash@gmail.com',
+        email: 'kspatelsimform100@gmail.com',
         password: '12345678',
       },
       {

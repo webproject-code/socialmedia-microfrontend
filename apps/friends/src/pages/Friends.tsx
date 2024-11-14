@@ -1,63 +1,26 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
-import {
-  Box,
-  ScrollArea,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@social-media/evoke-ui';
+import { Box, Tabs, TabsList, TabsTrigger } from '@social-media/evoke-ui';
 
-import {
-  useFriendRequests,
-  useProfile,
-  useSuggestedFriends,
-  useUsers,
-} from '@social-media/api';
-import { Spinner, useTheme } from '@social-media/utils';
+import { useProfile } from '@social-media/api';
+import { useTheme } from '@social-media/utils';
 
-import { FriendSearch } from '../components/FriendSearch';
-import FriendsListCard from '../components/FriendsListCard';
-import FriendsListCardSkeleton from '../components/FriendsListCardSkeleton';
-import IllustrationImage from '../components/IllustrationImage';
+import FriendRequestsTab from '../components/FriendRequestsTab';
+import SuggestedFriendsTab from '../components/SuggestedFriendsTab';
+import SearchTab from '../components/SearchTab';
 
 const Friends: React.FC = () => {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(window.location.search);
-  const [searchTerm, setSearchTerm] = useState(
-    searchParams.get('searchTerm') || ''
-  );
+  const searchTerm = searchParams.get('searchTerm') || '';
   const theme = useTheme();
 
   const { data: profileData } = useProfile();
-
   const currentUserId = profileData?.id || '';
-  const {
-    friendRequests,
-    isLoading: isFriendRequestsLoading,
-    bottomRef: friendRequestsBottomRef,
-    isFetchingNextPage: isFetchingNextFriendRequests,
-  } = useFriendRequests(currentUserId);
-
-  const {
-    suggestedFriends,
-    isLoading: isSuggestedFriendsLoading,
-    bottomRef: suggestedFriendsBottomRef,
-    isFetchingNextPage: isFetchingNextSuggestedFriends,
-  } = useSuggestedFriends(currentUserId);
 
   const activeTab =
     new URLSearchParams(window.location.search).get('activeTab') || 'requests';
   const pathname = window.location.pathname;
-
-  const {
-    users,
-    isLoading: isUsersLoading,
-    bottomRef: usersBottomRef,
-    isFetchingNextPage: isFetchingNextUsers,
-  } = useUsers(activeTab === 'search' ? { query: searchTerm } : {});
 
   const handleTabChange = (tab: string) => {
     const searchParams = new URLSearchParams();
@@ -69,15 +32,8 @@ const Friends: React.FC = () => {
     navigate(`${pathname}?${searchParams.toString()}`);
   };
 
-  const handleSearch = (term: string) => {
-    const searchParams = new URLSearchParams(window.location.search);
-    setSearchTerm(term);
-    searchParams.set('searchTerm', term);
-    if (term === '') {
-      searchParams.delete('searchTerm');
-    }
-    navigate(`${pathname}?${searchParams.toString()}`);
-  };
+  const getIllustrationPath = (isDarkTheme: boolean, imageName: string) =>
+    `assets/images/${isDarkTheme ? 'dark' : 'light'}-${imageName}.svg`;
 
   return (
     <Box
@@ -125,137 +81,35 @@ const Friends: React.FC = () => {
         </TabsList>
 
         {/* Friend Requests Tab */}
-        <TabsContent
-          value="requests"
-          className="h-[90%] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md"
-        >
-          {isFriendRequestsLoading && (
-            <div className="p-2 h-[95%] overflow-hidden">
-              <FriendsListCardSkeleton cardType="request" />
-            </div>
+        <FriendRequestsTab
+          currentUserId={currentUserId}
+          illustrationPath={getIllustrationPath(
+            theme.isDarkTheme,
+            'no-results-found-image'
           )}
-          {!isFriendRequestsLoading && friendRequests?.length === 0 && (
-            <IllustrationImage
-              src={`assets/images/${
-                theme.isDarkTheme ? 'dark' : 'light'
-              }-no-results-found-image.svg`}
-              alt="no results"
-              message="No new friend requests!"
-            />
-          )}
-          {!isFriendRequestsLoading && friendRequests?.length > 0 && (
-            <ScrollArea className="h-[95%] p-1">
-              {friendRequests?.map((request) => (
-                <FriendsListCard
-                  key={request.id}
-                  profile={request.sender.profilePicture}
-                  name={request.sender.name}
-                  cardType="request"
-                  currentUserId={currentUserId}
-                  incomingRequestId={request.id}
-                  userId={request.sender.id}
-                />
-              ))}
-              <div ref={friendRequestsBottomRef} />
-              {isFetchingNextFriendRequests && (
-                <div className="flex my-3 justify-center">
-                  <Spinner />
-                </div>
-              )}
-            </ScrollArea>
-          )}
-        </TabsContent>
+        />
 
         {/* Suggested Friends Tab */}
-        <TabsContent
-          value="suggestedFriends"
-          className="h-[90%] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md"
-        >
-          {isSuggestedFriendsLoading && (
-            <div className="p-2 h-[95%] overflow-hidden">
-              <FriendsListCardSkeleton cardType="add" />
-            </div>
+        <SuggestedFriendsTab
+          currentUserId={currentUserId}
+          illustrationPath={getIllustrationPath(
+            theme.isDarkTheme,
+            'no-results-found-image'
           )}
-          {!isSuggestedFriendsLoading && suggestedFriends.length === 0 && (
-            <IllustrationImage
-              src={`assets/images/${
-                theme.isDarkTheme ? 'dark' : 'light'
-              }-no-results-found-image.svg`}
-              alt="no results"
-              message="No new suggestions for now!"
-            />
-          )}
-          {!isSuggestedFriendsLoading && suggestedFriends.length > 0 && (
-            <ScrollArea className="h-[95%] p-1">
-              {suggestedFriends.map((user) => (
-                <FriendsListCard
-                  key={user.id}
-                  profile={user.profilePicture}
-                  name={user.name}
-                  cardType="add"
-                  currentUserId={currentUserId}
-                  userId={user.id}
-                />
-              ))}
-              <div ref={suggestedFriendsBottomRef} />
-              {isFetchingNextSuggestedFriends && (
-                <div className="flex my-3 justify-center">
-                  <Spinner />
-                </div>
-              )}
-            </ScrollArea>
-          )}
-        </TabsContent>
+        />
 
         {/* Search Tab */}
-        <TabsContent
-          value="search"
-          className="h-[90%] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md px-3"
-        >
-          <FriendSearch onSearch={handleSearch} searchTerm={searchTerm} />
-          {isUsersLoading && (
-            <div className="p-2 h-[95%] overflow-hidden">
-              <FriendsListCardSkeleton cardType="search" />
-            </div>
+        <SearchTab
+          currentUserId={currentUserId}
+          illustrationPath={getIllustrationPath(
+            theme.isDarkTheme,
+            'no-results-found-image'
           )}
-          {!searchTerm && (
-            <IllustrationImage
-              src={`assets/images/${
-                theme.isDarkTheme ? 'dark' : 'light'
-              }-search-image.svg`}
-              alt="search"
-            />
+          searchIllustrationPath={getIllustrationPath(
+            theme.isDarkTheme,
+            'search-image'
           )}
-          {searchTerm && !isUsersLoading && users.length === 0 && (
-            <IllustrationImage
-              src={`assets/images/${
-                theme.isDarkTheme ? 'dark' : 'light'
-              }-no-results-found-image.svg`}
-              alt="no results"
-              message="No such users found!"
-            />
-          )}
-          {!isUsersLoading && users.length > 0 && (
-            <ScrollArea className="h-[95%] p-1">
-              {users.map((user) => (
-                <FriendsListCard
-                  key={user.id}
-                  profile={user.profilePicture}
-                  name={user.name}
-                  cardType="search"
-                  currentUserId={currentUserId}
-                  userId={user.id}
-                />
-              ))}
-              <div ref={usersBottomRef} />
-              {isFetchingNextUsers && (
-                <div className="flex my-3 justify-center">
-                  <Spinner />
-                </div>
-              )}
-            </ScrollArea>
-          )}
-        </TabsContent>
+        />
       </Tabs>
     </Box>
   );

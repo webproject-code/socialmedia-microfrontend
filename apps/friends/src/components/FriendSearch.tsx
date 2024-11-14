@@ -25,7 +25,7 @@ export const FriendSearch: React.FC<FriendSearchProps> = ({
   }, [debouncedSearchTerm]);
 
   return (
-    <Box role="search" className="flex gap-4 items-center py-2">
+    <Box role="search" className="flex gap-4 items-center py-2 mx-1">
       <Box className="w-full focus-within:ring-2 focus-within:ring-primary rounded-md">
         <Input
           type="text"

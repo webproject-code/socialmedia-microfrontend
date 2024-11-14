@@ -7,7 +7,7 @@ interface FriendsListCardSkeletonProps {
 
 const FriendsListCardSkeleton: React.FC<FriendsListCardSkeletonProps> = ({
   cardType,
-  count = 10, // Default to 5 skeleton cards
+  count = 10, // Default to 10 skeleton cards
 }) => {
   return (
     <>

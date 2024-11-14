@@ -84,13 +84,11 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
             </div>
           ) : (
             <span
-              className={`px-3 py-1 rounded-md border
-                ${
-                  requestStatus === 'ACCEPTED'
-                    ? 'text-green-500 dark:text-green-400 border-green-500 dark:border-green-400'
-                    : 'text-red-500 dark:text-red-400 border-red-500 dark:border-red-400'
-                }
-              `}
+              className={`status-base ${
+                requestStatus === 'ACCEPTED'
+                  ? 'status-accepted'
+                  : 'status-rejected'
+              }`}
             >
               {requestStatus}
             </span>
