@@ -26,3 +26,4 @@ export * from './schemas/chatlist-schema';
 export * from './store/store';
 
 export * from './schemas/auth-schema';
+export * from './schemas/chat-schema';

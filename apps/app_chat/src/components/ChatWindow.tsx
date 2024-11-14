@@ -135,7 +135,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           )}
         </div>
       )}
-
       <div className="flex flex-col-reverse mt-auto">
         {Object.entries(groupedMessages)
           .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())

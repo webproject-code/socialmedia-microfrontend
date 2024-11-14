@@ -7,6 +7,10 @@ export interface ChatUser {
   isDeleted: boolean;
 }
 
+export interface GroupMember extends ChatUser {
+  bio: string;
+}
+
 export enum ChatType {
   ONE_ON_ONE = 'ONE_ON_ONE',
   GROUP = 'GROUP',
@@ -80,12 +84,16 @@ export interface IChatServices {
   getGroupChat(chatId: string): Promise<GroupChat>;
   updateGroupChat(
     chatId: string,
-    settings: GroupChatSettings
+    settings: GroupChatSettings,
+    groupIcon?: File
   ): Promise<GroupChat>;
   getGroupChatMessages(
     chatId: string,
     params?: QueryPagination
   ): Promise<PaginatedResponse<'messages', Message[]>>;
+  getGroupMembers(
+    chatId: string
+  ): Promise<PaginatedResponse<'members', GroupMember[]>>;
   addGroupChatMembers(
     chatId: string,
     ownerId: string,

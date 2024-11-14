@@ -3,7 +3,7 @@ import {
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
-import { useChatStore } from '../store/useChatStore';
+import { useStore } from '@social-media/utils';
 
 interface MessageSearchOptions {
   chatType: ChatType;
@@ -13,7 +13,7 @@ export const useMessagesSearch = ({
   chatId,
   chatType,
 }: MessageSearchOptions) => {
-  const { searchResults, setSearchResults } = useChatStore();
+  const { searchResults, setSearchResults } = useStore();
 
   const searchMessages = async (query: string) => {
     if (!chatId) return;

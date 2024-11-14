@@ -1,14 +1,15 @@
 import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 import { AuthSlice, createAuthSlice } from './authSlice';
+import { ProfileSlice, createProfileSlice } from './profileSlice';
 import {
   RegistrationFormSlice,
   createRegistrationFormSlice,
 } from './registrationFormSlice';
-import { ProfileSlice, createProfileSlice } from './profileSlice';
-import { devtools, persist } from 'zustand/middleware';
+import { ChatSlice, createChatSlice } from './chatSlice';
 
 export const useStore = create<
-  AuthSlice & RegistrationFormSlice & ProfileSlice
+  AuthSlice & RegistrationFormSlice & ProfileSlice & ChatSlice
 >()(
   devtools(
     persist(
@@ -16,6 +17,7 @@ export const useStore = create<
         ...createAuthSlice(...args),
         ...createRegistrationFormSlice(...args),
         ...createProfileSlice(...args),
+        ...createChatSlice(...args),
       }),
       { name: 'social-media-store' }
     ),

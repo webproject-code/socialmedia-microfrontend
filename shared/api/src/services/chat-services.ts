@@ -54,18 +54,17 @@ export const getGroupChat: IChatServices['getGroupChat'] = async (
 
 export const updateGroupChat: IChatServices['updateGroupChat'] = async (
   chatId: string,
-  settings: GroupChatSettings
+  settings: GroupChatSettings,
+  groupIcon?: File
 ) => {
-  const { name, groupDescription, groupIcon } = settings;
+  const formData = new FormData();
+  formData.append('settings', JSON.stringify(settings));
+  if (groupIcon) {
+    formData.append('groupIcon', groupIcon);
+  }
   const { data } = await apiClient.patch<GroupChat>(
     `${GROUP_CHAT_ENDPOINT}/${chatId}/settings`,
-    {
-      settings: {
-        name,
-        groupDescription,
-      },
-      groupIcon,
-    },
+    formData,
     {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -109,6 +108,15 @@ export const removeGroupChatMembers: IChatServices['removeGroupChatMembers'] =
     });
     return 'Member removed successfully!';
   };
+
+export const getGroupMembers: IChatServices['getGroupMembers'] = async (
+  chatId: string
+) => {
+  const { data } = await apiClient.get(
+    `${GROUP_CHAT_ENDPOINT}/${chatId}/members`
+  );
+  return data;
+};
 
 export const sendMessage: IChatServices['sendMessage'] = async (
   content: string,
