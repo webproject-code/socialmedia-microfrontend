@@ -120,9 +120,9 @@ export const ChatCardList = () => {
           <ChatListSkeleton />
         </Box>
       ) : (
-        <Box className="w-full h-[calc(100vh-200px)] overflow-hidden">
+        <Box className="w-full h-[calc(100vh-100px)] overflow-hidden">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-200px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
+            <Box className="flex justify-center h-[calc(100vh-100px)] w-[100%] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
               <img
                 src={
                   isDarkTheme
@@ -135,7 +135,7 @@ export const ChatCardList = () => {
               <p className="font-primary">No chats found !</p>
             </Box>
           ) : (
-            <ScrollArea className="h-[calc(100vh-200px)] border-none">
+            <ScrollArea className="h-[calc(100vh-100px)] border-none">
               <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
                 {chats.map(renderChatCard)}
                 <div ref={bottomRef}>
