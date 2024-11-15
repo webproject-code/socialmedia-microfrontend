@@ -59,7 +59,7 @@ export const ChatCardList = () => {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Box className="flex gap-4 justify-stretch items-center py-3 px-2">
         <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
           <AvatarImage
@@ -116,13 +116,13 @@ export const ChatCardList = () => {
         </Button>
       </Box>
       {isLoading ? (
-        <Box className="flex flex-col h-[calc(100vh-100px)] w-full px-2">
+        <Box className="flex flex-grow flex-col h-full w-full px-2">
           <ChatListSkeleton />
         </Box>
       ) : (
-        <div className="">
+        <div className="flex-grow overflow-hidden">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-150px)] items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
+            <Box className="flex justify-center h-full items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
               <img
                 src={
                   isDarkTheme
@@ -138,7 +138,7 @@ export const ChatCardList = () => {
               <p className="font-primary">No chats found !</p>
             </Box>
           ) : (
-            <ScrollArea className="h-[calc(100vh-150px)] border-none">
+            <ScrollArea className="border-none h-full">
               <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
                 {chats.map(renderChatCard)}
                 <div ref={bottomRef}>
@@ -159,6 +159,6 @@ export const ChatCardList = () => {
         setIsModalOpen={setIsModalOpen}
         currentUserId={currentUserId}
       />
-    </>
+    </div>
   );
 };
