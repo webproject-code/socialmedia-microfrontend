@@ -5,8 +5,6 @@ import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
-import { useChatQuery } from '../hooks/useChatQuery';
-import { useChatScroll } from '../hooks/useChatScroll';
 
 interface ChatWindowProps {
   chatId: string;
@@ -30,13 +28,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const chatRef = useRef<ElementRef<'div'>>(null);
   const bottomRef = useRef<ElementRef<'div'>>(null);
 
-  console.log('in chat window calling chat query');
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
       chatId,
       chatType,
     });
-  console.log(data, 'data in window');
   useChatSocket({ addKey, updateKey, chatId });
   useChatScroll({
     chatRef,

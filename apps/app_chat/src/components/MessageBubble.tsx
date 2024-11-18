@@ -89,7 +89,7 @@ const MessageAvatar: React.FC<{ profilePicture: string }> = ({
   profilePicture,
 }) => (
   <Avatar className="h-6 w-6">
-    <AvatarImage src={profilePicture} />
+    <AvatarImage src={profilePicture} className="ring-0" />
   </Avatar>
 );
 

@@ -75,7 +75,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
     }
   };
   return (
-    <div className="message-input sticky bottom-0 bg-light-primary dark:bg-dark-primary px-5 py-4">
+    <div className="message-input shrink-0 sticky bottom-0 bg-light-primary dark:bg-dark-primary px-5 py-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex gap-2 items-center justify-center"
@@ -96,6 +96,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
                 error={!!errors.content}
                 errorMessage={errors.content?.message}
                 autoComplete="off"
+                autoFocus={true}
               />
             )}
           />
