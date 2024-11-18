@@ -136,6 +136,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
                   <Avatar size="lg" className="h-20 w-20">
                     <AvatarImage
                       src={previewUrl ? previewUrl : groupChat.groupIcon}
+                      className="ring-0"
                     />
                   </Avatar>
                   {isOwner && (

@@ -56,7 +56,7 @@ const MembersList: React.FC<MembersListProps> = ({
             >
               <div className="flex items-center space-x-3">
                 <Avatar className="h-7 w-7">
-                  <AvatarImage src={member.profilePicture} />
+                  <AvatarImage src={member.profilePicture} className="ring-0" />
                 </Avatar>
                 <div className="flex flex-col">
                   <p className="dark:text-dark-lavender truncate">

@@ -3,16 +3,25 @@ import {
   OneOnOneChat,
   useOneOnOneChatUpdate,
 } from '@social-media/api';
-import { Avatar, AvatarImage, Button, Input } from '@social-media/evoke-ui';
+import {
+  Avatar,
+  AvatarImage,
+  Box,
+  Button,
+  Divider,
+  Input,
+  ScrollArea,
+} from '@social-media/evoke-ui';
 import { useStore } from '@social-media/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useMessagesSearch } from '../hooks/useMessagesSearch';
 import { useTypingStatus } from '../hooks/useTypingStatus';
 import ChatSettings from './ChatSettings';
 import GroupChatInfoModal from './GroupChatInfoModal';
+import SearchedMessage from './SearchedMessage';
 
 interface ChatHeaderProps {
   chatType: ChatType;
@@ -31,10 +40,10 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   const [query, setQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
-  const { setSearchResults } = useStore();
-
+  const { searchResults, setSearchResults } = useStore();
   const { mutate } = useOneOnOneChatUpdate(chatId!);
   const { typingMessage } = useTypingStatus({ chatType });
   const { searchMessages } = useMessagesSearch({ chatId, chatType });
@@ -49,6 +58,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     setQuery('');
   };
 
+  useEffect(() => {
+    setIsSearchActive(false);
+    setQuery('');
+    setSearchResults([]);
+  }, [chatId]);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
@@ -58,13 +73,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     } else {
       setSearchResults([]);
     }
-
-    console.log('');
   };
 
   const handleVanishModeToggle = () => {
-    console.log('Vanish mode toggled');
-
     if (oneOnOneChatData) {
       const settings = {
         vanishMode: !oneOnOneChatData.vanishMode,
@@ -83,7 +94,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   return (
     <>
-      <div className="chat-header flex items-center justify-between py-3 px-2 md:px-4 sticky top-0 bg-light-primary dark:bg-dark-primary z-10 h-[72px]">
+      <div className="chat-header flex items-center justify-between py-3 px-2 md:px-4 shrink-0 sticky top-0 bg-light-primary dark:bg-dark-primary z-10 h-[72px]">
         {!isSearchActive ? (
           <>
             <div className="cursor-pointer flex gap-x-2 md:gap-x-4 items-center">
@@ -94,8 +105,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
               >
                 <FaArrowLeft className="dark:text-dark-lavender" />
               </Button>
-              <Avatar className="h-7 w-7 md:h-9 md:w-9 ">
-                <AvatarImage src={avatarUrl} />
+              <Avatar className="h-7 w-7 md:h-9 md:w-9">
+                <AvatarImage src={avatarUrl} className="ring-0" />
               </Avatar>
               <div className="flex flex-col justify-between h-12">
                 <h2 className="text-xl md:text-2xl text-dark-lavender justify-self-start font-semibold font-secondary">
@@ -117,7 +128,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
             />
           </>
         ) : (
-          <div className="search-message-container w-full flex items-center justify-center">
+          <div className="search-message-container w-full relative flex items-center justify-center">
             <Button
               className="w-fit"
               variant="icon"
@@ -125,20 +136,73 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
             >
               <FaArrowLeft className="dark:text-dark-lavender" />
             </Button>
-            <div className="input-container w-full">
+            <div className="input-container w-full ">
               <Input
                 name="search-messages"
                 type="text"
                 value={query}
                 onChange={handleSearch}
                 placeholder="Search messages..."
+                autoFocus={true}
+                autoComplete="off"
               >
                 <FaSearch className="dark:text-dark-lavender" />
               </Input>
+              {query && (
+                <Box className="search-results-container px-4 py-2 absolute bg-light-primary dark:bg-dark-primary top-11 left-0 w-full">
+                  {searchResults.length > 0 ? (
+                    <ul className="search-results-list">
+                      <ScrollArea className="h-full sm:max-h-[500px]">
+                        {searchResults.map((message) => (
+                          <>
+                            <li
+                              key={message.id}
+                              className="search-result-item flex items-center gap-4 py-2"
+                            >
+                              <Avatar className="w-7 h-7">
+                                <AvatarImage
+                                  src={message.sender.profilePicture}
+                                  className="ring-0"
+                                />
+                              </Avatar>
+                              <Box className="flex flex-col gap-y-1 w-full">
+                                <Box className="flex items-center gap-2">
+                                  <span className="font-semibold">
+                                    {message.sender.name}
+                                  </span>
+                                  <span className="text-sm text-gray-500">
+                                    {new Date(
+                                      message.createdAt
+                                    ).toLocaleDateString([], {
+                                      hour: '2-digit',
+                                      minute: '2-digit',
+                                    })}
+                                  </span>
+                                </Box>
+                                <SearchedMessage
+                                  content={message.content}
+                                  query={query}
+                                />
+                              </Box>
+                            </li>
+                            <Divider
+                              alignment="horizontal"
+                              className="my-1 border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+                            />
+                          </>
+                        ))}
+                      </ScrollArea>
+                    </ul>
+                  ) : (
+                    <p className="text-gray-500">No messages found.</p>
+                  )}
+                </Box>
+              )}
             </div>
           </div>
         )}
       </div>
+
       <GroupChatInfoModal
         isOpen={isGroupModalOpen}
         onClose={toggleGroupInfoClick}
