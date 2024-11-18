@@ -15,8 +15,8 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   return (
-    <div>
-      <Button onClick={openModal} className="" tabIndex={0}>
+    <>
+      <Button onClick={openModal} className="sm:w-[200px]" tabIndex={0}>
         Edit Profile
       </Button>
       {isOpen && (
@@ -38,7 +38,7 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
           </Modal.Content>
         </Modal>
       )}
-    </div>
+    </>
   );
 };
 

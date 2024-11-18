@@ -20,8 +20,8 @@ const ProfileInfoSkeleton = () => {
             <Skeleton variant="text" width="120px" height="24px" />
             <Box className="hidden sm:flex">
               <Stack spacing="small">
-                <Skeleton variant="rectangular" width="100px" height="36px" />
-                <Skeleton variant="rectangular" width="100px" height="36px" />
+                <Skeleton variant="rectangular" width="200px" height="36px" />
+                <Skeleton variant="rectangular" width="200px" height="36px" />
               </Stack>
             </Box>
           </Stack>

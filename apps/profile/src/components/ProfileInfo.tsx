@@ -47,9 +47,11 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
             <p className="font-secondary text-xl sm:text-2xl font-bold">
               {profile.name}
             </p>
+            {/* <ProfileSettingsDropdown /> */}
+
             <Box className="hidden sm:flex">
               {isOwner ? (
-                <Stack spacing="small">
+                <Stack spacing="small" className="w-full">
                   <EditProfileButton ownerProfile={profile} />
                   <LogoutButton />
                 </Stack>

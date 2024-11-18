@@ -1,5 +1,5 @@
 import { useFriendshipStatus } from '@social-media/api';
-import { Skeleton } from '@social-media/evoke-ui';
+import { Skeleton, Stack } from '@social-media/evoke-ui';
 import AddFriendButton from './AddFriendButton';
 import CancelFriendButton from './CancelFriendButton';
 import AcceptRequestButton from './AcceptRequestButton';
@@ -21,11 +21,18 @@ const FriendStatusButton: React.FC<FriendStatusButtonProps> = ({
 
   if (isPending || !friendshipStatus)
     return (
-      <Skeleton
-        variant="rectangular"
-        height="36px"
-        className="w-full sm:w-[200px]"
-      />
+      <Stack spacing="small">
+        <Skeleton
+          variant="rectangular"
+          height="36px"
+          className="w-full sm:w-[200px]"
+        />
+        <Skeleton
+          variant="rectangular"
+          height="36px"
+          className="w-full sm:w-[200px]"
+        />
+      </Stack>
     );
 
   const getButtonLabel = (status: string | undefined) => {
