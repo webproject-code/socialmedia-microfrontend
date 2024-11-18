@@ -33,7 +33,7 @@
       "executor": "@nx/rspack:module-federation-dev-server",
       "options": {
         "buildTarget": "chatlist:build:development",
-        "port": 4202
+        "port": 4206
       },
       "configurations": {
         "development": {},

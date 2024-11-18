@@ -1,18 +1,11 @@
-import * as React from 'react';
+import '../styles.css';
+import '@social-media/evoke-ui/dist/styles.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { routes } from '../routes';
 
-import '../styles.css';
-// const Auth = React.lazy(() => import('auth/Module'));
-
-export function App() {
+export const App: React.FC = () => {
   const router = createBrowserRouter(routes);
-
-  return (
-    <React.Suspense fallback={null}>
-      <RouterProvider router={router} />
-    </React.Suspense>
-  );
-}
+  return <RouterProvider router={router} />;
+};
 
 export default App;

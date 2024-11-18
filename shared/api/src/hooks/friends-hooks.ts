@@ -242,13 +242,8 @@ export const useRemoveFriend = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => removeFriend(userId, friendId),
-    onSuccess: () => {
-      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
-        friendRequestId: null,
-        status: 'NOT_FRIENDS',
-      });
-      queryClient.invalidateQueries({ queryKey: ['friends', userId] });
-      queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
+    onSuccess: (data) => {
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], data);
     },
   });
 };
@@ -258,13 +253,13 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => sendFriendRequest(userId, friendId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.setQueryData(
         ['friendshipStatus', userId, friendId],
         (oldData: FriendRequest) => {
           if (oldData) {
             return {
-              friendRequestId: data.friendRequest.id,
+              ...oldData,
               status: 'REQUEST_SENT',
             };
           }
@@ -334,6 +329,7 @@ export const useRejectFriendRequest = (
         friendRequestId: friendRequestId,
         status: 'NOT_FRIENDS',
       });
+      queryClient.invalidateQueries({ queryKey: ['friendRequests', userId] });
     },
   });
 };

@@ -1,10 +1,5 @@
-// import { Container } from '@social-media/evoke-ui';
 import { ChatCardList } from '../components/chatCardList';
 
 export const ChatsList = () => {
-  return (
-    // <Container className="">
-    <ChatCardList />
-    // </Container>
-  );
+  return <ChatCardList />;
 };

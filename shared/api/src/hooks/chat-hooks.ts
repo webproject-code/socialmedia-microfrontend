@@ -43,7 +43,6 @@ export const useOneOnOneChatUpdate = (chatId: string) => {
     mutationFn: (settings: OneOnOneChatSettings) =>
       updateOneOnOneChatSettings(chatId, settings),
     onSuccess: (data: OneOnOneChat) => {
-      console.log(data);
       queryClient.setQueryData(['one-on-one', chatId], data);
     },
   });
@@ -63,8 +62,8 @@ export const useGroupChatUpdate = (chatId: string) => {
       updateGroupChat(
         chatId,
         {
-          name: settings.name,
-          groupDescription: settings.groupDescription,
+          name: settings?.name,
+          groupDescription: settings?.groupDescription,
         },
         groupIcon
       ),

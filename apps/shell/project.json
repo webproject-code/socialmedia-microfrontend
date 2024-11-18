@@ -4,6 +4,13 @@
   "sourceRoot": "apps/shell/src",
   "projectType": "application",
   "tags": [],
+  "implicitDependencies": [
+    "auth",
+    "profile",
+    "friends",
+    "app_chat",
+    "chatlist"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/rspack:rspack",

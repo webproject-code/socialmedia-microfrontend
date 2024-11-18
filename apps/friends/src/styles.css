@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Lato', system-ui;
+  font-size: medium;
+  font-weight: 500;
+}
+
+html {
+  overflow: hidden;
+}
+
+@layer components {
+  .focus-ring {
+    @apply focus-visible:ring-2
+           focus-visible:ring-light-secondary
+           focus-visible:ring-offset-2
+           dark:focus-visible:ring-dark-secondary
+           dark:focus-visible:ring-offset-dark-primary;
+  }
+}
+
+.tabs-content-base {
+  @apply h-[calc(100%-2.5rem)] sm:h-[calc(100%-3.5rem)] border border-t-0 border-light-silverSteel/30 dark:border-dark-silverSteel/30 rounded-b-md;
+}
+
+.loading-container {
+  @apply p-2 overflow-hidden;
+}
+
+.status-accepted {
+  @apply text-green-500 dark:text-green-400 border-green-500 dark:border-green-400;
+}
+
+.status-rejected {
+  @apply text-red-500 dark:text-red-400 border-red-500 dark:border-red-400;
+}
+
+.status-base {
+  @apply px-3 py-1 rounded-md border;
+}
