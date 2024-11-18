@@ -5,6 +5,8 @@ import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
+import { useChatQuery } from '../hooks/useChatQuery';
+import { useChatScroll } from '../hooks/useChatScroll';
 
 interface ChatWindowProps {
   chatId: string;

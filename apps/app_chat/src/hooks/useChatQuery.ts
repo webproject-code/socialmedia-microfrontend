@@ -26,6 +26,7 @@ export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
     }
   };
 
+  console.log(getMessages);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
       queryKey: [`chat:${chatId}`],
