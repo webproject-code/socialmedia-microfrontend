@@ -20,7 +20,7 @@ interface GroupChatFormProps {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DefaultGroupIcon = 'assets/Images/people.png';
+const DefaultGroupIcon = 'assets/Images/group-svgrepo-com.svg';
 
 export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
   ownerId,

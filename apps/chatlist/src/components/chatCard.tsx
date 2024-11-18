@@ -32,8 +32,10 @@ export const ChatCard: React.FC<ChatCardProps> = ({
   const activeChat = pathname.split('/')[3] === chatId;
   const handleCardClick = useCallback(() => {
     navigate(`${type === 'ONE_ON_ONE' ? 'one-on-one' : 'group'}/${chatId}`);
-    updateCount(chatId, 0);
-  }, [navigate, chatId, type, updateCount]);
+    if (!activeChat) {
+      updateCount(chatId, 0);
+    }
+  }, [navigate, chatId, type, updateCount, activeChat]);
 
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -90,7 +92,7 @@ export const ChatCard: React.FC<ChatCardProps> = ({
               <span className="text-xs sm:text-sm text-light-silverSteel dark:text-dark-silverSteel whitespace-nowrap">
                 {formattedMessageTime}
               </span>
-              {unreadCount > 0 && (
+              {!activeChat && unreadCount > 0 && (
                 <span className="h-4 w-4 sm:h-5 sm:w-5 bg-light-secondary dark:bg-dark-secondary rounded-full flex items-center justify-center text-[10px] sm:text-xs text-light-primary dark:text-dark-primary">
                   {unreadCount}
                 </span>

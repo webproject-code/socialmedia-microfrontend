@@ -13,6 +13,7 @@ interface FriendCardProps {
   email: string;
   profilePicture: string;
   onClickHandler: () => void;
+  groupChat?: boolean;
 }
 
 export const FriendCard: React.FC<FriendCardProps> = ({
@@ -20,6 +21,7 @@ export const FriendCard: React.FC<FriendCardProps> = ({
   email,
   profilePicture,
   onClickHandler,
+  groupChat,
 }) => {
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -65,12 +67,14 @@ export const FriendCard: React.FC<FriendCardProps> = ({
                 </p>
               </Box>
             </Box>
-            <Box className="flex flex-col items-end gap-1 sm:gap-2 flex-shrink-0">
-              <IoChatbubbleEllipses
-                size={25}
-                className="fill-light-secondary dark:fill-dark-secondary"
-              />
-            </Box>
+            {groupChat ? null : (
+              <Box className="flex flex-col items-end gap-1 sm:gap-2 flex-shrink-0">
+                <IoChatbubbleEllipses
+                  size={25}
+                  className="fill-light-secondary dark:fill-dark-secondary"
+                />
+              </Box>
+            )}
           </Box>
         </Card.Content>
       </Card>

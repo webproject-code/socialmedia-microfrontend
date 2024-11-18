@@ -34,32 +34,35 @@ export const ChatCardList = () => {
     []
   );
 
-  const renderChatCard = useCallback((chat: Chat) => {
-    const isOneOnOne = chat.type === 'ONE_ON_ONE';
+  const renderChatCard = useCallback(
+    (chat: Chat) => {
+      const isOneOnOne = chat.type === 'ONE_ON_ONE';
 
-    return (
-      <ChatCard
-        type={chat.type}
-        chatId={chat.id}
-        key={chat.id}
-        name={chat.name}
-        lastMessage={chat.messages.length > 0 ? chat.messages[0].content : ''}
-        lastMessageTime={chat.lastMessageAt}
-        profileImage={
-          isOneOnOne
-            ? chat.initiatorId === currentUserId
-              ? chat.participant.profilePicture
-              : chat.initiator.profilePicture
-            : chat.groupIcon
-        }
-        unreadCount={chat.unreadCount}
-        updateCount={updateUnreadCount}
-      />
-    );
-  }, []);
+      return (
+        <ChatCard
+          type={chat.type}
+          chatId={chat.id}
+          key={chat.id}
+          name={chat.name}
+          lastMessage={chat.messages.length > 0 ? chat.messages[0].content : ''}
+          lastMessageTime={chat.lastMessageAt}
+          profileImage={
+            isOneOnOne
+              ? chat.initiatorId === currentUserId
+                ? chat.participant.profilePicture
+                : chat.initiator.profilePicture
+              : chat.groupIcon
+          }
+          unreadCount={chat.unreadCount}
+          updateCount={updateUnreadCount}
+        />
+      );
+    },
+    [currentUserId, updateUnreadCount]
+  );
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Box className="flex gap-4 justify-stretch items-center py-3 px-2">
         <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
           <AvatarImage
@@ -116,25 +119,29 @@ export const ChatCardList = () => {
         </Button>
       </Box>
       {isLoading ? (
-        <Box className="flex flex-col h-[calc(100vh-100px)] w-full px-2">
+        <Box className="flex flex-grow flex-col h-full w-full px-2">
           <ChatListSkeleton />
         </Box>
       ) : (
-        <Box className="w-full h-[calc(100vh-100px)]">
+        <div className="flex-grow overflow-hidden">
           {chats?.length === 0 ? (
-            <Box className="flex justify-center h-[calc(100vh-100px)] w-[100%] items-center text-light-secondary dark:text-dark-secondary">
+            <Box className="flex justify-center h-full items-center flex-col text-light-silverSteel/50 dark:text-dark-silverSteel/50">
               <img
                 src={
                   isDarkTheme
-                    ? 'assets/Images/dark-no-results-found-image 1.svg'
-                    : 'assets/Images/light-no-results-found-image 1.svg'
+                    ? 'assets/Images/dark-no-results-found-image.svg'
+                    : 'assets/Images/light-no-results-found-image.svg'
                 }
+                width={300}
+                height={300}
                 alt="search not found"
-                className="object-fill h-[60%] w-[60%]"
+                className="object-fill"
               />
+
+              <p className="font-primary">No chats found !</p>
             </Box>
           ) : (
-            <ScrollArea className="h-[calc(100vh-100px)] border-none">
+            <ScrollArea className="border-none h-full">
               <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
                 {chats.map(renderChatCard)}
                 <div ref={bottomRef}>
@@ -148,13 +155,13 @@ export const ChatCardList = () => {
               </Box>
             </ScrollArea>
           )}
-        </Box>
+        </div>
       )}
       <CreateChatModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         currentUserId={currentUserId}
       />
-    </>
+    </div>
   );
 };

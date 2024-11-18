@@ -70,6 +70,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     socketInstance.on('connect', () => {
       setIsConnected(true);
+      console.log('socket connected');
     });
 
     socketInstance.on('connect_error', (error) => {
@@ -78,6 +79,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     socketInstance.on('disconnect', () => {
       setIsConnected(false);
+      console.log('socket disconnected');
     });
 
     setSocket(socketInstance);
