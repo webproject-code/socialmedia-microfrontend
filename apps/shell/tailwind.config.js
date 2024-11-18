@@ -10,13 +10,31 @@ module.exports = {
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
+  darkMode: 'selector',
   theme: {
     extend: {
+      screens: {
+        xs: '0px',
+        sm: '600px',
+        md: '960px',
+        lg: '1280px',
+        xl: '1920px',
+      },
       colors: {
-        primary: '#24293C',
-        secondary: '#AACCFF',
-        lavender: '#E6E6FA',
-        silverSteel: '#A7A9AA',
+        light: {
+          primary: '#FFFFFF',
+          secondary: '#3366CC',
+          lavender: '#D4BFFF',
+          silverSteel: '#6b7280',
+          modalColor: '#F4F4F9',
+        },
+        dark: {
+          primary: '#24293C',
+          secondary: '#AACCFF',
+          lavender: '#E6E6FA',
+          silverSteel: '#A7A9AA',
+          modalColor: '#0F0E21',
+        },
       },
       fontFamily: {
         primary: ['Lato'],

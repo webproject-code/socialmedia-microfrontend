@@ -17,6 +17,9 @@ export * from './helper';
 export * from './hooks/useOrigin';
 export * from './hooks/useDebounce';
 
+export * from './schemas/profile-schema';
+export * from './schemas/chatlist-schema';
+
 export * from './store/store';
 
 export * from './schemas/auth-schema';

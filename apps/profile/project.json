@@ -34,7 +34,7 @@
       "executor": "@nx/rspack:module-federation-dev-server",
       "options": {
         "buildTarget": "profile:build:development",
-        "port": 4201
+        "port": 4205
       },
       "configurations": {
         "development": {},

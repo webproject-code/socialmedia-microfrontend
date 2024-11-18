@@ -7,9 +7,9 @@ interface ApiError {
 }
 
 // Helper Function tohandler different error types
-export const handleError = async (error: AxiosError): Promise<ApiError> => {
+export const handleError = (error: AxiosError): ApiError => {
   let apiError: ApiError = { message: 'An unknown error occurred' };
-  // let isRefreshing = false;
+
   if (error.response) {
     const statusCode = error.response.status;
     const responseData = error.response.data as {
@@ -28,34 +28,6 @@ export const handleError = async (error: AxiosError): Promise<ApiError> => {
         };
         break;
       case 401:
-        window.location.href = '/auth/login';
-        // const orignalRequest = error.config;
-
-        // if (!isRefreshing) {
-        //   isRefreshing = true;
-        //   const refreshToken = getCookie('refreshToken');
-        //   console.log(refreshToken);
-        //   try {
-        //     const { data } = await apiClient.post('/auth/refresh-token', {
-        //       Headers: {
-        //         Authorization: `Bearer ${refreshToken}`,
-        //       },
-        //     });
-        //     const newAccessToken = data.accessToken;
-        //     localStorage.setItem('token', newAccessToken);
-        //     if (orignalRequest) {
-        //       orignalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        //       return apiClient(orignalRequest);
-        //     }
-        //   } catch (error) {
-        //     apiError = {
-        //       message:
-        //         responseData.message || 'Unauthorized - Please login again',
-        //       statusCode,
-        //       data: responseData,
-        //     };
-        //   }
-        // }
         apiError = {
           message: responseData.message || 'Unauthorized - Please login again',
           statusCode,
