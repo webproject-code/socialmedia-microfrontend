@@ -7,7 +7,7 @@ import { useAcceptFriendRequest } from '@social-media/api';
 interface AcceptFriendRequestButtonProps {
   userId: string;
   friendId: string;
-  friendRequestId: string;
+  incomingRequestId: string;
   name: string;
   onAccept: () => void;
 }
@@ -15,14 +15,14 @@ interface AcceptFriendRequestButtonProps {
 const AcceptFriendRequestButton: React.FC<AcceptFriendRequestButtonProps> = ({
   userId,
   friendId,
-  friendRequestId,
+  incomingRequestId,
   name,
   onAccept,
 }) => {
   const { mutate: acceptOrRejectFriendRequest } = useAcceptFriendRequest(
     userId,
     friendId,
-    friendRequestId
+    incomingRequestId
   );
 
   const handleAccept = () => {
@@ -33,7 +33,7 @@ const AcceptFriendRequestButton: React.FC<AcceptFriendRequestButtonProps> = ({
   return (
     <Button
       aria-label={`Accept friend request from ${name}`}
-      className="p-1.5 sm:px-4 sm:py-2 focus-ring"
+      className="p-1.5 sm:px-3 focus-ring"
       tabIndex={0}
       onClick={handleAccept}
       onKeyDown={(e) => {
