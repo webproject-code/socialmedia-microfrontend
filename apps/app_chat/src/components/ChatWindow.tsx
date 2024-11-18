@@ -1,6 +1,8 @@
 import { ChatType, Message, useProfile } from '@social-media/api';
 import { Container } from '@social-media/evoke-ui';
 import React, { ElementRef, useMemo, useRef } from 'react';
+import { useChatQuery } from '../hooks/useChatQuery';
+import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
 import { useChatQuery } from '../hooks/useChatQuery';

@@ -1,0 +1,61 @@
+{
+  "name": "friends",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/friends/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "web",
+        "outputPath": "dist/apps/friends",
+        "main": "apps/friends/src/main.ts",
+        "tsConfig": "apps/friends/tsconfig.app.json",
+        "rspackConfig": "apps/friends/rspack.config.ts",
+        "assets": ["apps/friends/src/favicon.ico", "apps/friends/src/assets"]
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false,
+          "rspackConfig": "apps/friends/rspack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/rspack:module-federation-dev-server",
+      "options": {
+        "buildTarget": "friends:build:development",
+        "port": 4202
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "friends:build:production"
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/rspack:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "friends:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "friends:serve:development"
+        },
+        "production": {
+          "serveTarget": "friends:serve:production"
+        }
+      }
+    }
+  }
+}

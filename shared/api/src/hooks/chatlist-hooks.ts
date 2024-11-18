@@ -168,6 +168,12 @@ export const useChatList = (searchTerm: string) => {
     return uniqueChats;
   }, [data?.pages]);
 
+  const noMessageChats = useMemo(() => {
+    return chats.filter((chats) => {
+      if (chats.messages.length > 0) return chats;
+    });
+  }, [chats]);
+
   // Handler for loading more data
   const loadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -269,7 +275,7 @@ export const useChatList = (searchTerm: string) => {
   // }, [queryClient, searchTerm, refetch]);
 
   return {
-    chats,
+    chats: noMessageChats,
     isLoading,
     isFetchingNextPage,
     isError,

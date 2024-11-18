@@ -2,9 +2,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
-import { useStore } from '../../store/store';
-import { registrationStepOneSchema } from '../../schemas';
+import { registrationStepOneSchema, useStore } from '@social-media/utils';
 
 const RegisterStepOneForm: React.FC = () => {
   const { registerForm, updateRegisterForm, goToNextStep } = useStore();

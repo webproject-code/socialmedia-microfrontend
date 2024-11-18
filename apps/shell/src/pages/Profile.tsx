@@ -1,10 +1,9 @@
-import TopbarForMobile from '../components/TopbarForMobile';
+import { UserProfile } from 'profile/Module';
 
 const Profile: React.FC = () => {
   return (
-    <div>
-      <TopbarForMobile title="Profile" />
-      Profile
+    <div className="p-2 md:p-4 h-full">
+      <UserProfile />
     </div>
   );
 };

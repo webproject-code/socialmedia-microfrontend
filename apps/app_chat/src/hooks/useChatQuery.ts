@@ -16,16 +16,17 @@ export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
   // function to fetch messages
   const getMessages = ({ pageParam = '' }) => {
     if (chatType === ChatType.ONE_ON_ONE) {
-      console.log('return chat service', chatId, chatType);
+      console.log('chattype', chatType);
+      console.log('calling chat service');
       return getOneOnOneChatMessages(chatId, { cursor: pageParam });
     } else if (chatType === ChatType.GROUP) {
-      console.log('return chat service', chatId, chatType);
+      console.log('chattype', chatType);
+      console.log('calling chat service');
       return getGroupChatMessages(chatId, { cursor: pageParam });
     }
   };
 
   console.log(getMessages);
-
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
       queryKey: [`chat:${chatId}`],

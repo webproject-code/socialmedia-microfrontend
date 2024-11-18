@@ -18,7 +18,10 @@
       "@social-media/api": ["shared/api/src/index.ts"],
       "@social-media/utils": ["shared/utils/src/index.ts"],
       "app_chat/Module": ["apps/app_chat/src/remote-entry.ts"],
-      "auth/Module": ["apps/auth/src/remote-entry.ts"]
+      "auth/Module": ["apps/auth/src/remote-entry.ts"],
+      "chatlist/Module": ["apps/chatlist/src/remote-entry.ts"],
+      "friends/Module": ["apps/friends/src/remote-entry.ts"],
+      "profile/Module": ["apps/profile/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
