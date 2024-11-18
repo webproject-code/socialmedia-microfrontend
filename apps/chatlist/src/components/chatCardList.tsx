@@ -34,29 +34,32 @@ export const ChatCardList = () => {
     []
   );
 
-  const renderChatCard = useCallback((chat: Chat) => {
-    const isOneOnOne = chat.type === 'ONE_ON_ONE';
+  const renderChatCard = useCallback(
+    (chat: Chat) => {
+      const isOneOnOne = chat.type === 'ONE_ON_ONE';
 
-    return (
-      <ChatCard
-        type={chat.type}
-        chatId={chat.id}
-        key={chat.id}
-        name={chat.name}
-        lastMessage={chat.messages.length > 0 ? chat.messages[0].content : ''}
-        lastMessageTime={chat.lastMessageAt}
-        profileImage={
-          isOneOnOne
-            ? chat.initiatorId === currentUserId
-              ? chat.participant.profilePicture
-              : chat.initiator.profilePicture
-            : chat.groupIcon
-        }
-        unreadCount={chat.unreadCount}
-        updateCount={updateUnreadCount}
-      />
-    );
-  }, []);
+      return (
+        <ChatCard
+          type={chat.type}
+          chatId={chat.id}
+          key={chat.id}
+          name={chat.name}
+          lastMessage={chat.messages.length > 0 ? chat.messages[0].content : ''}
+          lastMessageTime={chat.lastMessageAt}
+          profileImage={
+            isOneOnOne
+              ? chat.initiatorId === currentUserId
+                ? chat.participant.profilePicture
+                : chat.initiator.profilePicture
+              : chat.groupIcon
+          }
+          unreadCount={chat.unreadCount}
+          updateCount={updateUnreadCount}
+        />
+      );
+    },
+    [currentUserId, updateUnreadCount]
+  );
 
   return (
     <div className="flex flex-col h-screen">
