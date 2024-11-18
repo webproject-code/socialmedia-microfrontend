@@ -11,7 +11,7 @@ const ChatLayout: React.FC = () => {
 
   return (
     <SocketProvider>
-      <Grid className="w-full h-full" columns={12} spacing="small">
+      <Grid className="w-full h-full p-1" columns={12} spacing="small">
         <Grid.GridItem
           columnSpan={{ xs: 12, md: 4, lg: 3 }}
           className="overflow-hidden md:block"
