@@ -11,7 +11,7 @@ import {
   Spinner,
   registrationStepTwoSchema,
   useStore,
-} from '@social-media/utils'
+} from '@social-media/utils';
 
 const RegisterStepTwoForm: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);

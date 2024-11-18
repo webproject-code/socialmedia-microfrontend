@@ -21,6 +21,7 @@ const CancelFriendButton: React.FC<CancelFriendButtonProps> = ({
     <Button
       className="sm:w-[200px] dark:text-dark-primary "
       onClick={() => cancelFriendRequest()}
+      tabIndex={0}
     >
       Cancel Request
     </Button>

@@ -14,6 +14,12 @@ const config: ModuleFederationConfig = {
         strictVersion: false,
       };
     }
+    if (library === 'socket.io-client') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
     return defaultConfig;
   },
 };

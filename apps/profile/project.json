@@ -15,7 +15,8 @@
         "main": "apps/profile/src/main.ts",
         "tsConfig": "apps/profile/tsconfig.app.json",
         "rspackConfig": "apps/profile/rspack.config.ts",
-        "assets": ["apps/profile/src/favicon.ico", "apps/profile/src/assets"]
+        "assets": ["apps/profile/src/favicon.ico", "apps/profile/src/assets"],
+        "postcssConfig": "apps/profile/postcss.config.js"
       },
       "configurations": {
         "development": {

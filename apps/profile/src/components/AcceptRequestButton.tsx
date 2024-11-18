@@ -30,6 +30,7 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
       <Button
         className="dark:text-dark-primary sm:w-[200px]"
         onClick={() => acceptFriendRequest()}
+        tabIndex={0}
       >
         Accept
       </Button>
@@ -37,6 +38,7 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
         className="dark:text-dark-secondary sm:w-[200px]"
         onClick={() => rejectFriendRequest()}
         variant="outline"
+        tabIndex={0}
       >
         Reject
       </Button>
