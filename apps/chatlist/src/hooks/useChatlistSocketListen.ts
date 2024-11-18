@@ -82,10 +82,10 @@ export const useChatlistSocketListen = () => {
         }
       );
     };
-    socket.on('Chatlist:newMessage', handleNewMessage);
+    socket.on('chatlist:newMessage', handleNewMessage);
 
     return () => {
-      socket.off('Chatlist:newMessage', handleNewMessage);
+      socket.off('chatlist:newMessage', handleNewMessage);
     };
   }, [queryClient, socket]);
 
