@@ -69,7 +69,7 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
                   className="rounded border-gray-300 dark:border-dark-lavender"
                 />
                 <Avatar className="h-7 w-7">
-                  <AvatarImage src={friend.profilePicture} />
+                  <AvatarImage src={friend.profilePicture} className="ring-0" />
                 </Avatar>
                 <span className="dark:text-dark-lavender">{friend.name}</span>
               </label>
