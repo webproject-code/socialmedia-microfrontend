@@ -1,6 +1,5 @@
 import { Box, Stack } from '@social-media/evoke-ui';
-import { useTheme } from '@social-media/utils';
-import { useStore } from '@social-media/utils';
+import { useStore, useTheme } from '@social-media/utils';
 import AuthContainerCard from '../components/AuthContainerCard';
 import RegisterStepTwoForm from '../components/forms/RegisterStepTwoForm';
 import RegisterStepOneForm from '../components/forms/RegisterStepOneForm';
@@ -41,7 +40,7 @@ const Register: React.FC = () => {
           {/* Image for larger screens */}
           <Box className="hidden md:block">
             <img
-              src={`../assets/images/${
+              src={`assets/images/${
                 theme.isDarkTheme ? 'dark' : 'light'
               }-register-image.svg`}
               alt="logo"
