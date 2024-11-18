@@ -48,9 +48,7 @@ const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
         columnSpacing={'medium'}
       >
         {friends.map((friend) => {
-          return (
-            <FriendsCard key={friend.id} friend={friend} userId={userId} />
-          );
+          return <FriendsCard key={friend.id} friend={friend} />;
         })}
       </Grid>
       <div ref={bottomRef} className="flex justify-center">

@@ -1,30 +1,17 @@
 import { Friend } from '@social-media/api';
-import { Box, Stack } from '@social-media/evoke-ui';
-import { IoChatbubbleEllipses } from 'react-icons/io5';
+import { Stack } from '@social-media/evoke-ui';
 
 import { useNavigate } from 'react-router-dom';
-import { checkOneOnOneChatStatus } from '@social-media/api';
-import { useStore } from '@social-media/utils';
 
 type FriendsCardProps = {
   friend: Friend;
-  userId: string;
 };
 
-const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
+const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
   const navigate = useNavigate();
-  const { user } = useStore();
-  const isOwner = user?.id === friend.id;
+
   const handleClick = () => {
     navigate(`/users/${friend.id}`);
-  };
-
-  const handleNavigateToChat = () => {
-    checkOneOnOneChatStatus(userId, friend.id).then((response) => {
-      if (response.data) {
-        navigate(`/chats/one-on-one/${response.data.id}`);
-      }
-    });
   };
 
   return (
@@ -50,14 +37,6 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend, userId }) => {
           </p>
         </div>
       </div>
-      {!isOwner && (
-        <Box className="p-4" onClick={handleNavigateToChat}>
-          <IoChatbubbleEllipses
-            tabIndex={0}
-            className="h-6 w-6 text-light-secondary dark:text-dark-secondary cursor-pointer focus-ring outline-0"
-          />
-        </Box>
-      )}
     </Stack>
   );
 };
