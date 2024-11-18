@@ -1,6 +1,6 @@
 import { Box, Stack } from '@social-media/evoke-ui';
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/forms/LoginForm';
 import { useTheme } from '@social-media/utils';
 import AuthContainerCard from '../components/AuthContainerCard';
 
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       />
       <Box className="hidden md:block">
         <img
-          src={`../assets/images/${
+          src={`assets/images/${
             theme.isDarkTheme ? 'dark' : 'light'
           }-login-image.svg`}
           alt="logo"

@@ -14,7 +14,35 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: [],
+  remotes: ['auth', 'profile', 'friends', 'chatlist', 'app_chat'],
+
+  shared: (library, defaultConfig) => {
+    if (library === '@social-media/evoke-ui') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+    if (library === 'socket.io-client') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+    if (library === '@hookform/resolvers/zod') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+    if (library === '@tanstack/react-query') {
+      return {
+        ...defaultConfig,
+        strictVersion: false,
+      };
+    }
+    return defaultConfig;
+  },
 };
 
 export default config;

@@ -4,11 +4,11 @@ import {
   FriendRequest,
   PaginatedResponse,
   Friend,
-  User,
   QueryPagination,
+  User,
 } from '../types';
 
-// Fetch friends
+// fetch friends
 export const fetchFriends: IFriendsService['fetchFriends'] = async (
   userId: string,
   params?: QueryPagination
