@@ -26,7 +26,12 @@ const LogoutButton: React.FC = () => {
 
   return (
     <>
-      <Button onClick={openModal} className="sm:w-[200px]" tabIndex={0}>
+      <Button
+        variant="destructive"
+        onClick={openModal}
+        className="sm:w-[200px]"
+        tabIndex={0}
+      >
         Logout
       </Button>
       {isOpen && (
