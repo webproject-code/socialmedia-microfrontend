@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserProfile, useProfileUpdate } from '@social-media/api';
+import { User, UserProfile, useProfileUpdate } from '@social-media/api';
 import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -12,7 +12,7 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   const [preview, setPreview] = useState<string | undefined>(
     profile.profilePicture
   );
-  const { setVisitedUser } = useStore();
+  const { user, setVisitedUser, updateUser } = useStore();
   const { isPending, mutate, error, isSuccess } = useProfileUpdate();
 
   const {
@@ -56,6 +56,15 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
     const updatedUser = { id: profile.id, ...data };
     mutate(updatedUser, {
       onSuccess: (updatedData) => {
+        if (user) {
+          const newUser: User = {
+            ...user,
+            name: updatedData.name,
+            profilePicture: updatedData.profilePicture,
+            bio: updatedData.bio,
+          };
+          updateUser(newUser);
+        }
         setVisitedUser(updatedData);
         reset({
           // Reset the form to updated values

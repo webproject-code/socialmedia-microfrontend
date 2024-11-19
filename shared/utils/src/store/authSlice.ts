@@ -6,6 +6,7 @@ export type AuthSlice = {
   user: User | null;
   login: (payload: { isAuthenticated: boolean; user: User | null }) => void;
   logout: () => void;
+  updateUser: (user: User | null) => void;
 };
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
@@ -21,5 +22,8 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   logout: () => {
     set({ isAuthenticated: false, user: null });
     localStorage.removeItem('token');
+  },
+  updateUser: (user) => {
+    set({ user });
   },
 });
