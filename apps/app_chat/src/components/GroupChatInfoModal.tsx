@@ -46,7 +46,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<GroupSettingsFormData>({
     resolver: zodResolver(groupSettingsSchema),
     defaultValues: {
@@ -120,7 +120,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
         onClose={onClose}
         className="dark:bg-dark-modalColor sm:max-w-[600px] max-h-[90vh] overflow-y-auto"
       >
-        <Modal.Header className="text-2xl dark:text-dark-lavender">
+        <Modal.Header className="text-2xl text-light-secondary dark:text-dark-lavender">
           <div>
             <h1>Group Information</h1>
             <div className="text-sm text-gray-500 dark:text-dark-silverSteel">
@@ -161,6 +161,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
                       render={({ field }) => (
                         <Input
                           {...field}
+                          label="Name"
                           type="text"
                           placeholder="Enter name"
                           error={!!errors.name}
@@ -178,6 +179,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
                       render={({ field }) => (
                         <Input
                           {...field}
+                          label="Description"
                           type="text"
                           placeholder="Enter description"
                           error={!!errors.groupDescription}
@@ -194,9 +196,12 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
                 {isOwner && (
                   <Button
                     type="submit"
-                    className="w-fit px-4 py-2 justify-self-end"
+                    className="w-fit px-4 py-2 justify-self-end dark:bg-dark-secondary"
                     size="sm"
-                    disabled={updateSettingsMutation.isPending}
+                    disabled={
+                      updateSettingsMutation.isPending ||
+                      (previewUrl === null && !isDirty)
+                    }
                   >
                     {updateSettingsMutation.isPending
                       ? 'Saving...'
@@ -209,7 +214,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
             <div className="mt-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semifold dark:text-dark-lavender">
+                  <h3 className="text-lg font-semifold text-light-secondary dark:text-dark-lavender">
                     {isAddingMembersOpen
                       ? 'Add Members'
                       : `Members ${membersData?.members.length}`}

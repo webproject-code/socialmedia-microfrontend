@@ -4,6 +4,7 @@ import { ChatType, Message } from '@social-media/api';
 import { Avatar, AvatarImage } from '@social-media/evoke-ui';
 import DeleteButton from './DeleteMessageButton';
 import DeleteMessageModal from './DeleteMessageModal';
+import { FaBan } from 'react-icons/fa';
 
 interface MessageBubbleProps {
   message: Message;
@@ -71,14 +72,18 @@ const MessageContainer: React.FC<MessageContainerProps> = ({
   onDelete,
 }) => (
   <div
-    className={`relative group ${getMessageContainerStyles(
+    className={`relative shadow-md group ${getMessageContainerStyles(
       isSentByCurrentUser
     )}`}
   >
     {!isSentByCurrentUser && isGroupMessage && (
       <SenderName name={message.sender.name} />
     )}
-    <MessageContent content={message.content} isDeleted={message.isDeleted} />
+    <MessageContent
+      content={message.content}
+      isDeleted={message.isDeleted}
+      isSentByCurrentUser={isSentByCurrentUser}
+    />
     {canDeleteMessage && !message.isDeleted && (
       <DeleteButton onClick={onDelete} />
     )}
@@ -97,17 +102,25 @@ const SenderName: React.FC<{ name: string }> = ({ name }) => (
   <h3 className="text-sm font-semibold dark:text-dark-primary">{name}</h3>
 );
 
-const MessageContent: React.FC<{ content: string; isDeleted: boolean }> = ({
-  content,
-  isDeleted,
-}) => (
-  <p className={getMessageTextStyles(isDeleted)}>
-    {isDeleted ? 'This message has been deleted' : content}
+const MessageContent: React.FC<{
+  isSentByCurrentUser: boolean;
+  content: string;
+  isDeleted: boolean;
+}> = ({ content, isDeleted, isSentByCurrentUser }) => (
+  <p className={getMessageTextStyles(isSentByCurrentUser, isDeleted)}>
+    {isDeleted ? (
+      <span className="flex gap-1 justify-between items-center">
+        {' '}
+        <FaBan /> <span>This message has been deleted</span>
+      </span>
+    ) : (
+      content
+    )}
   </p>
 );
 
 const MessageTimestamp: React.FC<{ timestamp: string }> = ({ timestamp }) => (
-  <span className="message-timestamp self-end text-xs dark:text-dark-silverSteel">
+  <span className="message-timestamp self-end text-xs text-gray-600 dark:text-dark-silverSteel">
     {formatMessageTime(timestamp)}
   </span>
 );
@@ -116,15 +129,28 @@ const getMessageContainerStyles = (isSentByCurrentUser: boolean): string => {
   const baseStyles =
     'px-4 py-2 rounded-lg max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl';
   const conditionalStyles = isSentByCurrentUser
-    ? 'rounded-tr-none dark:bg-dark-secondary'
-    : 'rounded-tl-none dark:bg-dark-lavender';
+    ? 'rounded-tr-none dark:bg-dark-secondary bg-light-secondary'
+    : 'rounded-tl-none dark:bg-dark-lavender bg-light-primary';
 
-  return `${baseStyles} ${conditionalStyles}`;
+  return `${baseStyles} ${conditionalStyles} `;
 };
 
-const getMessageTextStyles = (isDeleted: boolean): string => {
+const getMessageTextStyles = (
+  isSentByCurrentUser: boolean,
+  isDeleted: boolean
+): string => {
+  if (isDeleted) {
+    return `font-primary italic ${
+      isSentByCurrentUser ? 'text-gray-300 dark:text-gray-500' : 'text-gray-500'
+    } break-words text-sm`;
+  }
+
+  const sentStyles = 'text-white dark:text-black'; // Current user's message is white in light mode
+
+  const receivedStyles = 'text-gray-800 dark:text-black';
+
   return `font-primary ${
-    isDeleted ? 'italic text-gray-500' : 'text-black'
+    isSentByCurrentUser ? sentStyles : receivedStyles
   } break-words text-sm`;
 };
 

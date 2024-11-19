@@ -7,7 +7,7 @@ interface ApiError {
 }
 
 // Helper Function tohandler different error types
-export const handleError = async (error: AxiosError): Promise<ApiError> => {
+export const handleError = (error: AxiosError): ApiError => {
   let apiError: ApiError = { message: 'An unknown error occurred' };
   // let isRefreshing = false;
   if (error.response) {
@@ -28,6 +28,7 @@ export const handleError = async (error: AxiosError): Promise<ApiError> => {
         };
         break;
       case 401:
+        localStorage.removeItem('token');
         window.location.href = '/auth/login';
         // const orignalRequest = error.config;
 
