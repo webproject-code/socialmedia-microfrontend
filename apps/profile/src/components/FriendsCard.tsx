@@ -22,16 +22,16 @@ const FriendsCard: React.FC<FriendsCardProps> = ({ friend }) => {
       tabIndex={0}
     >
       <div
-        className="flex gap-4 items-center w-full cursor-pointer p-4"
+        className="flex gap-4 items-center w-full cursor-pointer p-2 sm:p-4"
         onClick={handleClick}
       >
         <img
-          className="w-11 h-11 rounded-full"
+          className="w-9 h-9 sm:w-11 sm:h-11 rounded-full"
           src={friend.profilePicture}
           alt="profile"
         />
         <div className="flex flex-col">
-          <h6>{friend.name}</h6>
+          <h6 className="text-base md:text-md">{friend.name}</h6>
           <p className="text-sm text-slate-600 dark:text-silverSteel">
             {friend.email}
           </p>

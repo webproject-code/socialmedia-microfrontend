@@ -39,7 +39,7 @@ const MutualFriendList: React.FC<MutualFriendListProps> = ({
     <Stack spacing="small" align="center" className="w-full">
       <AvatarGroup friends={data.mutualFriends} />
       <p>
-        <span className="me-1">Followed By</span>
+        <span className="me-1">Friends With</span>
         <span className="text-light-secondary dark:text-dark-secondary ">
           {data.mutualFriends.slice(0, 3).map((friend, index) => {
             return (
