@@ -131,7 +131,7 @@ const ConfirmRemoveMemberModal: React.FC<ConfirmRemoveMemberModalProps> = ({
           Cancel
         </Button>
         <Button
-          className="w-fit dark:bg-red-500 dark:text-dark-lavender hover:bg-red-700"
+          className="w-fit bg-red-500 dark:text-dark-lavender hover:bg-red-700"
           onClick={onConfirm}
         >
           Remove

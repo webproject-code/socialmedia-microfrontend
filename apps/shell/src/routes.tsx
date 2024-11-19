@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { ErrorFallback, NotFoundPage } from '@social-media/utils';
+import Fallback from './components/Fallback';
 
 // Lazy load components
 const Home = lazy(() => import('./pages/Home'));
@@ -36,7 +37,7 @@ export const routes: RouteObject[] = [
   {
     path: '/auth',
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Fallback />}>
         <Auth />
       </Suspense>
     ),
@@ -44,7 +45,7 @@ export const routes: RouteObject[] = [
       {
         path: 'login',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Fallback />}>
             <Login />
           </Suspense>
         ),
@@ -52,7 +53,7 @@ export const routes: RouteObject[] = [
       {
         path: 'register',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Fallback />}>
             <Register />
           </Suspense>
         ),
@@ -60,7 +61,7 @@ export const routes: RouteObject[] = [
       {
         path: 'forgot-password',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Fallback />}>
             <ForgotPassword />
           </Suspense>
         ),
@@ -68,7 +69,7 @@ export const routes: RouteObject[] = [
       {
         path: 'reset-password',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Fallback />}>
             <ResetPassword />
           </Suspense>
         ),
@@ -78,12 +79,12 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Fallback />}>
         <PrivateRoute />
       </Suspense>
     ),
     errorElement: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Fallback />}>
         <ErrorFallback />
       </Suspense>
     ),
@@ -91,7 +92,7 @@ export const routes: RouteObject[] = [
       {
         path: '/',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Fallback />}>
             <Layout />
           </Suspense>
         ),
@@ -99,7 +100,7 @@ export const routes: RouteObject[] = [
           {
             path: '/',
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Fallback />}>
                 <Home />
               </Suspense>
             ),
@@ -107,7 +108,7 @@ export const routes: RouteObject[] = [
           {
             path: '/friends',
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Fallback />}>
                 <FriendsPage />
               </Suspense>
             ),
@@ -115,7 +116,7 @@ export const routes: RouteObject[] = [
           {
             path: '/users/:id',
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Fallback />}>
                 <Profile />
               </Suspense>
             ),
@@ -123,7 +124,7 @@ export const routes: RouteObject[] = [
           {
             path: '/chats',
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Fallback />}>
                 <ChatLayout />
               </Suspense>
             ),
@@ -131,7 +132,7 @@ export const routes: RouteObject[] = [
               {
                 path: 'one-on-one/:chatId',
                 element: (
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<Fallback />}>
                     <OneOnOneChat />
                   </Suspense>
                 ),
@@ -139,7 +140,7 @@ export const routes: RouteObject[] = [
               {
                 path: 'group/:chatId',
                 element: (
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<Fallback />}>
                     <GroupChat />
                   </Suspense>
                 ),

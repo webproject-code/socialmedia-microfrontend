@@ -4,8 +4,11 @@ import { useSocket } from '@social-media/utils';
 import { useEffect } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import ChatHeader from '../components/ChatHeader';
+import ChatHeaderSkeleton from '../components/ChatHeaderSkeleton';
 import ChatWindow from '../components/ChatWindow';
+import ChatWindowSkeleton from '../components/ChatWindowSkeleton';
 import MessageInput from '../components/MessageInput';
+import MessageInputSkeleton from '../components/MessageInputSkeleton';
 
 const OneOnOneChat = () => {
   const { chatId } = useParams();
@@ -28,8 +31,14 @@ const OneOnOneChat = () => {
 
   if (isLoading) {
     return (
-      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
-        Fetching chat details
+      <Container className="min-h-screen w-full flex flex-col bg-light-primary dark:bg-dark-primary">
+        <ChatHeaderSkeleton />
+
+        {/* window */}
+        <ChatWindowSkeleton />
+
+        {/* input */}
+        <MessageInputSkeleton />
       </Container>
     );
   }
@@ -59,7 +68,11 @@ const OneOnOneChat = () => {
           name={name}
           avatarUrl={avatarUrl}
         />
-        <ChatWindow chatType={chatType} chatId={chatId} />
+        <ChatWindow
+          chatType={chatType}
+          chatId={chatId}
+          isVanishMode={data.vanishMode}
+        />
         <MessageInput chatType={chatType} chatId={chatId} />
       </div>
     );

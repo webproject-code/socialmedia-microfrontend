@@ -8,7 +8,7 @@ const SearchedMessage: React.FC<SearchedMessageProps> = ({
   query,
 }) => {
   return (
-    <p className="dark:text-dark-lavender max-[]: truncate">
+    <p className="text-gray-600 dark:text-dark-lavender max-[]: truncate">
       {truncateAndHighlight(content, query, 50)}
     </p>
   );
@@ -43,7 +43,10 @@ const truncateAndHighlight = (
   // Highlight the matches
   const highlighted = snippet.split(regex).map((part, index) =>
     regex.test(part) ? (
-      <span key={index} className="highlight dark:text-yellow-300">
+      <span
+        key={index}
+        className="highlight text-yellow-500 dark:text-yellow-300"
+      >
         {part}
       </span>
     ) : (

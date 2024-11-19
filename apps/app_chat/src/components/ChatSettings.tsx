@@ -22,7 +22,9 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({
   const getDropdownItems = () => {
     const commonItems = [
       {
-        icon: <FaSearch className="text-dark-lavender" />,
+        icon: (
+          <FaSearch className="text-light-secondary dark:text-dark-lavender" />
+        ),
         label: 'Search in chat',
         onClick: onSearchClick,
         divider: true,
@@ -31,7 +33,9 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({
 
     const oneOnOneItems = [
       {
-        icon: <FaHandSparkles className="text-dark-lavender" />,
+        icon: (
+          <FaHandSparkles className="text-light-secondary dark:text-dark-lavender" />
+        ),
         label: `${isVanishModeEnabled ? 'Disable' : 'Enable'} vanish mode`,
         onClick: onVanishModeToggle,
       },
@@ -39,7 +43,9 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({
 
     const groupItems = [
       {
-        icon: <FaUsers className="text-dark-lavender" />,
+        icon: (
+          <FaUsers className="text-light-secondary dark:text-dark-lavender" />
+        ),
         label: 'Group info',
         onClick: onGroupInfoClick,
       },
@@ -55,7 +61,7 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({
     <Dropdown
       trigger={
         <Button className="w-fit" variant="icon">
-          <FaEllipsisV className="dark:text-dark-lavender dark:hover:text-dark-secondary/90" />
+          <FaEllipsisV className="text-light-secondary hover:text-light-secondary/80 dark:text-dark-lavender dark:hover:text-dark-secondary/90" />
         </Button>
       }
       align="right"

@@ -5,11 +5,13 @@ import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
 import MessageBubble from './MessageBubble';
+import ChatWindowSkeleton from './ChatWindowSkeleton';
 
 interface ChatWindowProps {
   chatId: string;
   chatType: ChatType;
   isGroupOwner?: boolean;
+  isVanishMode?: boolean;
 }
 
 interface MessagesByDate {
@@ -20,6 +22,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   chatId,
   chatType,
   isGroupOwner,
+  isVanishMode,
 }) => {
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
@@ -96,11 +99,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }, [data?.pages]);
 
   if (status === 'pending') {
-    return (
-      <Container className="h-screen bg-light-primary dark:bg-dark-primary">
-        <div className="flex-1 justify-center items-center">Loading...</div>
-      </Container>
-    );
+    return <ChatWindowSkeleton />;
   }
 
   if (status === 'error') {
@@ -115,7 +114,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div
-      className="chat-window flex-1 flex flex-col py-4 overflow-y-auto dark:bg-[#4C4D51]/20"
+      className="chat-window flex-1 flex flex-col py-4 overflow-y-auto bg-gray-300 dark:bg-[#4C4D51]/20"
       ref={chatRef}
     >
       {hasNextPage === false && <div className="flex-1" />}
@@ -135,13 +134,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         </div>
       )}
       <div className="flex flex-col-reverse mt-auto">
+        {isVanishMode && (
+          <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary text-light-secondary dark:text-dark-secondary border border-light-secondary dark:border-dark-secondary py-1 rounded-full mx-auto px-4 opacity-90">
+            Vanish mode enabled
+          </div>
+        )}
         {Object.entries(groupedMessages)
           .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
           .map(([date, messages]) => (
             <div key={date} className="flex flex-col">
-              <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
+              <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary text-gray-600 dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
                 {formatDateLabel(date)}
               </div>
+
               <div className="flex flex-col">
                 {messages.map((message) => (
                   <MessageBubble

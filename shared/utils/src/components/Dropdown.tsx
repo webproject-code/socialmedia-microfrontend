@@ -1,3 +1,4 @@
+import { Divider } from '@social-media/evoke-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
 export interface DropdownItem {
@@ -85,7 +86,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 {item.label}
               </div>
               {item.divider && index < items.length - 1 && (
-                <div className="h-px bg-gray-700" />
+                <Divider
+                  alignment="horizontal"
+                  className="border-b-0 dark:border-dark-silverSteel border-light-silverSteel opacity-15"
+                />
               )}
             </React.Fragment>
           ))}

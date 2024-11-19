@@ -1,6 +1,7 @@
 import {
   ChatType,
   OneOnOneChat,
+  useGroupMembers,
   useOneOnOneChatUpdate,
 } from '@social-media/api';
 import {
@@ -16,7 +17,7 @@ import { useStore } from '@social-media/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMessagesSearch } from '../hooks/useMessagesSearch';
 import { useTypingStatus } from '../hooks/useTypingStatus';
 import ChatSettings from './ChatSettings';
@@ -47,11 +48,16 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   const { mutate } = useOneOnOneChatUpdate(chatId!);
   const { typingMessage } = useTypingStatus({ chatType });
   const { searchMessages } = useMessagesSearch({ chatId, chatType });
+  const { data, isLoading: isGroupMemberLoading } = useGroupMembers(chatId);
 
-  const oneOnOneChatData = queryClient.getQueryData<OneOnOneChat>([
-    'one-on-one',
-    chatId,
-  ]);
+  let oneOnOneChatData: OneOnOneChat | undefined;
+
+  if (chatType === ChatType.ONE_ON_ONE) {
+    oneOnOneChatData = queryClient.getQueryData<OneOnOneChat>([
+      'one-on-one',
+      chatId,
+    ]);
+  }
 
   const handleSearchToggle = () => {
     setIsSearchActive((prev) => !prev);
@@ -94,7 +100,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   return (
     <>
-      <div className="chat-header flex items-center justify-between py-3 px-2 md:px-4 shrink-0 sticky top-0 bg-light-primary dark:bg-dark-primary z-10 h-[72px]">
+      <div className="chat-header flex items-center justify-between py-3 px-2 md:px-4 shrink-0 sticky top-0 bg-light-primary dark:bg-dark-primary z-10 h-[72px] shadow-md">
         {!isSearchActive ? (
           <>
             <div className="cursor-pointer flex gap-x-2 md:gap-x-4 items-center">
@@ -109,14 +115,41 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                 <AvatarImage src={avatarUrl} className="ring-0" />
               </Avatar>
               <div className="flex flex-col justify-between h-12">
-                <h2 className="text-xl md:text-2xl text-dark-lavender justify-self-start font-semibold font-secondary">
+                <h2 className="text-xl  text-light-secondary dark:text-dark-lavender justify-self-start font-bold font-secondary">
                   {name}
                 </h2>
-                {typingMessage && (
-                  <span className="typing-status dark:text-dark-secondary text-sm">
-                    {typingMessage}
-                  </span>
-                )}
+
+                <span className=" text-light-silverSteel dark:text-dark-secondary text-sm">
+                  {typingMessage ? (
+                    typingMessage
+                  ) : chatType === ChatType.GROUP ? (
+                    isGroupMemberLoading ? (
+                      'Getting group details...'
+                    ) : (
+                      <span>
+                        {' '}
+                        {data?.members.slice(0, 3).map((member, index) => {
+                          return (
+                            <span key={member.id}>
+                              <Link
+                                to={`/users/${member.id}`}
+                                className="hover:underline text-sm"
+                              >
+                                {member.name}
+                              </Link>
+                              {index < data.members.length - 1 && ', '}
+                            </span>
+                          );
+                        })}
+                        {data!.members.length > 3 && (
+                          <span className="text-sm">
+                            +{data!.members.length - 3} more
+                          </span>
+                        )}
+                      </span>
+                    )
+                  ) : null}
+                </span>
               </div>
             </div>
             <ChatSettings
@@ -134,7 +167,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
               variant="icon"
               onClick={handleSearchToggle}
             >
-              <FaArrowLeft className="dark:text-dark-lavender" />
+              <FaArrowLeft className="text-light-secondary dark:text-dark-lavender" />
             </Button>
             <div className="input-container w-full ">
               <Input
@@ -167,7 +200,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                               </Avatar>
                               <Box className="flex flex-col gap-y-1 w-full">
                                 <Box className="flex items-center gap-2">
-                                  <span className="font-semibold">
+                                  <span className="text-light-secondary dark:text-dark-secondary">
                                     {message.sender.name}
                                   </span>
                                   <span className="text-sm text-gray-500">
