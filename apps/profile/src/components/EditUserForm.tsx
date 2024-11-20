@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, UserProfile, useProfileUpdate } from '@social-media/api';
+import { useProfileUpdate } from '@social-media/api';
 import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -7,13 +7,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Spinner, StatusMessageBox } from '@social-media/utils';
 import { useStore, editProfileSchema } from '@social-media/utils';
 
-const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
+const EditUserForm: React.FC = () => {
+  // Get the current user data from the store
+  const { user, updateUser } = useStore();
   // Initialize preview state with the existing profile picture URL
   const [preview, setPreview] = useState<string | undefined>(
-    profile.profilePicture
+    user?.profilePicture
   );
-  const { user, setVisitedUser, updateUser } = useStore();
   const { isPending, mutate, error, isSuccess } = useProfileUpdate();
+
+  // Effect to clean up preview URL
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   const {
     control,
@@ -24,18 +32,13 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
       profilePicture: undefined,
-      name: profile.name,
-      bio: profile.bio,
+      name: (user && user.name) || '',
+      bio: (user && user.bio) || '',
     },
     mode: 'onChange',
   });
 
-  // Effect to clean up preview URL
-  useEffect(() => {
-    return () => {
-      if (preview) URL.revokeObjectURL(preview);
-    };
-  }, [preview]);
+  if (!user) return null;
 
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -48,31 +51,29 @@ const EditUserForm: React.FC<{ profile: UserProfile }> = ({ profile }) => {
       setPreview(URL.createObjectURL(file)); // Update preview with new image URL
       return;
     }
-    setPreview(profile.profilePicture);
+    setPreview(user.profilePicture);
     onChange(undefined);
   };
 
   const onSubmit = (data: z.infer<typeof editProfileSchema>) => {
-    const updatedUser = { id: profile.id, ...data };
+    const updatedUser = { id: user.id, ...data };
     mutate(updatedUser, {
       onSuccess: (updatedData) => {
-        if (user) {
-          const newUser: User = {
-            ...user,
-            name: updatedData.name,
-            profilePicture: updatedData.profilePicture,
-            bio: updatedData.bio,
-          };
-          updateUser(newUser);
-        }
-        setVisitedUser(updatedData);
+        // Update the user data in the store
+        updateUser({
+          ...user,
+          name: updatedData.name,
+          profilePicture: updatedData.profilePicture,
+          bio: updatedData.bio,
+        });
+        // Reset the form to updated values
         reset({
-          // Reset the form to updated values
           profilePicture: undefined,
           name: data.name,
           bio: data.bio,
         });
-        setPreview(updatedData.profilePicture); // Reset the image preview as well
+        // Reset the image preview as well
+        setPreview(updatedData.profilePicture);
       },
     });
   };

@@ -1,15 +1,8 @@
 import { Button, Modal } from '@social-media/evoke-ui';
 import { useState } from 'react';
 import EditUserForm from './EditUserForm';
-import { UserProfile } from '@social-media/api';
 
-type EditProfileButtonProps = {
-  ownerProfile: UserProfile;
-};
-
-const EditProfileButton: React.FC<EditProfileButtonProps> = ({
-  ownerProfile,
-}) => {
+const EditProfileButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
@@ -34,7 +27,7 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
             </h3>
           </Modal.Header>
           <Modal.Content>
-            <EditUserForm profile={ownerProfile} />
+            <EditUserForm />
           </Modal.Content>
         </Modal>
       )}

@@ -15,19 +15,15 @@ const RemoveFriendButton: React.FC<RemoveFriendButtonProps> = ({
   const { mutate: removeFriend } = useRemoveFriend(userId, friendId);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  //
+
   const openChatWindow = () => {
     setIsLoading(true);
-    createOneOnOneChat(userId, friendId)
-      .then((response) => {
-        setIsLoading(false);
-        if (response.id) {
-          navigate(`/chats/one-on-one/${response.id}`);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createOneOnOneChat(userId, friendId).then((response) => {
+      setIsLoading(false);
+      if (response.id) {
+        navigate(`/chats/one-on-one/${response.id}`);
+      }
+    });
   };
   return (
     <Stack spacing="small" className="w-full">
