@@ -253,18 +253,13 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => sendFriendRequest(userId, friendId),
-    onSuccess: () => {
-      queryClient.setQueryData(
-        ['friendshipStatus', userId, friendId],
-        (oldData: FriendRequest) => {
-          if (oldData) {
-            return {
-              ...oldData,
-              status: 'REQUEST_SENT',
-            };
-          }
-        }
-      );
+    onSuccess: (data) => {
+      console.log(data);
+
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: data.friendRequest.id,
+        status: 'REQUEST_SENT',
+      });
     },
   });
 };
