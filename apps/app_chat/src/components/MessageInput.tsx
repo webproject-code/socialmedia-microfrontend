@@ -14,7 +14,7 @@ interface MessageInputProps {
 }
 
 const MessageInputSchema = z.object({
-  content: z.string().min(1),
+  content: z.string().min(1, 'Message should not be empty'),
 });
 
 const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
@@ -56,6 +56,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
       content: '',
     },
     resolver: zodResolver(MessageInputSchema),
+    mode: 'onSubmit',
   });
 
   const {
