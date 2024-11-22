@@ -9,8 +9,12 @@ import {
   resetPasswordSchema,
 } from '@social-media/utils';
 import { useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
+import PasswordEye from '../PasswordEye';
 
 const ResetPasswordForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { data: message, mutate, error, isPending } = useResetPassword();
   const token = useSearchParams()[0].get('token');
 
@@ -47,28 +51,40 @@ const ResetPasswordForm = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <Input
-              {...field}
-              type="password"
-              label="Password"
-              placeholder="********"
-              error={!!errors.password}
-              errorMessage={errors.password?.message}
-            />
+            <div className="relative">
+              <Input
+                {...field}
+                type={showPassword ? 'text' : 'password'}
+                label="Password"
+                placeholder="********"
+                error={!!errors.password}
+                errorMessage={errors.password?.message}
+              />
+              <PasswordEye
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
+              />
+            </div>
           )}
         />
         <Controller
           name="confirmPassword"
           control={control}
           render={({ field }) => (
-            <Input
-              {...field}
-              type="password"
-              label="Confirm Password"
-              placeholder="********"
-              error={!!errors.confirmPassword}
-              errorMessage={errors.confirmPassword?.message} // This should display the correct error message
-            />
+            <div className="relative">
+              <Input
+                {...field}
+                type={showConfirmPassword ? 'text' : 'password'}
+                label="Confirm Password"
+                placeholder="********"
+                error={!!errors.confirmPassword}
+                errorMessage={errors.confirmPassword?.message}
+              />
+              <PasswordEye
+                showPassword={showConfirmPassword}
+                setShowPassword={setShowConfirmPassword}
+              />
+            </div>
           )}
         />
         <Button disabled={isPending || !!message}>

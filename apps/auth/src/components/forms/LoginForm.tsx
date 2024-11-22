@@ -3,13 +3,15 @@ import { IoIosWarning } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Input, Stack } from '@social-media/evoke-ui';
+import { Box, Button, Input, Stack } from '@social-media/evoke-ui';
 import { useLogin } from '@social-media/api';
 import { Spinner, loginSchema, useStore } from '@social-media/utils';
+import { useState } from 'react';
+import PasswordEye from '../PasswordEye';
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState(false);
   const { mutate, isPending, error } = useLogin();
   const { login } = useStore();
 
@@ -60,14 +62,20 @@ const LoginForm: React.FC = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <Input
-              {...field}
-              type="password"
-              label="Password"
-              placeholder="********"
-              error={!!errors.password}
-              errorMessage={errors.password?.message}
-            />
+            <Box className="relative">
+              <Input
+                {...field}
+                type={showPassword ? 'text' : 'password'}
+                label="Password"
+                placeholder="********"
+                error={!!errors.password}
+                errorMessage={errors.password?.message}
+              />
+              <PasswordEye
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
+              />
+            </Box>
           )}
         />
         <div className="text-end">
