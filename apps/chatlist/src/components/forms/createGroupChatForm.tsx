@@ -7,9 +7,8 @@ import { useEffect, useState } from 'react';
 import { useCreateGroupChat } from '@social-media/api';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '@social-media/utils';
-import { RxCross2 } from 'react-icons/rx';
 import { FaCamera } from 'react-icons/fa';
-import { CiUser } from 'react-icons/ci';
+
 interface GroupChatFormProps {
   ownerId: string;
   memberList: { id: string; name: string }[];
@@ -81,21 +80,14 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
       }
     }
 
-    if (data.memberIds.length === 0) {
-      setError('memberIds', {
-        message: 'Please add at least one member to the group',
-      });
-      return;
-    }
-
     if (data.groupIcon && data.memberIds.length !== 0) {
       mutate(data, {
         onSuccess(data) {
           closeModal(false);
+          resetForm();
           navigate(`/chats/group/${data.id}`);
         },
       });
-      resetForm();
     }
   };
 
@@ -123,10 +115,6 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const removeMember = (id: string) => {
-    setMemberList((prevList) => prevList.filter((member) => member.id !== id));
   };
 
   return (
@@ -198,51 +186,7 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
         />
       </div>
 
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <label className="text-sm font-primary  dark:text-gray-300">
-            Group Members
-            <span className="text-red-500 ml-1">*</span>
-          </label>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {memberList.length} selected
-          </span>
-        </div>
-
-        {memberList.length > 0 ? (
-          <div className="flex flex-wrap gap-2">
-            {memberList.map((member) => (
-              <div
-                key={member.id}
-                className="group font-primary flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-full text-sm"
-              >
-                <span>{member.name}</span>
-                <button
-                  type="button"
-                  onClick={() => removeMember(member.id)}
-                  className="opacity-60 hover:opacity-100 transition-opacity"
-                  aria-label={`Remove ${member.name}`}
-                >
-                  <RxCross2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex font-primary items-center justify-center py-4 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
-            <div className="text-center text-light-silverSteel-500 dark:text-dark-silverSteel">
-              <CiUser className="w-6 h-6 mx-auto mb-2" />
-              <p>Click on friends to add them to the group</p>
-            </div>
-          </div>
-        )}
-
-        {errors.memberIds && (
-          <p className="text-sm text-red-500">{errors.memberIds.message}</p>
-        )}
-      </div>
-
-      <div className="flex justify-end gap-2 pt-4">
+      <div className="flex justify-end gap-2">
         <Button
           variant="outline"
           className="font-primary border-2 border-red-400 text-red-400 hover:bg-red-500 hover:text-light-primary focus-visible:ring-2

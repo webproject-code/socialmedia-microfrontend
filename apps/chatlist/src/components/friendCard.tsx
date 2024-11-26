@@ -8,12 +8,14 @@ import {
 import React, { useCallback } from 'react';
 import { IoChatbubbleEllipses } from 'react-icons/io5';
 import { KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { FaUserMinus } from 'react-icons/fa';
 interface FriendCardProps {
   name: string;
   email: string;
   profilePicture: string;
   onClickHandler: () => void;
   groupChat?: boolean;
+  selectedMember?: boolean;
 }
 
 export const FriendCard: React.FC<FriendCardProps> = ({
@@ -22,6 +24,7 @@ export const FriendCard: React.FC<FriendCardProps> = ({
   profilePicture,
   onClickHandler,
   groupChat,
+  selectedMember,
 }) => {
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -67,6 +70,7 @@ export const FriendCard: React.FC<FriendCardProps> = ({
                 </p>
               </Box>
             </Box>
+            {selectedMember && <FaUserMinus className="text-red-500" />}
             {groupChat ? null : (
               <Box className="flex flex-col items-end gap-1 sm:gap-2 flex-shrink-0">
                 <IoChatbubbleEllipses
