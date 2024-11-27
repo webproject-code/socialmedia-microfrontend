@@ -1,8 +1,11 @@
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input } from '@social-media/evoke-ui';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { registrationStepOneSchema, useStore } from '@social-media/utils';
+
+import PasswordInput from '../PasswordInput';
 
 const RegisterStepOneForm: React.FC = () => {
   const { registerForm, updateRegisterForm, goToNextStep } = useStore();
@@ -32,7 +35,7 @@ const RegisterStepOneForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mx-0 sm:mx-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Controller
         name="email"
         control={control}
@@ -65,12 +68,10 @@ const RegisterStepOneForm: React.FC = () => {
         name="password"
         control={control}
         render={({ field }) => (
-          <Input
+          <PasswordInput
             {...field}
-            type="password"
             label="Password"
-            placeholder="********"
-            error={!!errors.password}
+            isError={!!errors.password}
             errorMessage={errors.password?.message}
           />
         )}
@@ -79,13 +80,11 @@ const RegisterStepOneForm: React.FC = () => {
         name="confirmPassword"
         control={control}
         render={({ field }) => (
-          <Input
+          <PasswordInput
             {...field}
-            type="password"
             label="Confirm Password"
-            placeholder="********"
-            error={!!errors.confirmPassword}
-            errorMessage={errors.confirmPassword?.message} // This should display the correct error message
+            isError={!!errors.confirmPassword}
+            errorMessage={errors.confirmPassword?.message}
           />
         )}
       />
