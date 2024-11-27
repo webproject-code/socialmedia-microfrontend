@@ -1,20 +1,19 @@
+import { Box, Button } from '@social-media/evoke-ui';
+import { Controller, useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { useResetPassword } from '@social-media/api';
-import { Controller, useForm } from 'react-hook-form';
-import { Box, Button, Input } from '@social-media/evoke-ui';
 import {
   Spinner,
   StatusMessageBox,
   resetPasswordSchema,
 } from '@social-media/utils';
-import { useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
-import PasswordEye from '../PasswordEye';
+
+import PasswordInput from '../PasswordInput';
 
 const ResetPasswordForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { data: message, mutate, error, isPending } = useResetPassword();
   const token = useSearchParams()[0].get('token');
 
@@ -51,40 +50,24 @@ const ResetPasswordForm = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <div className="relative">
-              <Input
-                {...field}
-                type={showPassword ? 'text' : 'password'}
-                label="Password"
-                placeholder="********"
-                error={!!errors.password}
-                errorMessage={errors.password?.message}
-              />
-              <PasswordEye
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
-              />
-            </div>
+            <PasswordInput
+              label="Password"
+              {...field}
+              isError={!!errors.password}
+              errorMessage={errors.password?.message}
+            />
           )}
         />
         <Controller
           name="confirmPassword"
           control={control}
           render={({ field }) => (
-            <div className="relative">
-              <Input
-                {...field}
-                type={showConfirmPassword ? 'text' : 'password'}
-                label="Confirm Password"
-                placeholder="********"
-                error={!!errors.confirmPassword}
-                errorMessage={errors.confirmPassword?.message}
-              />
-              <PasswordEye
-                showPassword={showConfirmPassword}
-                setShowPassword={setShowConfirmPassword}
-              />
-            </div>
+            <PasswordInput
+              label="Confirm Password"
+              {...field}
+              isError={!!errors.confirmPassword}
+              errorMessage={errors.confirmPassword?.message}
+            />
           )}
         />
         <Button disabled={isPending || !!message}>
