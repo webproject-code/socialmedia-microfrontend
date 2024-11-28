@@ -57,7 +57,7 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
           <img
             className="w-11 h-11 rounded-full ring-1 ring-secondary"
             src={profile}
-            alt={`${name}'s profile picture`}
+            alt={`${name}'s profile`}
           />
           <div className="flex flex-col">
             <h6>{name}</h6>
