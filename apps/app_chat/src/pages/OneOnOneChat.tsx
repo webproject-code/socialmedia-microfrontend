@@ -1,6 +1,6 @@
 import { ChatType, useOneOnOneChat, useProfile } from '@social-media/api';
 import { Container } from '@social-media/evoke-ui';
-import { useSocket } from '@social-media/utils';
+import { useSocket } from '@social-media/api';
 import { useEffect } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import ChatHeader from '../components/ChatHeader';
@@ -31,7 +31,7 @@ const OneOnOneChat = () => {
 
   if (isLoading) {
     return (
-      <Container className="min-h-screen w-full flex flex-col bg-light-primary dark:bg-dark-primary">
+      <Container className="h-screen w-full flex flex-col bg-light-primary dark:bg-dark-primary">
         <ChatHeaderSkeleton />
 
         {/* window */}
@@ -61,7 +61,7 @@ const OneOnOneChat = () => {
         ? data.participant.profilePicture
         : data.initiator.profilePicture;
     return (
-      <div className="min-h-screen w-full flex flex-col">
+      <div className="h-[calc(100vh-65px)] md:h-screen w-full flex flex-col">
         <ChatHeader
           chatType={chatType}
           chatId={chatId}

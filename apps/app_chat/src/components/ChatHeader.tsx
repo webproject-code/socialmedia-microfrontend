@@ -68,7 +68,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     setIsSearchActive(false);
     setQuery('');
     setSearchResults([]);
-  }, [chatId]);
+  }, [chatId, setSearchResults]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -142,7 +142,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   return (
     <>
-      <div className="chat-header flex items-center justify-between py-2 md:py-3 px-2 md:px-4 shrink-0 sticky top-0 bg-light-primary dark:bg-dark-primary z-10 h-[64px] md:h-[72px] shadow-md">
+      <div
+        className={`chat-header flex items-center justify-between py-2 md:py-3 px-2 md:px-4  ${
+          oneOnOneChatData?.vanishMode
+            ? 'dark:bg-purple-800 bg-light-lavender'
+            : 'dark:bg-dark-primary bg-light-primary'
+        } z-10 h-[64px] md:h-[72px] shadow-md`}
+      >
         {!isSearchActive ? (
           <>
             <div className="cursor-pointer flex gap-x-2 md:gap-x-4 items-center">
@@ -194,9 +200,10 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                 placeholder="Search messages..."
                 autoFocus={true}
                 autoComplete="off"
-              >
-                <FaSearch className="dark:text-dark-lavender" />
-              </Input>
+                icon={<FaSearch className="dark:text-dark-lavender" />}
+                iconPosition="left"
+              />
+
               {query && (
                 <Box className="search-results-container px-4 py-2 absolute bg-light-primary dark:bg-dark-primary top-11 left-0 w-full">
                   {searchResults.length > 0 ? (

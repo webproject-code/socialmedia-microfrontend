@@ -17,7 +17,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   isSentByCurrentUser,
   canDeleteMessage,
 }) => {
-  const isGroupMessage = message.groupChatId !== null;
+  const isGroupMessage = message.groupChatId ? true : false;
   const bubbleAlignment = isSentByCurrentUser ? 'justify-end' : 'justify-start';
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
