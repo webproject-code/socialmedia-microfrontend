@@ -1,5 +1,5 @@
 import { ChatsListServiceResponse, Message } from '@social-media/api';
-import { useSocket } from '@social-media/utils';
+import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';

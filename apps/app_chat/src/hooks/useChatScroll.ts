@@ -20,6 +20,8 @@ export const useChatScroll = ({
 
   // effect to load previous messages
   useEffect(() => {
+    if (chatRef.current === null) return;
+
     const topDiv = chatRef.current;
 
     // function to load previous message when scrolled to top
