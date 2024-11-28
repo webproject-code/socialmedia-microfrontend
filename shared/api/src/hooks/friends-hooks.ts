@@ -271,13 +271,14 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
   const { sendFriendRequest: sendFriendRequestEvent } = useSocket();
   return useMutation({
     mutationFn: () => sendFriendRequest(userId, friendId),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.setQueryData(
         ['friendshipStatus', userId, friendId],
         (oldData: FriendRequest) => {
           if (oldData) {
             return {
               ...oldData,
+              friendRequestId: data.friendRequest.id,
               status: 'REQUEST_SENT',
             };
           }
