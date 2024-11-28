@@ -12,15 +12,16 @@ const CancelFriendButton: React.FC<CancelFriendButtonProps> = ({
   friendId,
   friendRequestId,
 }) => {
-  const { mutate: cancelFriendRequest } = useCancelFriendRequest(
+  const { mutate: cancelFriendRequest, isPending } = useCancelFriendRequest(
     userId,
     friendId,
     friendRequestId
   );
   return (
     <Button
-      className="sm:w-[200px] dark:text-dark-primary "
+      className="sm:w-[200px] dark:text-dark-primary"
       onClick={() => cancelFriendRequest()}
+      disabled={isPending}
       tabIndex={0}
     >
       Cancel Request

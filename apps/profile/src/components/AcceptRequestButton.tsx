@@ -15,21 +15,16 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
   friendId,
   friendRequestId,
 }) => {
-  const { mutate: acceptFriendRequest } = useAcceptFriendRequest(
-    userId,
-    friendId,
-    friendRequestId
-  );
-  const { mutate: rejectFriendRequest } = useRejectFriendRequest(
-    userId,
-    friendId,
-    friendRequestId
-  );
+  const { mutate: acceptFriendRequest, isPending: isPendingForAccept } =
+    useAcceptFriendRequest(userId, friendId, friendRequestId);
+  const { mutate: rejectFriendRequest, isPending: isPendingForReject } =
+    useRejectFriendRequest(userId, friendId, friendRequestId);
   return (
     <Stack direction="row" spacing="small" className="w-full">
       <Button
         className="dark:text-dark-primary sm:w-[200px]"
         onClick={() => acceptFriendRequest()}
+        disabled={isPendingForAccept}
         tabIndex={0}
       >
         Accept
@@ -37,6 +32,7 @@ const AcceptRequestButton: React.FC<AcceptRequestButtonProps> = ({
       <Button
         className="dark:text-dark-secondary sm:w-[200px]"
         onClick={() => rejectFriendRequest()}
+        disabled={isPendingForReject}
         variant="outline"
         tabIndex={0}
       >

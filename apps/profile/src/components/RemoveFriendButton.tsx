@@ -12,7 +12,7 @@ const RemoveFriendButton: React.FC<RemoveFriendButtonProps> = ({
   userId,
   friendId,
 }) => {
-  const { mutate: removeFriend } = useRemoveFriend(userId, friendId);
+  const { mutate: removeFriend, isPending } = useRemoveFriend(userId, friendId);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,6 +37,7 @@ const RemoveFriendButton: React.FC<RemoveFriendButtonProps> = ({
       <Button
         variant="destructive"
         className="xs:w-full sm:w-[200px]"
+        disabled={isPending}
         onClick={() => removeFriend()}
       >
         Remove Friend
