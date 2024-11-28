@@ -18,6 +18,11 @@ import {
 import { FriendRequest, QueryPagination } from '../types';
 import { useInfiniteScroll } from '../axios/useInfiniteScroll';
 import { useCallback, useMemo } from 'react';
+import {
+  useFriendRequestsSocket,
+  useFriendSocket,
+} from './friends-socket-hooks';
+import { useSocket } from '../context/SocketContext';
 
 // Fetch users to add friend
 export const useUsers = (params: QueryPagination) => {
@@ -71,6 +76,9 @@ export const useUsers = (params: QueryPagination) => {
 
 // Fetch friends
 export const useFriends = (userId: string, params?: QueryPagination) => {
+  // add socket listeners
+  useFriendSocket();
+
   const {
     data,
     fetchNextPage,
@@ -189,6 +197,9 @@ export const useSuggestedFriends = (
 
 // Fetch friend requests
 export const useFriendRequests = (userId: string, params?: QueryPagination) => {
+  // add socket listeners
+  useFriendRequestsSocket();
+
   const {
     data,
     fetchNextPage,
@@ -240,10 +251,16 @@ export const useFriendRequests = (userId: string, params?: QueryPagination) => {
 // Remove friend
 export const useRemoveFriend = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
+  const { removeFriend: removeFriendEvent } = useSocket();
+
   return useMutation({
     mutationFn: () => removeFriend(userId, friendId),
     onSuccess: (data) => {
       queryClient.setQueryData(['friendshipStatus', userId, friendId], data);
+      queryClient.invalidateQueries({ queryKey: ['friends', userId] });
+      queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
+      //emit socket event
+      removeFriendEvent(userId, friendId);
     },
   });
 };
@@ -251,6 +268,7 @@ export const useRemoveFriend = (userId: string, friendId: string) => {
 // Send friend request
 export const useSendFriendRequest = (userId: string, friendId: string) => {
   const queryClient = useQueryClient();
+  const { sendFriendRequest: sendFriendRequestEvent } = useSocket();
   return useMutation({
     mutationFn: () => sendFriendRequest(userId, friendId),
     onSuccess: () => {
@@ -265,6 +283,8 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
           }
         }
       );
+      //emit socket event
+      sendFriendRequestEvent(userId, friendId);
     },
   });
 };
@@ -276,6 +296,7 @@ export const useCancelFriendRequest = (
   friendRequestId: string
 ) => {
   const queryClient = useQueryClient();
+  const { cancelFriendRequest: cancelFriendRequestEvent } = useSocket();
   return useMutation({
     mutationFn: () => cancelFriendRequest(friendRequestId),
     onSuccess: () => {
@@ -290,6 +311,8 @@ export const useCancelFriendRequest = (
           }
         }
       );
+      //emit socket event
+      cancelFriendRequestEvent(userId, friendId);
     },
   });
 };
@@ -301,6 +324,7 @@ export const useAcceptFriendRequest = (
   friendRequestId: string
 ) => {
   const queryClient = useQueryClient();
+  const { acceptFriendRequest } = useSocket();
   return useMutation({
     mutationFn: () => acceptOrRejectFriendRequest(friendRequestId, 'ACCEPTED'),
     onSuccess: () => {
@@ -311,6 +335,8 @@ export const useAcceptFriendRequest = (
       queryClient.invalidateQueries({ queryKey: ['friends', userId] });
       queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
       queryClient.invalidateQueries({ queryKey: ['friendRequests', userId] });
+      //emit socket event
+      acceptFriendRequest(userId, friendId);
     },
   });
 };
@@ -322,6 +348,7 @@ export const useRejectFriendRequest = (
   friendRequestId: string
 ) => {
   const queryClient = useQueryClient();
+  const { rejectFriendRequest } = useSocket();
   return useMutation({
     mutationFn: () => acceptOrRejectFriendRequest(friendRequestId, 'REJECTED'),
     onSuccess: () => {
@@ -330,6 +357,8 @@ export const useRejectFriendRequest = (
         status: 'NOT_FRIENDS',
       });
       queryClient.invalidateQueries({ queryKey: ['friendRequests', userId] });
+      //emit socket event
+      rejectFriendRequest(userId, friendId);
     },
   });
 };

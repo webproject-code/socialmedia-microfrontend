@@ -6,6 +6,7 @@ import {
   updateProfile,
 } from '../services/profile-services';
 import { EditUser, UserProfile } from '../types';
+import { useFriendStatusSocket } from './profile-socket-hooks';
 
 // Fetch profile details of logged in user
 export const useProfile = () => {
@@ -37,6 +38,8 @@ export const useProfileUpdate = () => {
 
 // Fetch friendship status
 export const useFriendshipStatus = (userId: string, friendId: string) => {
+  // add socket listeners
+  useFriendStatusSocket();
   return useQuery({
     queryKey: ['friendshipStatus', userId, friendId],
     queryFn: () => fetchFriendshipStatus(userId, friendId),
