@@ -21,6 +21,11 @@ type SocketContextType = {
   ) => void;
   sendGroupMessage: (chatId: string, senderId: string, content: string) => void;
   deleteGroupMessage: (chatId: string, messageId: string) => void;
+  sendFriendRequest: (senderId: string, receiverId: string) => void;
+  acceptFriendRequest: (senderId: string, receiverId: string) => void;
+  removeFriend: (senderId: string, receiverId: string) => void;
+  rejectFriendRequest: (senderId: string, receiverId: string) => void;
+  cancelFriendRequest: (senderId: string, receiverId: string) => void;
 };
 
 const SocketContext = createContext<SocketContextType>({
@@ -45,6 +50,21 @@ const SocketContext = createContext<SocketContextType>({
     return;
   },
   deleteGroupMessage: () => {
+    return;
+  },
+  sendFriendRequest: () => {
+    return;
+  },
+  acceptFriendRequest: () => {
+    return;
+  },
+  removeFriend: () => {
+    return;
+  },
+  rejectFriendRequest: () => {
+    return;
+  },
+  cancelFriendRequest: () => {
     return;
   },
 });
@@ -133,6 +153,26 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (socket) socket.emit(`sendGroupMessage`, { chatId, senderId, content });
   };
 
+  const sendFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('sendFriendRequest', { senderId, receiverId });
+  };
+
+  const acceptFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('acceptFriendRequest', { senderId, receiverId });
+  };
+
+  const removeFriend = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('removeFriend', { senderId, receiverId });
+  };
+
+  const rejectFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('rejectFriendRequest', { senderId, receiverId });
+  };
+
+  const cancelFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('cancelFriendRequest', { senderId, receiverId });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -145,6 +185,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         deleteMessage,
         sendGroupMessage,
         deleteGroupMessage,
+        sendFriendRequest,
+        acceptFriendRequest,
+        removeFriend,
+        rejectFriendRequest,
+        cancelFriendRequest,
       }}
     >
       {children}

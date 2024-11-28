@@ -1,5 +1,5 @@
 import { Message } from '@social-media/api';
-import { useSocket } from '@social-media/utils';
+import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 

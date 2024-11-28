@@ -1,6 +1,6 @@
 import { ChatType, useOneOnOneChat, useProfile } from '@social-media/api';
 import { Container } from '@social-media/evoke-ui';
-import { useSocket } from '@social-media/utils';
+import { useSocket } from '@social-media/api';
 import { useEffect } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import ChatHeader from '../components/ChatHeader';
