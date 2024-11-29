@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   forgotPassword,
   login,
@@ -43,7 +43,11 @@ export const useRegister = () => {
 };
 
 export const useLogout = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => logout(),
+    onSuccess: () => {
+      queryClient.clear();
+    },
   });
 };
