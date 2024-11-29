@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { FaUserMinus } from 'react-icons/fa';
+
 import { GroupMember } from '@social-media/api';
 import {
   Avatar,
@@ -6,8 +9,6 @@ import {
   Modal,
   ScrollArea,
 } from '@social-media/evoke-ui';
-import React, { useState } from 'react';
-import { FaUserMinus } from 'react-icons/fa';
 
 interface MembersListProps {
   members: GroupMember[];

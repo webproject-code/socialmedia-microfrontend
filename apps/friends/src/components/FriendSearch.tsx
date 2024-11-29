@@ -41,9 +41,9 @@ export const FriendSearch: React.FC<FriendSearchProps> = ({
             }
           }}
           autoComplete="off"
-        >
-          <LuSearch aria-hidden="true" />
-        </Input>
+          icon={<LuSearch aria-hidden="true" />}
+          iconPosition="left"
+        />
       </Box>
     </Box>
   );

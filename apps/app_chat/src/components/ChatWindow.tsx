@@ -1,11 +1,20 @@
-import { ChatType, Message, useProfile } from '@social-media/api';
-import { Container } from '@social-media/evoke-ui';
 import React, { ElementRef, useMemo, useRef } from 'react';
+
+import { ChatType, Message, useProfile } from '@social-media/api';
+import {
+  Box,
+  Button,
+  Container,
+  ScrollArea,
+  Stack,
+} from '@social-media/evoke-ui';
+import { Spinner, useStore } from '@social-media/utils';
+
 import { useChatQuery } from '../hooks/useChatQuery';
 import { useChatScroll } from '../hooks/useChatScroll';
 import { useChatSocket } from '../hooks/useChatSocket';
-import MessageBubble from './MessageBubble';
 import ChatWindowSkeleton from './ChatWindowSkeleton';
+import MessageBubble from './MessageBubble';
 
 interface ChatWindowProps {
   chatId: string;
@@ -26,7 +35,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
+  const updateChatSettingsKey = `chat:${chatId}:settings:update`;
   const { data: user } = useProfile();
+  const { vanishMessages } = useStore();
 
   const chatRef = useRef<ElementRef<'div'>>(null);
   const bottomRef = useRef<ElementRef<'div'>>(null);
@@ -36,7 +47,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       chatId,
       chatType,
     });
-  useChatSocket({ addKey, updateKey, chatId });
+  useChatSocket({ addKey, updateKey, updateChatSettingsKey, chatId });
   useChatScroll({
     chatRef,
     bottomRef,
@@ -69,25 +80,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   // Group messages by date
   const groupedMessages = useMemo(() => {
-    if (!data?.pages) return {};
+    if (!data?.pages && !isVanishMode) return {};
+
+    const messagesToGroup = isVanishMode
+      ? vanishMessages[chatId] || []
+      : data?.pages?.flatMap((page) => page?.messages ?? []) ?? [];
 
     const groups: MessagesByDate = {};
 
-    // Process pages in reverse order
-    [...data.pages].reverse().forEach((page) => {
-      if (!page?.messages) return;
-
-      // Process messages in each page
-      page.messages.forEach((message) => {
-        const date = new Date(message.createdAt).toDateString();
-        if (!groups[date]) {
-          groups[date] = [];
-        }
-        groups[date].push(message);
-      });
+    messagesToGroup.forEach((message) => {
+      const date = new Date(message.createdAt).toDateString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(message);
     });
 
-    // Sort messages within each date group
     Object.keys(groups).forEach((date) => {
       groups[date].sort(
         (a, b) =>
@@ -96,7 +104,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     });
 
     return groups;
-  }, [data?.pages]);
+  }, [data?.pages, isVanishMode, chatId]);
 
   if (status === 'pending') {
     return <ChatWindowSkeleton />;
@@ -113,56 +121,58 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }
 
   return (
-    <div
-      className="chat-window flex-1 flex flex-col py-4 overflow-y-auto bg-gray-300 dark:bg-[#4C4D51]/20"
-      ref={chatRef}
-    >
-      {hasNextPage === false && <div className="flex-1" />}
+    <div className="chat-window flex-1 flex flex-col overflow-y-auto bg-gray-300 dark:bg-[#4C4D51]/20">
+      <ScrollArea className="h-full" ref={chatRef}>
+        {hasNextPage === false && <Box className="flex-grow" />}
 
-      {hasNextPage && (
-        <div className="flex justify-center">
-          {isFetchingNextPage ? (
-            <div className="h-6 w-6 text-zinc-500 border-1 rounded-full animate-spin my-4" />
-          ) : (
-            <button
-              onClick={() => fetchNextPage()}
-              className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition"
-            >
-              Load previous messages
-            </button>
-          )}
-        </div>
-      )}
-      <div className="flex flex-col-reverse mt-auto">
-        {isVanishMode && (
-          <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary text-light-secondary dark:text-dark-secondary border border-light-secondary dark:border-dark-secondary py-1 rounded-full mx-auto px-4 opacity-90">
-            Vanish mode enabled
-          </div>
+        {hasNextPage && (
+          <Box className="flex justify-center">
+            {isFetchingNextPage ? (
+              <Spinner />
+            ) : (
+              <Button
+                className="w-fit dark:bg-dark-secondary bg-light-secondary text-xs"
+                size="sm"
+                onClick={() => fetchNextPage()}
+              >
+                Load previous messages
+              </Button>
+            )}
+          </Box>
         )}
-        {Object.entries(groupedMessages)
-          .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
-          .map(([date, messages]) => (
-            <div key={date} className="flex flex-col">
-              <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary text-gray-600 dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
-                {formatDateLabel(date)}
-              </div>
 
-              <div className="flex flex-col">
-                {messages.map((message) => (
-                  <MessageBubble
-                    key={message.id}
-                    message={message}
-                    isSentByCurrentUser={message.senderId === user?.id}
-                    canDeleteMessage={
-                      message.senderId === user?.id || Boolean(isGroupOwner)
-                    }
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-      </div>
-      <div ref={bottomRef} />
+        <Box className="flex flex-col-reverse min-h-full">
+          {Object.entries(groupedMessages)
+            .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+            .map(([date, messages]) => (
+              <Stack direction={'column'} key={date}>
+                <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary text-gray-600 dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
+                  {formatDateLabel(date)}
+                </div>
+
+                <Stack direction={'column'}>
+                  {messages.map((message) => (
+                    <MessageBubble
+                      key={message.id}
+                      message={message}
+                      isSentByCurrentUser={message.senderId === user?.id}
+                      canDeleteMessage={
+                        message.senderId === user?.id || Boolean(isGroupOwner)
+                      }
+                    />
+                  ))}
+                </Stack>
+              </Stack>
+            ))}
+          {isVanishMode && (
+            <Box className="flex flex-col items-center py-2 justify-center text-gray-600 dark:text-gray-300 font-primary">
+              <h2 className="text-xl font-semibold">Vanish mode is on</h2>
+              <p>Messages will be deleted when the mode is disabled</p>
+            </Box>
+          )}
+        </Box>
+        <div ref={bottomRef} />
+      </ScrollArea>
     </div>
   );
 };

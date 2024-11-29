@@ -8,7 +8,6 @@ export * from './components/Dropdown';
 
 export * from './context/ThemeContext';
 export * from './context/ReactQueryContext';
-export * from './context/SocketContext';
 
 export * from './hooks/useTheme';
 export * from './hooks/useDebounce';

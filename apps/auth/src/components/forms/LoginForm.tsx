@@ -1,15 +1,17 @@
-import { z } from 'zod';
+import { Button, Input, Stack } from '@social-media/evoke-ui';
+import { Controller, useForm } from 'react-hook-form';
 import { IoIosWarning } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import { Button, Input, Stack } from '@social-media/evoke-ui';
+
 import { useLogin } from '@social-media/api';
 import { Spinner, loginSchema, useStore } from '@social-media/utils';
 
+import PasswordInput from '../PasswordInput';
+
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-
   const { mutate, isPending, error } = useLogin();
   const { login } = useStore();
 
@@ -60,12 +62,10 @@ const LoginForm: React.FC = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <Input
+            <PasswordInput
               {...field}
-              type="password"
               label="Password"
-              placeholder="********"
-              error={!!errors.password}
+              isError={!!errors.password}
               errorMessage={errors.password?.message}
             />
           )}

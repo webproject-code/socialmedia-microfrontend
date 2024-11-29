@@ -31,7 +31,7 @@ const RejectFriendRequestButton: React.FC<RejectFriendRequestButtonProps> = ({
   };
   return (
     <Button
-      variant="outline"
+      variant="destructive"
       aria-label={`Reject friend request from ${name}`}
       className="p-1 sm:px-3 focus-ring outline-none"
       onClick={handleReject}

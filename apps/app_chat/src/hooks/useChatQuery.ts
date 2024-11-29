@@ -1,9 +1,11 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+
 import {
   ChatType,
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useStore } from '@social-media/utils';
 
 interface UseChatQueryOptions {
   chatId: string;
@@ -12,6 +14,7 @@ interface UseChatQueryOptions {
 
 // custom hook to fetch messages using infinite query
 export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
+  const { vanishMessages } = useStore();
   // function to fetch messages
   const getMessages = ({ pageParam = '' }) => {
     if (chatType === ChatType.ONE_ON_ONE) {
@@ -31,6 +34,25 @@ export const useChatQuery = ({ chatId, chatType }: UseChatQueryOptions) => {
       },
       // refetchInterval: isConnected ? false : 1000,
       refetchOnWindowFocus: false,
+      select: (data) => {
+        const cachedVanishMessages = vanishMessages[chatId] || [];
+
+        if (!data || !data.pages) return { pages: [] };
+
+        const updatedPages = [...data.pages];
+        if (updatedPages[0]) {
+          updatedPages[0] = {
+            ...updatedPages[0],
+            messages: [...cachedVanishMessages, ...updatedPages[0].messages],
+            pagination: updatedPages[0]?.pagination,
+          };
+        }
+
+        return {
+          ...data,
+          pages: updatedPages,
+        };
+      },
     });
 
   return {

@@ -1,8 +1,9 @@
+import React from 'react';
+import { FaEllipsisV, FaHandSparkles, FaSearch, FaUsers } from 'react-icons/fa';
+
 import { ChatType } from '@social-media/api';
 import { Button } from '@social-media/evoke-ui';
 import { Dropdown } from '@social-media/utils';
-import React from 'react';
-import { FaEllipsisV, FaHandSparkles, FaSearch, FaUsers } from 'react-icons/fa';
 
 interface ChatSettingsProps {
   chatType: ChatType;
@@ -60,7 +61,7 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({
   return (
     <Dropdown
       trigger={
-        <Button className="w-fit" variant="icon">
+        <Button className="w-fit px-1" variant="icon">
           <FaEllipsisV className="text-light-secondary hover:text-light-secondary/80 dark:text-dark-lavender dark:hover:text-dark-secondary/90" />
         </Button>
       }
