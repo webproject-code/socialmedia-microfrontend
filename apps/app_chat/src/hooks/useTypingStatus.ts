@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import { ChatType } from '@social-media/api';
 import { useSocket } from '@social-media/api';
-import { useEffect, useState } from 'react';
 
 interface TypingUser {
   name: string;
@@ -9,25 +10,25 @@ interface TypingUser {
 
 interface TypingStatus {
   chatType: ChatType;
+  chatId: string;
 }
 
-export const useTypingStatus = ({ chatType }: TypingStatus) => {
+export const useTypingStatus = ({ chatType, chatId }: TypingStatus) => {
   const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
   const { socket } = useSocket();
 
   useEffect(() => {
     if (!socket) return;
 
-    // Remove users who haven't typed for 3 seconds
-    const cleanupInterval = setInterval(() => {
-      const now = Date.now();
-      setTypingUsers((prevUsers) =>
-        prevUsers.filter((user) => now - user.timestamp < 3000)
-      );
-    }, 1000);
-
     // Handle user started typing
-    const handleUserTyping = ({ name }: { name: string }) => {
+    const handleUserTyping = ({
+      chatId: eventChatId,
+      name,
+    }: {
+      chatId: string;
+      name: string;
+    }) => {
+      if (eventChatId !== chatId) return; // Ignore events for other chats
       setTypingUsers((prevUsers) => {
         // Check if user is already in the list
         const userIndex = prevUsers.findIndex((user) => user.name === name);
@@ -48,7 +49,14 @@ export const useTypingStatus = ({ chatType }: TypingStatus) => {
     };
 
     // Handle user stopped typing
-    const handleUserStoppedTyping = ({ name }: { name: string }) => {
+    const handleUserStoppedTyping = ({
+      chatId: eventChatId,
+      name,
+    }: {
+      chatId: string;
+      name: string;
+    }) => {
+      if (eventChatId !== chatId) return; // Ignore events for other chats
       setTypingUsers((prevUsers) =>
         prevUsers.filter((user) => user.name !== name)
       );
@@ -60,11 +68,10 @@ export const useTypingStatus = ({ chatType }: TypingStatus) => {
 
     // Cleanup function
     return () => {
-      clearInterval(cleanupInterval);
       socket.off(`userTyping`, handleUserTyping);
       socket.off(`userStoppedTyping`, handleUserStoppedTyping);
     };
-  }, [socket]);
+  }, [socket, chatId]); // Add chatId to dependencies
 
   // Format typing indicator message
   const typingMessage = (() => {

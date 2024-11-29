@@ -1,3 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { FaArrowLeft, FaSearch } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+
 import {
   ChatType,
   OneOnOneChat,
@@ -14,10 +19,7 @@ import {
   ScrollArea,
 } from '@social-media/evoke-ui';
 import { useStore } from '@social-media/utils';
-import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
-import { FaArrowLeft, FaSearch } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+
 import { useMessagesSearch } from '../hooks/useMessagesSearch';
 import { useTypingStatus } from '../hooks/useTypingStatus';
 import ChatSettings from './ChatSettings';
@@ -38,15 +40,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   chatId,
 }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
-
-  const navigate = useNavigate();
-
-  const { searchResults, setSearchResults } = useStore();
+  const { searchResults, setSearchResults, clearVanishMessages } = useStore();
   const { mutate } = useOneOnOneChatUpdate(chatId!);
-  const { typingMessage } = useTypingStatus({ chatType });
+  const { typingMessage } = useTypingStatus({ chatId, chatType });
   const { searchMessages } = useMessagesSearch({ chatId, chatType });
   const { data, isLoading: isGroupMemberLoading } = useGroupMembers(chatId);
 
@@ -86,7 +86,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
       const settings = {
         vanishMode: !oneOnOneChatData.vanishMode,
       };
-      mutate(settings);
+      mutate(settings, {
+        onSuccess: () => {
+          clearVanishMessages(chatId);
+        },
+      });
     }
   };
 
