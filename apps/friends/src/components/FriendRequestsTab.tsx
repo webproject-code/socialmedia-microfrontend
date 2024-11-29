@@ -1,4 +1,4 @@
-import { ScrollArea, TabsContent } from '@social-media/evoke-ui';
+import { ScrollArea } from '@social-media/evoke-ui';
 import FriendsListCardSkeleton from './FriendsListCardSkeleton';
 import IllustrationImage from './IllustrationImage';
 import FriendsListCard from './FriendsListCard';
@@ -18,7 +18,7 @@ const FriendRequestsTab: React.FC<FriendRequestsTabProps> = ({
     useFriendRequests(currentUserId);
 
   return (
-    <TabsContent value="requests" className="tabs-content-base">
+    <>
       {isLoading && (
         <div className="loading-container">
           <FriendsListCardSkeleton cardType="request" />
@@ -50,7 +50,7 @@ const FriendRequestsTab: React.FC<FriendRequestsTabProps> = ({
           {isFetchingNextPage && <LoadingSpinner />}
         </ScrollArea>
       )}
-    </TabsContent>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import Chats from './pages/Chats';
 import GroupChat from './pages/GroupChat'; // Import your GroupChat component
 import Home from './pages/Home';
 import OneOnOneChat from './pages/OneOnOneChat'; // Import your OneOnOneChat component
-import { SocketProvider } from '@social-media/utils';
+import { SocketProvider } from '@social-media/api';
 
 export const routes: RouteObject[] = [
   {

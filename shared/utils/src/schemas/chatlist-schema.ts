@@ -8,7 +8,7 @@ export const createGroupChatSchema = z.object({
   groupDescription: z
     .string()
     .min(2, 'Group description must be at least 2 character long')
-    .max(15, 'max 15 character are allowed'),
+    .max(200, 'max 200 character are allowed'),
   ownerId: z.string(),
   groupIcon: z
     .instanceof(File)
