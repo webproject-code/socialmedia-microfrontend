@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { FaBan } from 'react-icons/fa';
 
 import { ChatType, Message } from '@social-media/api';
 import { Avatar, AvatarImage } from '@social-media/evoke-ui';
+
 import DeleteButton from './DeleteMessageButton';
 import DeleteMessageModal from './DeleteMessageModal';
-import { FaBan } from 'react-icons/fa';
 
 interface MessageBubbleProps {
   message: Message;

@@ -1,5 +1,6 @@
 import React, { ElementRef, useMemo, useRef } from 'react';
 
+import { ChatType, Message, useProfile } from '@social-media/api';
 import {
   Box,
   Button,
@@ -7,7 +8,6 @@ import {
   ScrollArea,
   Stack,
 } from '@social-media/evoke-ui';
-import { ChatType, Message, useProfile } from '@social-media/api';
 import { Spinner, useStore } from '@social-media/utils';
 
 import { useChatQuery } from '../hooks/useChatQuery';
@@ -164,6 +164,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 </Stack>
               </Stack>
             ))}
+          {isVanishMode && (
+            <Box className="flex flex-col items-center py-2 justify-center text-gray-600 dark:text-gray-300 font-primary">
+              <h2 className="text-xl font-semibold">Vanish mode is on</h2>
+              <p>Messages will be deleted when the mode is disabled</p>
+            </Box>
+          )}
         </Box>
         <div ref={bottomRef} />
       </ScrollArea>

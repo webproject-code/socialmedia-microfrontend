@@ -1,12 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChatType, OneOnOneChat, useProfile } from '@social-media/api';
-import { Button, Input } from '@social-media/evoke-ui';
-import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaPaperPlane } from 'react-icons/fa';
 import * as z from 'zod';
+
+import {
+  ChatType,
+  OneOnOneChat,
+  useProfile,
+  useSocket,
+} from '@social-media/api';
+import { Button, Input } from '@social-media/evoke-ui';
 
 interface MessageInputProps {
   chatType: ChatType;

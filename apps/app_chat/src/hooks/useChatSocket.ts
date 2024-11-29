@@ -1,7 +1,8 @@
-import { Message } from '@social-media/api';
-import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+
+import { Message, useSocket } from '@social-media/api';
+import { useStore } from '@social-media/utils';
 
 type ChatSocketProps = {
   chatId: string;
@@ -18,6 +19,7 @@ export const useChatSocket = ({
 }: ChatSocketProps) => {
   const { socket } = useSocket();
   const queryClient = useQueryClient();
+  const { clearVanishMessages } = useStore();
 
   useEffect(() => {
     if (!socket) return;
@@ -73,10 +75,10 @@ export const useChatSocket = ({
     });
 
     socket.on(updateChatSettingsKey, (chatType: string) => {
-      console.log('event receive', chatType);
       queryClient.invalidateQueries({
         queryKey: [chatType, chatId],
       });
+      clearVanishMessages(chatId);
     });
 
     return () => {

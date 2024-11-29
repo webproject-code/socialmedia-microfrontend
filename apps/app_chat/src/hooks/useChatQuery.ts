@@ -1,10 +1,11 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+
 import {
   ChatType,
   getGroupChatMessages,
   getOneOnOneChatMessages,
 } from '@social-media/api';
 import { useStore } from '@social-media/utils';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface UseChatQueryOptions {
   chatId: string;

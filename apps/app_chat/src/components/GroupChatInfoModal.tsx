@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { FaCamera } from 'react-icons/fa';
+
 import {
   useAddMembers,
   useGroupChat,
@@ -19,9 +23,7 @@ import {
   GroupSettingsFormData,
   groupSettingsSchema,
 } from '@social-media/utils';
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { FaCamera } from 'react-icons/fa';
+
 import AddMembersList from './AddMembersList';
 import MembersList from './MembersList';
 

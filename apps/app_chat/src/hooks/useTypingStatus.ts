@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { ChatType } from '@social-media/api';
-import { useSocket } from '@social-media/api';
+import { ChatType, useSocket } from '@social-media/api';
 
 interface TypingUser {
   name: string;
