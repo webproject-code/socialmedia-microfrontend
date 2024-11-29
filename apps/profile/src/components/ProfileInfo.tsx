@@ -63,11 +63,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, isOwner }) => {
             </Box>
           </Stack>
           <Stack direction="column" spacing="small">
-            <ProfileFriendsCount
-              friendsCount={
-                profile.friendIds.length + profile.friendOfIds.length
-              }
-            />
+            <ProfileFriendsCount userId={profile.id} />
             <div className="flex gap-2 items-center">
               <IoMdMail className="h-4 w-4 sm:h-5 sm:w-5" />
               <p className="text-sm sm:text-lg font-medium">{profile.email}</p>

@@ -108,6 +108,8 @@ export const useFriends = (userId: string, params?: QueryPagination) => {
     return [...new Set(allFriends)];
   }, [data?.pages]);
 
+  const totalCount = data?.pages[0].pagination.totalCount;
+
   // Handler for loading more data
   const loadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -119,6 +121,7 @@ export const useFriends = (userId: string, params?: QueryPagination) => {
   const bottomRef = useInfiniteScroll(loadMore);
 
   return {
+    totalCount,
     friends,
     isLoading,
     isFetchingNextPage,
