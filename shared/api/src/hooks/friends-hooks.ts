@@ -276,6 +276,8 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
         friendRequestId: data.friendRequest.id,
         status: 'REQUEST_SENT',
       });
+      //emit socket event
+      sendFriendRequestEvent(userId, friendId);
     },
   });
 };
@@ -295,6 +297,8 @@ export const useCancelFriendRequest = (
         friendRequestId: null,
         status: 'NOT_FRIENDS',
       });
+      //emit socket event
+      cancelFriendRequestEvent(userId, friendId);
     },
   });
 };
