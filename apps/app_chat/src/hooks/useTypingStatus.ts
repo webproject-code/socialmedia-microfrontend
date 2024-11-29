@@ -1,5 +1,5 @@
 import { ChatType } from '@social-media/api';
-import { useSocket } from '@social-media/utils';
+import { useSocket } from '@social-media/api';
 import { useEffect, useState } from 'react';
 
 interface TypingUser {

@@ -1,4 +1,4 @@
-import { SocketProvider } from '@social-media/utils';
+import { SocketProvider } from '@social-media/api';
 import { Grid } from '@social-media/evoke-ui';
 import { ChatsList } from 'chatlist/Module';
 import { Outlet, useLocation } from 'react-router-dom';

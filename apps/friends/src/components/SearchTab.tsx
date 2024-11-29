@@ -1,4 +1,4 @@
-import { ScrollArea, TabsContent } from '@social-media/evoke-ui';
+import { ScrollArea } from '@social-media/evoke-ui';
 import FriendsListCardSkeleton from './FriendsListCardSkeleton';
 import IllustrationImage from './IllustrationImage';
 import FriendsListCard from './FriendsListCard';
@@ -41,7 +41,7 @@ const SearchTab: React.FC<SearchTabProps> = ({
   });
 
   return (
-    <TabsContent value="search" className="tabs-content-base">
+    <>
       <FriendSearch onSearch={handleSearch} searchTerm={searchTerm} />
       {isLoading && (
         <div className="loading-container">
@@ -77,7 +77,7 @@ const SearchTab: React.FC<SearchTabProps> = ({
           {isFetchingNextPage && <LoadingSpinner />}
         </ScrollArea>
       )}
-    </TabsContent>
+    </>
   );
 };
 

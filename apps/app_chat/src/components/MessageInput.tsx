@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChatType, OneOnOneChat, useProfile } from '@social-media/api';
 import { Button, Input } from '@social-media/evoke-ui';
-import { useSocket } from '@social-media/utils';
+import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
