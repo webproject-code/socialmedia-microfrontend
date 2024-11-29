@@ -79,7 +79,7 @@ const EditUserForm: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
           {/* Display current or new profile picture preview */}

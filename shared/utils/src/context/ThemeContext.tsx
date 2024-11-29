@@ -1,3 +1,5 @@
+import { ThemeProvider } from '@emotion/react';
+import { createTheme } from '@social-media/evoke-ui';
 import React, { createContext, useState, useEffect } from 'react';
 
 // Create the context
@@ -9,6 +11,50 @@ export type ThemeContextType = {
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
 );
+
+const lightTheme = createTheme({
+  colors: {
+    variants: {
+      primary: {
+        main: '#FFFFFF',
+      },
+      secondary: {
+        main: '#3366CC',
+      },
+      levender: {
+        main: '#D4BFFF',
+      },
+      silverSteel: {
+        main: '#6b7280',
+      },
+      modalColor: {
+        main: '#F4F4F9',
+      },
+    },
+  },
+});
+
+const darkTheme = createTheme({
+  colors: {
+    variants: {
+      primary: {
+        main: '#24293C',
+      },
+      secondary: {
+        main: '#AACCFF',
+      },
+      levender: {
+        main: '#E6E6FA',
+      },
+      silverSteel: {
+        main: '#A7A9AA',
+      },
+      modalColor: {
+        main: '#0F0E21',
+      },
+    },
+  },
+});
 
 // Provider component to manage the theme state
 export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -46,7 +92,9 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ThemeContext.Provider value={{ isDarkTheme, toggleTheme }}>
-      {children}
+      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+        {children}
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 };

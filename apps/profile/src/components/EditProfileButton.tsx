@@ -14,12 +14,12 @@ const EditProfileButton: React.FC = () => {
       </Button>
       {isOpen && (
         <Modal
-          size={'lg'}
-          isOpen={isOpen}
+          size="sm"
+          show={isOpen}
           onClose={closeModal}
-          showCross={true}
-          closeOnOutsideClick={true}
-          className="bg-light-modalColor dark:bg-dark-modalColor py-4 px-6 z-5"
+          showCloseButton={true}
+          closeOnOverlayClick={true}
+          bodyClassName="bg-light-modalColor dark:bg-dark-modalColor"
         >
           <Modal.Header>
             <h3 className="text-xl font-bold text-light-secondary dark:text-dark-secondary">
