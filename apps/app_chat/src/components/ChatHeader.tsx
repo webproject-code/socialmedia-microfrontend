@@ -108,7 +108,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
     if (data)
       return (
-        <span className="max-w-[220px] sm:max-w-full truncate">
+        <span className="max-w-[220px] truncate">
           {data.members.slice(0, 3).map((member, index) => (
             <span key={member.id}>
               <Link
@@ -172,7 +172,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                 </h2>
 
                 <div
-                  className={`text-light-silverSteel dark:text-dark-secondary transition-opacity duration-300 ease-in-out`}
+                  className={`text-light-silverSteel dark:text-dark-secondary transition-opacity duration-300 ease-in-out truncate max-w-56 sm:max-w-none`}
                 >
                   {renderChatInfoContent()}
                 </div>
