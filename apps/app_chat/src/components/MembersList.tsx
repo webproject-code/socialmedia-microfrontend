@@ -49,7 +49,7 @@ const MembersList: React.FC<MembersListProps> = ({
   return (
     <div className="space-y-4">
       <div className="space-y-2 max-h-full overflow-y-auto">
-        <ScrollArea className="max-h-full px-0">
+        <ScrollArea className="h-[25vh] px-0">
           {members.map((member) => (
             <div
               key={member.id}
@@ -111,11 +111,11 @@ const ConfirmRemoveMemberModal: React.FC<ConfirmRemoveMemberModalProps> = ({
 }) => {
   return (
     <Modal
-      isOpen={isOpen}
+      show={isOpen}
       onClose={onClose}
       size="sm"
       className="dark:bg-dark-modalColor"
-      closeOnOutsideClick={true}
+      closeOnOverlayClick={true}
     >
       <Modal.Header className="text-xl font-semibold font-primary dark:text-dark-lavender">
         Remove Member
