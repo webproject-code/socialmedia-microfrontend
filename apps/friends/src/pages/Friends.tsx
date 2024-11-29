@@ -1,6 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Tabs, TabsList, TabsTrigger } from '@social-media/evoke-ui';
+import {
+  Box,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@social-media/evoke-ui';
 
 import { useProfile } from '@social-media/api';
 import { useTheme } from '@social-media/utils';
@@ -81,35 +87,41 @@ const Friends: React.FC = () => {
         </TabsList>
 
         {/* Friend Requests Tab */}
-        <FriendRequestsTab
-          currentUserId={currentUserId}
-          illustrationPath={getIllustrationPath(
-            theme.isDarkTheme,
-            'no-results-found-image'
-          )}
-        />
+        <TabsContent value="requests" className="tabs-content-base">
+          <FriendRequestsTab
+            currentUserId={currentUserId}
+            illustrationPath={getIllustrationPath(
+              theme.isDarkTheme,
+              'no-results-found-image'
+            )}
+          />
+        </TabsContent>
 
         {/* Suggested Friends Tab */}
-        <SuggestedFriendsTab
-          currentUserId={currentUserId}
-          illustrationPath={getIllustrationPath(
-            theme.isDarkTheme,
-            'no-results-found-image'
-          )}
-        />
+        <TabsContent value="suggestedFriends" className="tabs-content-base">
+          <SuggestedFriendsTab
+            currentUserId={currentUserId}
+            illustrationPath={getIllustrationPath(
+              theme.isDarkTheme,
+              'no-results-found-image'
+            )}
+          />
+        </TabsContent>
 
         {/* Search Tab */}
-        <SearchTab
-          currentUserId={currentUserId}
-          illustrationPath={getIllustrationPath(
-            theme.isDarkTheme,
-            'no-results-found-image'
-          )}
-          searchIllustrationPath={getIllustrationPath(
-            theme.isDarkTheme,
-            'search-image'
-          )}
-        />
+        <TabsContent value="search" className="tabs-content-base">
+          <SearchTab
+            currentUserId={currentUserId}
+            illustrationPath={getIllustrationPath(
+              theme.isDarkTheme,
+              'no-results-found-image'
+            )}
+            searchIllustrationPath={getIllustrationPath(
+              theme.isDarkTheme,
+              'search-image'
+            )}
+          />
+        </TabsContent>
       </Tabs>
     </Box>
   );

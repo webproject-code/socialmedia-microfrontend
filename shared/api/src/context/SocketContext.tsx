@@ -22,6 +22,11 @@ type SocketContextType = {
   sendGroupMessage: (chatId: string, senderId: string, content: string) => void;
   deleteGroupMessage: (chatId: string, messageId: string) => void;
   updateChatSettings: (chatId: string, chatType: string) => void;
+  sendFriendRequest: (senderId: string, receiverId: string) => void;
+  acceptFriendRequest: (senderId: string, receiverId: string) => void;
+  removeFriend: (senderId: string, receiverId: string) => void;
+  rejectFriendRequest: (senderId: string, receiverId: string) => void;
+  cancelFriendRequest: (senderId: string, receiverId: string) => void;
 };
 
 const SocketContext = createContext<SocketContextType>({
@@ -51,6 +56,22 @@ const SocketContext = createContext<SocketContextType>({
   updateChatSettings: () => {
     return;
   },
+  sendFriendRequest: () => {
+    return;
+  },
+
+  acceptFriendRequest: () => {
+    return;
+  },
+  removeFriend: () => {
+    return;
+  },
+  rejectFriendRequest: () => {
+    return;
+  },
+  cancelFriendRequest: () => {
+    return;
+  },
 });
 
 export const useSocket = () => {
@@ -63,11 +84,14 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const socketInstance = io('http://localhost:3000', {
-      auth: {
-        token: token,
-      },
-    });
+    const socketInstance = io(
+      'https://social-media-backend-j5dj.onrender.com',
+      {
+        auth: {
+          token: token,
+        },
+      }
+    );
 
     socketInstance.on('connect', () => {
       setIsConnected(true);
@@ -138,6 +162,26 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (socket) socket.emit('updateChatSettings', { chatId, chatType });
   };
 
+  const sendFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('sendFriendRequest', { senderId, receiverId });
+  };
+
+  const acceptFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('acceptFriendRequest', { senderId, receiverId });
+  };
+
+  const removeFriend = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('removeFriend', { senderId, receiverId });
+  };
+
+  const rejectFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('rejectFriendRequest', { senderId, receiverId });
+  };
+
+  const cancelFriendRequest = (senderId: string, receiverId: string) => {
+    if (socket) socket.emit('cancelFriendRequest', { senderId, receiverId });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -151,6 +195,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         sendGroupMessage,
         deleteGroupMessage,
         updateChatSettings,
+        sendFriendRequest,
+        acceptFriendRequest,
+        removeFriend,
+        rejectFriendRequest,
+        cancelFriendRequest,
       }}
     >
       {children}

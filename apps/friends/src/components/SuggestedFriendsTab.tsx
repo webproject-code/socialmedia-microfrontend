@@ -1,9 +1,11 @@
-import { ScrollArea, TabsContent } from '@social-media/evoke-ui';
+import { ScrollArea } from '@social-media/evoke-ui';
 import FriendsListCardSkeleton from './FriendsListCardSkeleton';
 import IllustrationImage from './IllustrationImage';
 import FriendsListCard from './FriendsListCard';
 import LoadingSpinner from './LoadingSpinner';
 import { useSuggestedFriends } from '@social-media/api';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 interface SuggestedFriendsTabProps {
   currentUserId: string;
@@ -14,6 +16,7 @@ const SuggestedFriendsTab: React.FC<SuggestedFriendsTabProps> = ({
   currentUserId,
   illustrationPath,
 }) => {
+  const queryClient = useQueryClient();
   const {
     suggestedFriends,
     isLoading: isSuggestedFriendsLoading,
@@ -21,8 +24,17 @@ const SuggestedFriendsTab: React.FC<SuggestedFriendsTabProps> = ({
     isFetchingNextPage: isFetchingNextSuggestedFriends,
   } = useSuggestedFriends(currentUserId);
 
+  useEffect(() => {
+    return () => {
+      // revalidate suggested friends when user change tab or page
+      queryClient.invalidateQueries({
+        queryKey: ['suggestedFriends', currentUserId],
+      });
+    };
+  }, [queryClient, currentUserId]);
+
   return (
-    <TabsContent value="suggestedFriends" className="tabs-content-base">
+    <>
       {isSuggestedFriendsLoading && (
         <div className="loading-container">
           <FriendsListCardSkeleton cardType="add" />
@@ -53,7 +65,7 @@ const SuggestedFriendsTab: React.FC<SuggestedFriendsTabProps> = ({
           {isFetchingNextSuggestedFriends && <LoadingSpinner />}
         </ScrollArea>
       )}
-    </TabsContent>
+    </>
   );
 };
 

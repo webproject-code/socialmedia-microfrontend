@@ -1,14 +1,17 @@
+import { Box, Button } from '@social-media/evoke-ui';
+import { Controller, useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { useResetPassword } from '@social-media/api';
-import { Controller, useForm } from 'react-hook-form';
-import { Box, Button, Input } from '@social-media/evoke-ui';
 import {
   Spinner,
   StatusMessageBox,
   resetPasswordSchema,
 } from '@social-media/utils';
-import { useSearchParams } from 'react-router-dom';
+
+import PasswordInput from '../PasswordInput';
 
 const ResetPasswordForm = () => {
   const { data: message, mutate, error, isPending } = useResetPassword();
@@ -47,12 +50,10 @@ const ResetPasswordForm = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <Input
-              {...field}
-              type="password"
+            <PasswordInput
               label="Password"
-              placeholder="********"
-              error={!!errors.password}
+              {...field}
+              isError={!!errors.password}
               errorMessage={errors.password?.message}
             />
           )}
@@ -61,13 +62,11 @@ const ResetPasswordForm = () => {
           name="confirmPassword"
           control={control}
           render={({ field }) => (
-            <Input
-              {...field}
-              type="password"
+            <PasswordInput
               label="Confirm Password"
-              placeholder="********"
-              error={!!errors.confirmPassword}
-              errorMessage={errors.confirmPassword?.message} // This should display the correct error message
+              {...field}
+              isError={!!errors.confirmPassword}
+              errorMessage={errors.confirmPassword?.message}
             />
           )}
         />

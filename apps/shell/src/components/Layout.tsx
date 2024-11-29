@@ -1,6 +1,8 @@
-import { SocketProvider } from '@social-media/api';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+
+import { SocketProvider } from '@social-media/api';
+
 import Sidebar from './Sidebar';
 
 const Layout: React.FC = () => {
