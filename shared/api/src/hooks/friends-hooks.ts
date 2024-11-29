@@ -255,8 +255,10 @@ export const useRemoveFriend = (userId: string, friendId: string) => {
 
   return useMutation({
     mutationFn: () => removeFriend(userId, friendId),
-    onSuccess: (data) => {
-      queryClient.setQueryData(['friendshipStatus', userId, friendId], data);
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['friendshipStatus', userId, friendId],
+      });
       queryClient.invalidateQueries({ queryKey: ['friends', userId] });
       queryClient.invalidateQueries({ queryKey: ['friends', friendId] });
       //emit socket event
