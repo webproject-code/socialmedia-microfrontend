@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+
 import { useFriends } from '@social-media/api';
 import {
   Avatar,
@@ -7,8 +10,6 @@ import {
   Input,
   ScrollArea,
 } from '@social-media/evoke-ui';
-import { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
 
 interface AddMembersListProps {
   onAddMembers: (memberIds: string[]) => void;
@@ -44,9 +45,10 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
           name="friends search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-        >
-          <FaSearch />
-        </Input>
+          icon={<FaSearch className="dark:text-dark-lavender" />}
+          iconPosition="left"
+        />
+
         <Box className="max-h-full space-y-2">
           <ScrollArea className="max-h-full">
             {filteredFriends.map((friend) => (

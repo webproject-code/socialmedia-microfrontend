@@ -1,5 +1,4 @@
 import { Skeleton, Stack } from '@social-media/evoke-ui';
-import React from 'react';
 
 const MessageInputSkeleton = () => {
   return (

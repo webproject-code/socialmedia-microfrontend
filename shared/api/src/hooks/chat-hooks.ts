@@ -8,11 +8,8 @@ import {
   updateGroupChat,
   updateOneOnOneChatSettings,
 } from '../services/chat-services';
-import {
-  GroupChatSettings,
-  OneOnOneChat,
-  OneOnOneChatSettings,
-} from '../types';
+import { GroupChatSettings, OneOnOneChatSettings } from '../types';
+import { useSocket } from '../context/SocketContext';
 
 export const useOneOnOneChat = (chatId: string) => {
   return useQuery({
@@ -38,18 +35,18 @@ export const useGroupMembers = (chatId: string) => {
 };
 
 export const useOneOnOneChatUpdate = (chatId: string) => {
-  const queryClient = useQueryClient();
+  const { updateChatSettings } = useSocket();
   return useMutation({
     mutationFn: (settings: OneOnOneChatSettings) =>
       updateOneOnOneChatSettings(chatId, settings),
-    onSuccess: (data: OneOnOneChat) => {
-      queryClient.setQueryData(['one-on-one', chatId], data);
+    onSuccess: () => {
+      updateChatSettings(chatId, 'one-on-one');
     },
   });
 };
 
 export const useGroupChatUpdate = (chatId: string) => {
-  const queryClient = useQueryClient();
+  const { updateChatSettings } = useSocket();
 
   return useMutation({
     mutationFn: ({
@@ -67,8 +64,8 @@ export const useGroupChatUpdate = (chatId: string) => {
         },
         groupIcon
       ),
-    onSuccess: (data) => {
-      queryClient.setQueryData(['group', chatId], data);
+    onSuccess: () => {
+      updateChatSettings(chatId, 'group');
     },
   });
 };

@@ -1,3 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { FaArrowLeft, FaSearch } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+
 import {
   ChatType,
   OneOnOneChat,
@@ -14,10 +19,7 @@ import {
   ScrollArea,
 } from '@social-media/evoke-ui';
 import { useStore } from '@social-media/utils';
-import { useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
-import { FaArrowLeft, FaSearch } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+
 import { useMessagesSearch } from '../hooks/useMessagesSearch';
 import { useTypingStatus } from '../hooks/useTypingStatus';
 import ChatSettings from './ChatSettings';
@@ -38,15 +40,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   chatId,
 }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
-
-  const navigate = useNavigate();
-
-  const { searchResults, setSearchResults } = useStore();
+  const { searchResults, setSearchResults, clearVanishMessages } = useStore();
   const { mutate } = useOneOnOneChatUpdate(chatId!);
-  const { typingMessage } = useTypingStatus({ chatType });
+  const { typingMessage } = useTypingStatus({ chatId, chatType });
   const { searchMessages } = useMessagesSearch({ chatId, chatType });
   const { data, isLoading: isGroupMemberLoading } = useGroupMembers(chatId);
 
@@ -68,7 +68,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     setIsSearchActive(false);
     setQuery('');
     setSearchResults([]);
-  }, [chatId]);
+  }, [chatId, setSearchResults]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -86,7 +86,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
       const settings = {
         vanishMode: !oneOnOneChatData.vanishMode,
       };
-      mutate(settings);
+      mutate(settings, {
+        onSuccess: () => {
+          clearVanishMessages(chatId);
+        },
+      });
     }
   };
 
@@ -98,9 +102,57 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     navigate('/chats');
   };
 
+  const renderGroupDetails = () => {
+    if (isGroupMemberLoading)
+      return <span className="text-sm">Getting group details...</span>;
+
+    if (data)
+      return (
+        <span className="max-w-[220px] sm:max-w-full truncate">
+          {data.members.slice(0, 3).map((member, index) => (
+            <span key={member.id}>
+              <Link
+                to={`/users/${member.id}`}
+                className="hover:underline text-sm"
+              >
+                {member.name}
+              </Link>
+              {index < data.members.length - 1 && ', '}
+            </span>
+          ))}
+          {data.members.length > 3 && (
+            <span className="text-sm">+{data.members.length - 3} more</span>
+          )}
+        </span>
+      );
+  };
+
+  const renderChatInfoContent = () => {
+    if (typingMessage)
+      return (
+        <span
+          className={`text-sm ${typingMessage ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {typingMessage}
+        </span>
+      );
+
+    if (chatType === ChatType.GROUP) {
+      return renderGroupDetails();
+    }
+
+    return null;
+  };
+
   return (
     <>
-      <div className="chat-header flex items-center justify-between py-3 px-2 md:px-4 shrink-0 sticky top-0 bg-light-primary dark:bg-dark-primary z-10 h-[72px] shadow-md">
+      <div
+        className={`chat-header flex items-center justify-between py-2 md:py-3 px-2 md:px-4  ${
+          oneOnOneChatData?.vanishMode
+            ? 'dark:bg-purple-800 bg-light-lavender'
+            : 'dark:bg-dark-primary bg-light-primary'
+        } z-10 h-[64px] md:h-[72px] shadow-md`}
+      >
         {!isSearchActive ? (
           <>
             <div className="cursor-pointer flex gap-x-2 md:gap-x-4 items-center">
@@ -109,47 +161,21 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                 variant="icon"
                 onClick={handleBackNavigation}
               >
-                <FaArrowLeft className="dark:text-dark-lavender" />
+                <FaArrowLeft className="text-light-secondary dark:text-dark-lavender" />
               </Button>
-              <Avatar className="h-7 w-7 md:h-9 md:w-9">
+              <Avatar className="h-9 w-9">
                 <AvatarImage src={avatarUrl} className="ring-0" />
               </Avatar>
-              <div className="flex flex-col justify-between h-12">
-                <h2 className="text-xl  text-light-secondary dark:text-dark-lavender justify-self-start font-bold font-secondary">
+              <div className="flex flex-col justify-center h-12 transition-all duration-300 ease-in-out">
+                <h2 className="text-xl  text-light-secondary leading-none dark:text-dark-lavender font-bold font-secondary transition-all duration-300 ease-in-out">
                   {name}
                 </h2>
 
-                <span className=" text-light-silverSteel dark:text-dark-secondary text-sm">
-                  {typingMessage ? (
-                    typingMessage
-                  ) : chatType === ChatType.GROUP ? (
-                    isGroupMemberLoading ? (
-                      'Getting group details...'
-                    ) : (
-                      <span>
-                        {' '}
-                        {data?.members.slice(0, 3).map((member, index) => {
-                          return (
-                            <span key={member.id}>
-                              <Link
-                                to={`/users/${member.id}`}
-                                className="hover:underline text-sm"
-                              >
-                                {member.name}
-                              </Link>
-                              {index < data.members.length - 1 && ', '}
-                            </span>
-                          );
-                        })}
-                        {data!.members.length > 3 && (
-                          <span className="text-sm">
-                            +{data!.members.length - 3} more
-                          </span>
-                        )}
-                      </span>
-                    )
-                  ) : null}
-                </span>
+                <div
+                  className={`text-light-silverSteel dark:text-dark-secondary transition-opacity duration-300 ease-in-out`}
+                >
+                  {renderChatInfoContent()}
+                </div>
               </div>
             </div>
             <ChatSettings
@@ -178,9 +204,10 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                 placeholder="Search messages..."
                 autoFocus={true}
                 autoComplete="off"
-              >
-                <FaSearch className="dark:text-dark-lavender" />
-              </Input>
+                icon={<FaSearch className="dark:text-dark-lavender" />}
+                iconPosition="left"
+              />
+
               {query && (
                 <Box className="search-results-container px-4 py-2 absolute bg-light-primary dark:bg-dark-primary top-11 left-0 w-full">
                   {searchResults.length > 0 ? (

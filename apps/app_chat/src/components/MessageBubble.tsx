@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { FaBan } from 'react-icons/fa';
 
 import { ChatType, Message } from '@social-media/api';
 import { Avatar, AvatarImage } from '@social-media/evoke-ui';
+
 import DeleteButton from './DeleteMessageButton';
 import DeleteMessageModal from './DeleteMessageModal';
-import { FaBan } from 'react-icons/fa';
 
 interface MessageBubbleProps {
   message: Message;
@@ -17,7 +18,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   isSentByCurrentUser,
   canDeleteMessage,
 }) => {
-  const isGroupMessage = message.groupChatId !== null;
+  const isGroupMessage = message.groupChatId ? true : false;
   const bubbleAlignment = isSentByCurrentUser ? 'justify-end' : 'justify-start';
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 

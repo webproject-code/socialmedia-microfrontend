@@ -1,12 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChatType, OneOnOneChat, useProfile } from '@social-media/api';
-import { Button, Input } from '@social-media/evoke-ui';
-import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaPaperPlane } from 'react-icons/fa';
 import * as z from 'zod';
+
+import {
+  ChatType,
+  OneOnOneChat,
+  useProfile,
+  useSocket,
+} from '@social-media/api';
+import { Button, Input } from '@social-media/evoke-ui';
 
 interface MessageInputProps {
   chatType: ChatType;
@@ -14,7 +19,7 @@ interface MessageInputProps {
 }
 
 const MessageInputSchema = z.object({
-  content: z.string().min(1),
+  content: z.string().min(1, 'Message should not be empty'),
 });
 
 const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
@@ -56,6 +61,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
       content: '',
     },
     resolver: zodResolver(MessageInputSchema),
+    mode: 'onSubmit',
   });
 
   const {
@@ -75,7 +81,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ chatId, chatType }) => {
     }
   };
   return (
-    <div className="message-input shrink-0 sticky bottom-0 bg-light-primary dark:bg-dark-primary px-5 py-4">
+    <div className="message-input bg-light-primary dark:bg-dark-primary px-5 py-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex gap-2 items-center justify-center"

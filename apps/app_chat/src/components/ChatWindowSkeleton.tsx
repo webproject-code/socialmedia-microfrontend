@@ -1,9 +1,8 @@
 import { Skeleton, Stack } from '@social-media/evoke-ui';
-import React from 'react';
 
 const ChatWindowSkeleton = () => {
   return (
-    <div className="flex-1 flex flex-col py-4 overflow-y-auto bg-gray-300 dark:bg-[#4C4D51]/20">
+    <div className="flex-1 flex flex-col px-4 py-4 overflow-y-auto bg-gray-300 dark:bg-[#4C4D51]/20">
       {/* Message Loading Placeholder */}
       <Stack direction="column" className="gap-2">
         {/* Date label Skeleton */}

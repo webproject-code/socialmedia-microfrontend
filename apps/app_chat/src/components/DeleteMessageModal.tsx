@@ -1,7 +1,12 @@
-import { ChatType, OneOnOneChat, useProfile } from '@social-media/api';
-import { Button, Modal } from '@social-media/evoke-ui';
-import { useSocket } from '@social-media/api';
 import { useQueryClient } from '@tanstack/react-query';
+
+import {
+  ChatType,
+  OneOnOneChat,
+  useProfile,
+  useSocket,
+} from '@social-media/api';
+import { Button, Modal } from '@social-media/evoke-ui';
 
 interface DeleteMessageModalProps {
   isOpen: boolean;

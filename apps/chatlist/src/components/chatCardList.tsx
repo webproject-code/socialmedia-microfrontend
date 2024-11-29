@@ -93,9 +93,9 @@ export const ChatCardList = () => {
             onChange={handleChange}
             placeholder={'Search Here...'}
             aria-label="Search chats"
-          >
-            <LuSearch />
-          </Input>
+            icon={<LuSearch />}
+            iconPosition="left"
+          />
         </Box>
         <Button
           size="icon"

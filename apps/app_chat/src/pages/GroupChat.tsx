@@ -52,7 +52,7 @@ const GroupChat = () => {
 
   if (chatId && groupChat && user) {
     return (
-      <div className="min-h-screen w-full flex flex-col">
+      <div className="h-[calc(100vh-65px)] md:h-screen w-full flex flex-col">
         <ChatHeader
           chatType={chatType}
           chatId={chatId}

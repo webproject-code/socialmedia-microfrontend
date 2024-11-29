@@ -21,6 +21,7 @@ type SocketContextType = {
   ) => void;
   sendGroupMessage: (chatId: string, senderId: string, content: string) => void;
   deleteGroupMessage: (chatId: string, messageId: string) => void;
+  updateChatSettings: (chatId: string, chatType: string) => void;
   sendFriendRequest: (senderId: string, receiverId: string) => void;
   acceptFriendRequest: (senderId: string, receiverId: string) => void;
   removeFriend: (senderId: string, receiverId: string) => void;
@@ -52,9 +53,13 @@ const SocketContext = createContext<SocketContextType>({
   deleteGroupMessage: () => {
     return;
   },
+  updateChatSettings: () => {
+    return;
+  },
   sendFriendRequest: () => {
     return;
   },
+
   acceptFriendRequest: () => {
     return;
   },
@@ -153,6 +158,10 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (socket) socket.emit(`sendGroupMessage`, { chatId, senderId, content });
   };
 
+  const updateChatSettings = (chatId: string, chatType: string) => {
+    if (socket) socket.emit('updateChatSettings', { chatId, chatType });
+  };
+
   const sendFriendRequest = (senderId: string, receiverId: string) => {
     if (socket) socket.emit('sendFriendRequest', { senderId, receiverId });
   };
@@ -185,6 +194,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         deleteMessage,
         sendGroupMessage,
         deleteGroupMessage,
+        updateChatSettings,
         sendFriendRequest,
         acceptFriendRequest,
         removeFriend,
