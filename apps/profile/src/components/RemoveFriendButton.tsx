@@ -12,22 +12,18 @@ const RemoveFriendButton: React.FC<RemoveFriendButtonProps> = ({
   userId,
   friendId,
 }) => {
-  const { mutate: removeFriend } = useRemoveFriend(userId, friendId);
+  const { mutate: removeFriend, isPending } = useRemoveFriend(userId, friendId);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  //
+
   const openChatWindow = () => {
     setIsLoading(true);
-    createOneOnOneChat(userId, friendId)
-      .then((response) => {
-        setIsLoading(false);
-        if (response.id) {
-          navigate(`/chats/one-on-one/${response.id}`);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createOneOnOneChat(userId, friendId).then((response) => {
+      setIsLoading(false);
+      if (response.id) {
+        navigate(`/chats/one-on-one/${response.id}`);
+      }
+    });
   };
   return (
     <Stack spacing="small" className="w-full">
@@ -41,6 +37,7 @@ const RemoveFriendButton: React.FC<RemoveFriendButtonProps> = ({
       <Button
         variant="destructive"
         className="xs:w-full sm:w-[200px]"
+        disabled={isPending}
         onClick={() => removeFriend()}
       >
         Remove Friend

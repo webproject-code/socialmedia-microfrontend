@@ -9,23 +9,27 @@ import ProfileInfoSkeleton from './ProfileInfoSkeleton';
 import LogoutButton from './LogoutButton';
 import MutualFriendList from './MutualFriendList';
 
-const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
-  profile,
-  isOwner,
-}) => {
+type ProfileInfoProps = {
+  profile: UserProfile;
+  isOwner: boolean;
+};
+
+const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, isOwner }) => {
+  // Get the current user data from the store
   const { user } = useStore();
+
   if (!user) {
     return <ProfileInfoSkeleton />;
   }
 
   return (
     <Stack direction="column" spacing="small">
+      {/* Profile Information */}
       <Stack
         direction="row"
         spacing={{ xs: 'medium', sm: 'large' }}
         className="w-full"
       >
-        {/* Profile Picture */}
         <Stack align="center" justify="center" className="w-fit">
           <Avatar className="xs:h-20 xs:w-20 sm:h-28 sm:w-28">
             <AvatarImage
@@ -36,7 +40,6 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
           </Avatar>
         </Stack>
 
-        {/* Profile Details */}
         <Stack direction="column" spacing="small" className="w-full">
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -47,12 +50,11 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
             <p className="font-secondary text-xl sm:text-2xl font-bold">
               {profile.name}
             </p>
-            {/* <ProfileSettingsDropdown /> */}
 
             <Box className="hidden sm:flex">
               {isOwner ? (
-                <Stack spacing="small" className="w-full">
-                  <EditProfileButton ownerProfile={profile} />
+                <Stack spacing="small">
+                  <EditProfileButton />
                   <LogoutButton />
                 </Stack>
               ) : (
@@ -82,11 +84,11 @@ const ProfileInfo: React.FC<{ profile: UserProfile; isOwner: boolean }> = ({
         <MutualFriendList userProfile={profile} ownerProfile={user} />
       )}
 
-      {/* Mobile Edit/Logout Buttons */}
+      {/* Buttons for mobile screen */}
       <Box className="flex sm:hidden w-full">
         {isOwner ? (
           <Stack spacing="small" className="w-full" justify="evenly">
-            <EditProfileButton ownerProfile={profile} />
+            <EditProfileButton />
             <LogoutButton />
           </Stack>
         ) : (

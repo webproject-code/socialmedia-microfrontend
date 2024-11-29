@@ -1,15 +1,8 @@
 import { Button, Modal } from '@social-media/evoke-ui';
 import { useState } from 'react';
 import EditUserForm from './EditUserForm';
-import { UserProfile } from '@social-media/api';
 
-type EditProfileButtonProps = {
-  ownerProfile: UserProfile;
-};
-
-const EditProfileButton: React.FC<EditProfileButtonProps> = ({
-  ownerProfile,
-}) => {
+const EditProfileButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
@@ -21,12 +14,12 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
       </Button>
       {isOpen && (
         <Modal
-          size={'lg'}
-          isOpen={isOpen}
+          size="sm"
+          show={isOpen}
           onClose={closeModal}
-          showCross={true}
-          closeOnOutsideClick={true}
-          className="bg-light-modalColor dark:bg-dark-modalColor py-4 px-6 z-5"
+          showCloseButton={true}
+          closeOnOverlayClick={true}
+          bodyClassName="bg-light-modalColor dark:bg-dark-modalColor"
         >
           <Modal.Header>
             <h3 className="text-xl font-bold text-light-secondary dark:text-dark-secondary">
@@ -34,7 +27,7 @@ const EditProfileButton: React.FC<EditProfileButtonProps> = ({
             </h3>
           </Modal.Header>
           <Modal.Content>
-            <EditUserForm profile={ownerProfile} />
+            <EditUserForm />
           </Modal.Content>
         </Modal>
       )}

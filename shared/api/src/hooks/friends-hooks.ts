@@ -15,7 +15,7 @@ import {
   removeFriend,
   sendFriendRequest,
 } from '../services/friends-services';
-import { FriendRequest, QueryPagination } from '../types';
+import { QueryPagination } from '../types';
 import { useInfiniteScroll } from '../axios/useInfiniteScroll';
 import { useCallback, useMemo } from 'react';
 import {
@@ -272,20 +272,10 @@ export const useSendFriendRequest = (userId: string, friendId: string) => {
   return useMutation({
     mutationFn: () => sendFriendRequest(userId, friendId),
     onSuccess: (data) => {
-      queryClient.setQueryData(
-        ['friendshipStatus', userId, friendId],
-        (oldData: FriendRequest) => {
-          if (oldData) {
-            return {
-              ...oldData,
-              friendRequestId: data.friendRequest.id,
-              status: 'REQUEST_SENT',
-            };
-          }
-        }
-      );
-      //emit socket event
-      sendFriendRequestEvent(userId, friendId);
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: data.friendRequest.id,
+        status: 'REQUEST_SENT',
+      });
     },
   });
 };
@@ -301,19 +291,10 @@ export const useCancelFriendRequest = (
   return useMutation({
     mutationFn: () => cancelFriendRequest(friendRequestId),
     onSuccess: () => {
-      queryClient.setQueryData(
-        ['friendshipStatus', userId, friendId],
-        (oldData: FriendRequest) => {
-          if (oldData) {
-            return {
-              ...oldData,
-              status: 'NOT_FRIENDS',
-            };
-          }
-        }
-      );
-      //emit socket event
-      cancelFriendRequestEvent(userId, friendId);
+      queryClient.setQueryData(['friendshipStatus', userId, friendId], {
+        friendRequestId: null,
+        status: 'NOT_FRIENDS',
+      });
     },
   });
 };
