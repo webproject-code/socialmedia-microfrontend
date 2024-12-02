@@ -86,6 +86,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
     setGroupChat(!groupChat);
     handleGroupChatPrevStep();
     setMemberIds([]);
+    setGroupChatStep(0);
   };
 
   return (
