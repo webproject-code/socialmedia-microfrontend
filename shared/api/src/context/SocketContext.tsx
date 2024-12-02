@@ -27,6 +27,9 @@ type SocketContextType = {
   removeFriend: (senderId: string, receiverId: string) => void;
   rejectFriendRequest: (senderId: string, receiverId: string) => void;
   cancelFriendRequest: (senderId: string, receiverId: string) => void;
+  createGroupChat: (members: string[]) => void;
+  addGroupMembers: (members: string[]) => void;
+  removeGroupMember: (memberId: string) => void;
 };
 
 const SocketContext = createContext<SocketContextType>({
@@ -59,7 +62,6 @@ const SocketContext = createContext<SocketContextType>({
   sendFriendRequest: () => {
     return;
   },
-
   acceptFriendRequest: () => {
     return;
   },
@@ -70,6 +72,15 @@ const SocketContext = createContext<SocketContextType>({
     return;
   },
   cancelFriendRequest: () => {
+    return;
+  },
+  createGroupChat: () => {
+    return;
+  },
+  addGroupMembers: () => {
+    return;
+  },
+  removeGroupMember: () => {
     return;
   },
 });
@@ -182,6 +193,18 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (socket) socket.emit('cancelFriendRequest', { senderId, receiverId });
   };
 
+  const createGroupChat = (members: string[]) => {
+    if (socket) socket.emit('createGroupChat', { members });
+  };
+
+  const addGroupMembers = (members: string[]) => {
+    if (socket) socket.emit('addGroupMembers', { members });
+  };
+
+  const removeGroupMember = (memberId: string) => {
+    if (socket) socket.emit('removeGroupMember', { memberId });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -200,6 +223,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         removeFriend,
         rejectFriendRequest,
         cancelFriendRequest,
+        createGroupChat,
+        addGroupMembers,
+        removeGroupMember,
       }}
     >
       {children}

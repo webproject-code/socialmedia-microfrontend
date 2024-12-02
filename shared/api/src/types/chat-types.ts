@@ -98,7 +98,7 @@ export interface IChatServices {
     chatId: string,
     ownerId: string,
     memberIds: string[]
-  ): Promise<string>;
+  ): Promise<string[]>;
   removeGroupChatMembers(
     chatId: string,
     ownerId: string,

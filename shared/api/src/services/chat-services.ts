@@ -92,21 +92,27 @@ export const addGroupChatMembers: IChatServices['addGroupChatMembers'] = async (
   ownerId: string,
   memberIds: string[]
 ) => {
-  await apiClient.patch(`${GROUP_CHAT_ENDPOINT}/${chatId}/add-members`, {
-    ownerId,
-    memberIds,
-  });
+  const { data } = await apiClient.patch(
+    `${GROUP_CHAT_ENDPOINT}/${chatId}/add-members`,
+    {
+      ownerId,
+      memberIds,
+    }
+  );
 
-  return 'Members added successfully!';
+  return data;
 };
 
 export const removeGroupChatMembers: IChatServices['removeGroupChatMembers'] =
   async (chatId: string, ownerId: string, memberId: string) => {
-    await apiClient.patch(`${GROUP_CHAT_ENDPOINT}/${chatId}/remove-member`, {
-      ownerId,
-      memberId,
-    });
-    return 'Member removed successfully!';
+    const { data } = await apiClient.patch(
+      `${GROUP_CHAT_ENDPOINT}/${chatId}/remove-member`,
+      {
+        ownerId,
+        memberId,
+      }
+    );
+    return data;
   };
 
 export const getGroupMembers: IChatServices['getGroupMembers'] = async (

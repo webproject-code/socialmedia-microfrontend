@@ -157,11 +157,13 @@ export const ChatCardList = () => {
           )}
         </div>
       )}
-      <CreateChatModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        currentUserId={currentUserId}
-      />
+      {isModalOpen && (
+        <CreateChatModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          currentUserId={currentUserId}
+        />
+      )}
     </div>
   );
 };
