@@ -72,7 +72,7 @@ export const useGroupChatUpdate = (chatId: string) => {
 
 export const useAddMembers = (chatId: string) => {
   const queryClient = useQueryClient();
-
+  const { addGroupMembers } = useSocket();
   return useMutation({
     mutationFn: ({
       ownerId,
@@ -83,16 +83,21 @@ export const useAddMembers = (chatId: string) => {
     }) => {
       return addGroupChatMembers(chatId, ownerId, memberIds);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ['group-members', chatId],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['group', chatId],
+      });
+      addGroupMembers(data);
     },
   });
 };
 
 export const useRemoveMembers = (chatId: string) => {
   const queryClient = useQueryClient();
+  const { removeGroupMember } = useSocket();
 
   return useMutation({
     mutationFn: ({
@@ -102,13 +107,14 @@ export const useRemoveMembers = (chatId: string) => {
       ownerId: string;
       memberId: string;
     }) => removeGroupChatMembers(chatId, ownerId, memberId),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ['group-members', chatId],
       });
       queryClient.invalidateQueries({
         queryKey: ['group', chatId],
       });
+      removeGroupMember(data);
     },
   });
 };

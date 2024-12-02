@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   createGroupChat,
   createOneOnOneChat,
@@ -7,6 +11,7 @@ import {
 } from '../services/chatlist-services';
 import {
   ChatsListServiceResponse,
+  ChatType,
   FriendsWithNochatResponse,
   groupData,
 } from '../types';
@@ -14,6 +19,7 @@ import { useCallback, useMemo } from 'react';
 
 // import { useSocket } from '@social-media/utils';
 import { useInfiniteScroll } from '../axios/useInfiniteScroll';
+import { useSocket } from '../context/SocketContext';
 
 // export const useChatList = (searchTerm: string) => {
 //   const {
@@ -84,8 +90,6 @@ export const useFriendsWithNoChat = (searchTerm: string, userId: string) => {
         ? lastPage.pagination.nextCursor
         : undefined,
     initialPageParam: '',
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
     refetchOnWindowFocus: true, // Refetch when window regains focus
     refetchOnMount: true, // Refetch when component mounts
   });
@@ -127,9 +131,17 @@ export const useCreateOneOnOneChat = () => {
 };
 
 export const useCreateGroupChat = () => {
+  const queryClient = useQueryClient();
+  const { createGroupChat: createGroupChatEvent } = useSocket();
   return useMutation({
     mutationFn: (groupData: groupData) => {
       return createGroupChat(groupData);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['chatList'] });
+      createGroupChatEvent(
+        data?.memberIds?.filter((Id) => Id !== data?.ownerId)
+      );
     },
   });
 };
@@ -169,8 +181,12 @@ export const useChatList = (searchTerm: string) => {
   }, [data?.pages]);
 
   const noMessageChats = useMemo(() => {
-    return chats.filter((chats) => {
-      if (chats.messages.length > 0) return chats;
+    return chats.filter((chat) => {
+      if (chat.type === ChatType.GROUP) {
+        return chat;
+      }
+      if (chat.type === ChatType.ONE_ON_ONE && chat.messages.length > 0)
+        return chat;
     });
   }, [chats]);
 

@@ -33,6 +33,10 @@ export const useChatlistSocketListen = () => {
     [queryClient]
   );
 
+  const updateChatlist = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['chatList'] });
+  }, [queryClient]);
+
   useEffect(() => {
     if (!socket) return;
 
@@ -94,11 +98,19 @@ export const useChatlistSocketListen = () => {
     };
 
     socket.on('chatlist:newMessage', handleNewMessage);
+    socket.on('chatlist:update', updateChatlist);
 
     return () => {
       socket.off('chatlist:newMessage', handleNewMessage);
+      socket.off('chatlist:update', updateChatlist);
     };
-  }, [queryClient, socket, location.pathname, updateUnreadCount]);
+  }, [
+    queryClient,
+    socket,
+    location.pathname,
+    updateUnreadCount,
+    updateChatlist,
+  ]);
 
   return {
     updateUnreadCount,
