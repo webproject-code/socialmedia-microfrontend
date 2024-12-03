@@ -117,9 +117,9 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
     const isOwner = userData?.id === groupChat.ownerId;
     return (
       <Modal show={isOpen} onClose={onClose} size="sm">
-        <Modal.Header className="text-2xl text-light-secondary dark:text-dark-lavender">
+        <Modal.Header className=" text-light-secondary dark:text-dark-lavender">
           <div>
-            <h1>Group Information</h1>
+            <h1 className="text-xl font-semibold">Group Information</h1>
             <div className="text-sm text-gray-500 dark:text-dark-silverSteel">
               Created on {new Date(groupChat.createdAt).toLocaleDateString()}
             </div>
@@ -127,7 +127,7 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
         </Modal.Header>
         <Modal.Content className="p-2 overflow-y-auto">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex items-center space-x-4">
+            <div className="flex gap-4 items-center">
               <div className="relative">
                 <Avatar size="lg" className="h-20 w-20">
                   <AvatarImage
@@ -210,10 +210,10 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
           <div className="mt-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semifold text-light-secondary dark:text-dark-lavender">
+                <h3 className="text-lg font-semibold text-light-secondary dark:text-dark-lavender">
                   {isAddingMembersOpen
                     ? 'Add Members'
-                    : `Members ${membersData?.members.length}`}
+                    : `Members (${membersData?.members.length})`}
                 </h3>
                 {isOwner && !isAddingMembersOpen ? (
                   <Button

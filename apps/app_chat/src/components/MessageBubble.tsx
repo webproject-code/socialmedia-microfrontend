@@ -28,7 +28,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   return (
     <div
-      className={`message-bubble flex items-start gap-x-3 mb-3 mx-5 ${bubbleAlignment}`}
+      className={`message-bubble flex items-start gap-x-1 sm:gap-x-3 mb-3 mx-3 ${bubbleAlignment}`}
     >
       {!isSentByCurrentUser && isGroupMessage && (
         <MessageAvatar profilePicture={message.sender.profilePicture} />
@@ -128,7 +128,7 @@ const MessageTimestamp: React.FC<{ timestamp: string }> = ({ timestamp }) => (
 
 const getMessageContainerStyles = (isSentByCurrentUser: boolean): string => {
   const baseStyles =
-    'px-4 py-2 rounded-lg max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl';
+    'p-2 sm:px-4 rounded-lg max-w-[80vw] md:max-w-[50vw] break-words';
   const conditionalStyles = isSentByCurrentUser
     ? 'rounded-tr-none dark:bg-dark-secondary bg-light-secondary'
     : 'rounded-tl-none dark:bg-dark-lavender bg-light-primary';

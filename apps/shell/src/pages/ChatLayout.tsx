@@ -38,7 +38,7 @@ const ChatLayout: React.FC = () => {
   const isAnyChatSelected = /(group|one-on-one)\/[a-f0-9]{24}/.test(pathname);
 
   return (
-    <Grid className="w-full h-full px-1" columns={12} spacing="small">
+    <Grid className="w-full h-full" columns={12} spacing="none">
       <Grid.GridItem
         columnSpan={{ xs: 12, md: 4, lg: 3 }}
         className="overflow-hidden md:block"

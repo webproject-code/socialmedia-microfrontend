@@ -50,12 +50,12 @@ const FriendsListCard: React.FC<FriendsListCardProps> = ({
     >
       <Card.Content className="flex py-3 items-center justify-between gap-4 px-1">
         <div
-          className="flex gap-3 items-center h-full w-full"
+          className="flex gap-3 items-center h-full w-full hover:text-light-secondary dark:hover:text-dark-secondary hover:font-semibold"
           onClick={() => navigate(`/users/${userId}`)}
           role="button"
         >
           <img
-            className="w-11 h-11 rounded-full ring-1 ring-secondary"
+            className="w-11 h-11 rounded-full"
             src={profile}
             alt={`${name}'s profile`}
           />

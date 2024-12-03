@@ -146,7 +146,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
             .map(([date, messages]) => (
               <Stack direction={'column'} key={date}>
-                <div className="text-center text-xs my-2 bg-gray-100 dark:bg-dark-primary text-gray-600 dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
+                <div className="text-center text-xs mt-2 mb-4 bg-gray-100 dark:bg-dark-primary text-gray-600 dark:text-dark-silverSteel py-1 rounded-full mx-auto px-4">
                   {formatDateLabel(date)}
                 </div>
 

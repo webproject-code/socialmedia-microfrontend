@@ -61,10 +61,13 @@ const MembersList: React.FC<MembersListProps> = ({
                 </Avatar>
                 <div className="flex flex-col">
                   <p className="dark:text-dark-lavender truncate">
-                    {member.name} {member.id === ownerId && ` (Owner)`}
+                    {member.name}{' '}
+                    <span className="text-light-secondary dark:text-dark-secondary font-semibold">
+                      {member.id === ownerId && ` (Owner)`}
+                    </span>
                   </p>
                   {member.bio && (
-                    <p className="text-sm text-gray-500 dark:text-dark-silverSteel max-w-[200px] truncate">
+                    <p className="text-sm text-gray-500 dark:text-dark-silverSteel max-w-[50vw] md:max-w-[70vw] truncate">
                       {member.bio}
                     </p>
                   )}
