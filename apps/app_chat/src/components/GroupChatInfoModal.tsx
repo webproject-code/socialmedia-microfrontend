@@ -125,7 +125,6 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
             </div>
           </div>
         </Modal.Header>
-        {/* <ScrollArea className="max-h-[90vh]"> */}
         <Modal.Content className="p-2 overflow-y-auto">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-center space-x-4">
@@ -255,7 +254,6 @@ const GroupChatInfoModal: React.FC<GroupChatInfoModalProps> = ({
             </div>
           </div>
         </Modal.Content>
-        {/* </ScrollArea> */}
       </Modal>
     );
   }

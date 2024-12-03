@@ -50,7 +50,7 @@ const SuggestedFriendsTab: React.FC<SuggestedFriendsTabProps> = ({
       )}
 
       {!isSuggestedFriendsLoading && suggestedFriends.length > 0 && (
-        <ScrollArea className="h-full p-1">
+        <ScrollArea className="p-1">
           {suggestedFriends.map((user) => (
             <FriendsListCard
               key={user.id}

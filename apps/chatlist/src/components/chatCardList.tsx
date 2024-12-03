@@ -141,7 +141,7 @@ export const ChatCardList = () => {
               <p className="font-primary">No chats found !</p>
             </Box>
           ) : (
-            <ScrollArea className="border-none h-full">
+            <ScrollArea className="border-none">
               <Box className="flex flex-col dark:bg-dark-primary bg-light-primary items-center justify-center mt-2">
                 {chats.map(renderChatCard)}
                 <div ref={bottomRef}>
