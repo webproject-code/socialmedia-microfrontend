@@ -129,8 +129,8 @@ export const ChatCardList = () => {
               <img
                 src={
                   isDarkTheme
-                    ? 'assets/Images/dark-no-results-found-image.svg'
-                    : 'assets/Images/light-no-results-found-image.svg'
+                    ? 'assets/images/dark-no-results-found-image.svg'
+                    : 'assets/images/light-no-results-found-image.svg'
                 }
                 width={300}
                 height={300}
