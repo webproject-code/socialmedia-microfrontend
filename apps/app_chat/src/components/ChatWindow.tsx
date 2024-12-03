@@ -122,7 +122,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div className="chat-window flex-1 flex flex-col overflow-y-auto bg-gray-300 dark:bg-[#4C4D51]/20">
-      <ScrollArea className="h-full" ref={chatRef}>
+      <ScrollArea ref={chatRef}>
         {hasNextPage === false && <Box className="flex-grow" />}
 
         {hasNextPage && (

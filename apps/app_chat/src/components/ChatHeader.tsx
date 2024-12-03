@@ -211,8 +211,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
               {query && (
                 <Box className="search-results-container px-4 py-2 absolute bg-light-primary dark:bg-dark-primary top-11 left-0 w-full">
                   {searchResults.length > 0 ? (
-                    <ul className="search-results-list">
-                      <ScrollArea className="h-full sm:max-h-[500px]">
+                    <ul aria-label="Search results">
+                      <ScrollArea
+                        css={{
+                          maxHeight: '500px',
+                        }}
+                        aria-label="scroll area"
+                      >
                         {searchResults.map((message) => (
                           <>
                             <li

@@ -49,7 +49,7 @@ const MembersList: React.FC<MembersListProps> = ({
   return (
     <div className="space-y-4">
       <div className="space-y-2 max-h-full overflow-y-auto">
-        <ScrollArea className="h-[25vh] px-0">
+        <ScrollArea css={{ height: '25vh' }} className="px-0">
           {members.map((member) => (
             <div
               key={member.id}

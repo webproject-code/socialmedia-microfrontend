@@ -34,7 +34,7 @@ const FriendRequestsTab: React.FC<FriendRequestsTabProps> = ({
       )}
 
       {!isLoading && friendRequests?.length > 0 && (
-        <ScrollArea className="h-full p-1">
+        <ScrollArea className="p-1">
           {friendRequests?.map((request) => (
             <FriendsListCard
               key={request.id}

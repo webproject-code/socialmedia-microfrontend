@@ -41,7 +41,7 @@ const FriendsTab: React.FC<FriendsTabProps> = ({ userId }) => {
       </Box>
     </Stack>
   ) : (
-    <ScrollArea className="h-full">
+    <ScrollArea>
       <Grid
         spacing={'medium'}
         columns={{ sm: 1, md: 2, lg: 3 }}

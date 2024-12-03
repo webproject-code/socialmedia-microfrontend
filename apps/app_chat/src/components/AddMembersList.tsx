@@ -50,7 +50,7 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
         />
 
         <Box className="max-h-full space-y-2">
-          <ScrollArea className="h-[20vh]">
+          <ScrollArea css={{ height: '20vh' }}>
             {filteredFriends.map((friend) => (
               <label
                 key={friend.id}

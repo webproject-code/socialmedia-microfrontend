@@ -62,7 +62,7 @@ const SearchTab: React.FC<SearchTabProps> = ({
       )}
 
       {!isLoading && searchTerm && users.length > 0 && (
-        <ScrollArea className="h-full p-1">
+        <ScrollArea className="p-1">
           {users.map((user) => (
             <FriendsListCard
               key={user.id}

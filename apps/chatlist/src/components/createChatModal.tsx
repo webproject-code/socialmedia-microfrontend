@@ -229,7 +229,7 @@ export const CreateChatModal: React.FC<CreateChatModalProps> = ({
                   <p className="font-primary">No User found !</p>
                 </Box>
               ) : (
-                <ScrollArea className="h-[450px]">
+                <ScrollArea css={{ height: '450px' }}>
                   {friends.map((user) => {
                     // Check if user is selected as a group member
                     const isMemberSelected = memberIds.some(
