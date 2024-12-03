@@ -2,7 +2,7 @@ import { Friends } from 'friends/Module';
 
 const FriendsPage: React.FC = () => {
   return (
-    <div className="p-2 md:p-4 h-full">
+    <div className="h-full">
       <Friends />
     </div>
   );

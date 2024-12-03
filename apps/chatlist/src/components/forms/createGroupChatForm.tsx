@@ -19,7 +19,7 @@ interface GroupChatFormProps {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DefaultGroupIcon = 'assets/Images/group-svgrepo-com.svg';
+const DefaultGroupIcon = 'assets/images/group-svgrepo-com.svg';
 
 export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
   ownerId,
@@ -65,6 +65,21 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
     setMemberList([]);
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setGroupIcon(URL.createObjectURL(file));
+
+    clearErrors('groupIcon');
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setValue('groupIcon', file);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     if (!data.groupIcon) {
       try {
@@ -91,59 +106,35 @@ export const CreateGroupChatForm: React.FC<GroupChatFormProps> = ({
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError('groupIcon', { message: 'File size must be less than 5MB' });
-        return;
-      }
-
-      if (!['image/jpeg', 'image/png', 'image/svg+xml'].includes(file.type)) {
-        setError('groupIcon', {
-          message: 'Only JPG, PNG & SVG formats are allowed',
-        });
-        return;
-      }
-
-      clearErrors('groupIcon');
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setGroupIcon(reader.result as string);
-        setValue('groupIcon', file);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 px-4">
       <div className="flex flex-col items-center mb-8">
-        <div className="relative group">
-          <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 ring-4 ring-white dark:ring-gray-900 shadow-lg">
-            <img
-              src={groupIcon}
-              alt="Group Icon"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <FaCamera className="w-6 h-6 text-white" />
-            </div>
-          </div>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/svg+xml"
-            onChange={handleFileChange}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            aria-label="Upload group icon"
+        {/* Group Icon Container */}
+        <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 ring-4 ring-white dark:ring-gray-900 shadow-lg group">
+          <img
+            src={groupIcon}
+            alt="Group Icon"
+            className="w-full h-full object-cover"
           />
-          {errors.groupIcon && (
-            <p className="absolute inset-0 flex items-center justify-center text-center -bottom-36  -translate-RxCross2-1/2 whitespace-nowrap text-sm text-red-500">
-              {errors.groupIcon.message}
-            </p>
-          )}
+          {/* Hover Overlay */}
+          <label className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+            <FaCamera className="w-6 h-6 text-white cursor-pointer" />
+            {/* File Input */}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/svg+xml,image/svg"
+              onChange={handleFileChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              aria-label="Upload group icon"
+            />
+          </label>
         </div>
+        {/* Error Message */}
+        {errors.groupIcon && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-400 ">
+            {errors.groupIcon.message}
+          </p>
+        )}
       </div>
 
       <div className="space-y-4">

@@ -49,11 +49,11 @@ const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
+      show={isOpen}
       onClose={onClose}
       size="sm"
       className="dark:bg-dark-modalColor"
-      closeOnOutsideClick={true}
+      closeOnOverlayClick={true}
     >
       <Modal.Header className="text-xl font-semibold font-primary dark:text-dark-lavender">
         Delete Message

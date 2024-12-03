@@ -167,7 +167,10 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
                 <AvatarImage src={avatarUrl} className="ring-0" />
               </Avatar>
               <div className="flex flex-col justify-center h-12 transition-all duration-300 ease-in-out">
-                <h2 className="text-xl  text-light-secondary leading-none dark:text-dark-lavender font-bold font-secondary transition-all duration-300 ease-in-out">
+                <h2
+                  className="text-xl  text-light-secondary leading-none dark:text-dark-lavender font-bold font-secondary transition-all duration-300 ease-in-out"
+                  onClick={toggleGroupInfoClick}
+                >
                   {name}
                 </h2>
 

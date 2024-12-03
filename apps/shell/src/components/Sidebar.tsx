@@ -44,7 +44,7 @@ const Sidebar: React.FC = () => {
           className="hidden md:block w-12 h-12 mb-4"
         />
       </Link>
-      <ul className="flex flex-grow flex-row md:flex-col w-full items-center justify-around md:space-y-8 md:justify-center">
+      <ul className="flex flex-grow flex-row md:flex-col w-full items-center justify-around md:gap-8 md:justify-center">
         {navItems.map(({ to, icon, label, exact }) => (
           <li key={to} className="relative group">
             <Link
