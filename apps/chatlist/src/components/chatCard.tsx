@@ -1,9 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { formatDate } from '@social-media/utils';
 import { ChatType } from '@social-media/api';
 import { Avatar, AvatarImage, Card, Divider } from '@social-media/evoke-ui';
-import { useCallback } from 'react';
-import { KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { formatDate } from '@social-media/utils';
+import { KeyboardEvent as ReactKeyboardEvent, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ChatCardProps {
   name: string;

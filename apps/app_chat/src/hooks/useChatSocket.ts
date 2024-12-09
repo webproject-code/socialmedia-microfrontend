@@ -78,6 +78,7 @@ export const useChatSocket = ({
       queryClient.invalidateQueries({
         queryKey: [chatType, chatId],
       });
+      queryClient.invalidateQueries({ queryKey: ['chatList'] });
       clearVanishMessages(chatId);
     });
 
