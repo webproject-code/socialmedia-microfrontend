@@ -7,11 +7,15 @@ import { useStore } from '@social-media/utils';
 import { ChatsList } from 'chatlist/Module';
 
 import NoChatSelected from '../components/NoChatSelected';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ChatLayout: React.FC = () => {
   const { pathname } = useLocation();
   const { socket } = useSocket();
-  const { addVanishMessage, updateVanishMessage } = useStore();
+  const { addVanishMessage, updateVanishMessage, clearVanishMessages } =
+    useStore();
+  const queryClient = useQueryClient();
+  const updateChatSettingsKey = `chat:settings:update`;
 
   useEffect(() => {
     if (!socket) return;
@@ -29,9 +33,18 @@ const ChatLayout: React.FC = () => {
       }
     );
 
+    socket.on(updateChatSettingsKey, ({ chatType, chatId }) => {
+      queryClient.invalidateQueries({
+        queryKey: [chatType, chatId],
+      });
+      queryClient.invalidateQueries({ queryKey: ['chatList'] });
+      clearVanishMessages(chatId);
+    });
+
     return () => {
       socket.off('vanishmessages:add');
       socket.off('vanishmessages:update');
+      socket.off('updateChatSettingsKey');
     };
   }, [socket]);
 
