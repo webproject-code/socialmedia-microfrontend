@@ -54,43 +54,38 @@ export const useChatlistSocketListen = () => {
             `${message.chatId}`
           );
 
-          // Find the chat that the new message belongs to
+          // Variable to store the updated chat
+          let updatedChat: ChatsListServiceResponse['chats'][0] | null = null;
+
+          // Remove the chat from its current position across pages and find the chat
           const updatedPages = oldData.pages.map((page) => {
             const chatIndex = page.chats.findIndex(
               (chat) => chat.id === message.chatId
             );
             if (chatIndex === -1) return page; // If no chat found, return the page as is
-
+            const newMessage = message.message; // The new message from the socket
             // Update the unread count and replace the last message
-            const updatedChats = page.chats.map((chat) => {
-              if (chat.id === message.chatId) {
-                const currentUnreadCount = chat.unreadCount ?? 0; // Default to 0 if undefined
-                const newMessage = message.message; // The new message from the socket
+            updatedChat = {
+              ...page.chats[chatIndex],
+              unreadCount: isCurrentChatOpen
+                ? page.chats[chatIndex].unreadCount ?? 0
+                : (page.chats[chatIndex].unreadCount ?? 0) + 1, // Increment unread count if the chat is not open
+              messages: [newMessage], // Replace last message with new message
+              lastMessageAt: newMessage.createdAt, // Update the timestamp to the new message's timestamp
+            };
 
-                // Replace the last message with the new message (keeping other properties intact)
-                const updatedChat = {
-                  ...chat,
-                  unreadCount: isCurrentChatOpen
-                    ? currentUnreadCount
-                    : currentUnreadCount + 1, // Increment unread count only if the chat is not open
-                  messages: [newMessage], // Replace last message with new message content
-                  lastMessageAt: newMessage.createdAt, // Update the timestamp to the new message's timestamp
-                  // Do not add to `messages` array as we are replacing the last message
-                };
+            // Remove the chat from the current page's chat list
+            const updatedChats = page.chats.filter(
+              (chat) => chat.id !== message.chatId
+            );
 
-                return updatedChat;
-              }
-              return chat;
-            });
-
-            // Reorder the chats to move the updated chat to the top
-            const sortedChats = [
-              updatedChats[chatIndex],
-              ...updatedChats.filter((c) => c.id !== message.chatId),
-            ];
-
-            return { ...page, chats: sortedChats };
+            return { ...page, chats: updatedChats };
           });
+
+          // Insert the updated chat at the top of the first page
+          if (updatedChat) {
+            updatedPages[0].chats = [updatedChat, ...updatedPages[0].chats];
+          }
 
           return { ...oldData, pages: updatedPages };
         }
