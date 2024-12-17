@@ -35,7 +35,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
-  const updateChatSettingsKey = `chat:${chatId}:settings:update`;
   const { data: user } = useProfile();
   const { vanishMessages } = useStore();
 
@@ -47,7 +46,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       chatId,
       chatType,
     });
-  useChatSocket({ addKey, updateKey, updateChatSettingsKey, chatId });
+  useChatSocket({ addKey, updateKey, chatId });
   useChatScroll({
     chatRef,
     bottomRef,

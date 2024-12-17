@@ -10,6 +10,7 @@ import {
   Input,
   ScrollArea,
 } from '@social-media/evoke-ui';
+import { Spinner } from '@social-media/utils';
 
 interface AddMembersListProps {
   onAddMembers: (memberIds: string[]) => void;
@@ -25,7 +26,9 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { friends } = useFriends(currentUserId, { query: searchQuery });
+  const { friends, bottomRef, isFetchingNextPage } = useFriends(currentUserId, {
+    query: searchQuery,
+  });
 
   const filteredFriends = friends.filter(
     (friend) =>
@@ -50,7 +53,7 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
         />
 
         <Box className="max-h-full space-y-2">
-          <ScrollArea css={{ height: '20vh' }}>
+          <ScrollArea style={{ height: '20vh' }}>
             {filteredFriends.map((friend) => (
               <label
                 key={friend.id}
@@ -77,6 +80,9 @@ const AddMembersList: React.FC<AddMembersListProps> = ({
               </label>
             ))}
           </ScrollArea>
+          <div ref={bottomRef} className="flex justify-center">
+            {isFetchingNextPage && <Spinner />}
+          </div>
         </Box>
       </Box>
       <Button
